@@ -1,0 +1,16 @@
+[server]
+headless = true
+
+[theme.light]
+primaryColor = "#1d4ed8"
+backgroundColor = "#f8fafc"
+secondaryBackgroundColor = "#eef2f7"
+textColor = "#0f172a"
+borderColor = "#cbd5e1"
+
+[theme.dark]
+primaryColor = "#60a5fa"
+backgroundColor = "#0b1220"
+secondaryBackgroundColor = "#131c2e"
+textColor = "#e2e8f0"
+borderColor = "#334155"

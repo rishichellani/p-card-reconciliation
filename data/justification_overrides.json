@@ -1,0 +1,41 @@
+{
+  "_comment": "Stage 2 simulation overrides. Planted scenarios so the demo always exercises interesting audit paths. Keys are txn_ids; values replace the randomly simulated justification.",
+  "T-1004": {
+    "business_purpose": "5 nights lodging for Denver customer onsite with Northwind Traders, Aug 29 - Sep 3 (opportunity OPP-2291).",
+    "receipt": {"present": true, "vendor_name": "Marriott Denver", "total": "1211.40", "receipt_date": "2026-09-03"}
+  },
+  "T-1005": {
+    "business_purpose": "Dinner with Northwind Traders procurement team to discuss renewal terms for OPP-2291.",
+    "attendees": ["Marcus Webb (Acme)", "Jordan Lee (Northwind)", "Priya Shah (Northwind)", "Carlos Ortiz (Northwind)", "Mei Chen (Northwind)", "Dale Turner (Northwind)"],
+    "receipt": {"present": true, "vendor_name": "The Capital Grille", "total": "412.75", "receipt_date": "2026-09-04"}
+  },
+  "T-1006": {
+    "business_purpose": "supplies",
+    "receipt": {"present": true, "vendor_name": "Staples", "total": "1236.10", "receipt_date": "2026-09-05"}
+  },
+  "T-1012": {
+    "business_purpose": "Client entertainment during Las Vegas trade show.",
+    "receipt": {"present": true, "vendor_name": "MGM Grand", "total": "500.00", "receipt_date": "2026-09-11"}
+  },
+  "T-1013": {
+    "business_purpose": "Team bonding night out after a tough quarter.",
+    "attendees": [],
+    "receipt": {"present": true, "vendor_name": "The Drunken Pig", "total": "386.00", "receipt_date": "2026-09-12"}
+  },
+  "T-1014": {
+    "business_purpose": "Thank-you gift for a client contact.",
+    "receipt": {"present": true, "vendor_name": "Tiffany & Co", "total": "890.00", "receipt_date": "2026-09-14"}
+  },
+  "T-1024": {
+    "business_purpose": "Q3 demand-gen campaign 'Autumn Launch' (approved campaign CMP-0917), LinkedIn/Facebook paid social.",
+    "receipt": {"present": true, "vendor_name": "Facebook Ads", "total": "4750.00", "receipt_date": "2026-09-21"}
+  },
+  "T-1025": {
+    "business_purpose": "Airfare to Chicago for the Oct 6-8 Midwest Sales Summit.",
+    "receipt": {"present": false, "vendor_name": null, "total": null, "receipt_date": null}
+  },
+  "T-1028": {
+    "business_purpose": "Standing desk mat and monitor riser for my home office.",
+    "receipt": {"present": true, "vendor_name": "Amazon Marketplace", "total": "238.40", "receipt_date": "2026-09-24"}
+  }
+}
