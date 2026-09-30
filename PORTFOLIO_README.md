@@ -72,13 +72,17 @@ A Streamlit app with two pages.
 employee directory and the policy rules: type, required or not, validation, and what each field drives downstream.
 
 ## Testing
-93 offline tests cover money and date parsing, quarantine behaviour, provider failover, credential disabling, JSON repair
+100 offline tests cover money and date parsing, quarantine behaviour, provider failover, credential disabling, JSON repair
 and retry, the hash chain and tamper detection, the append-only log, missing-justification handling, backup and restore
 (including tampered and unsafe archives), and total versus partial LLM outage. A `--mock-llm` mode runs the whole
 pipeline with no keys.
 
 ## Tech
 Python 3.10+, Pydantic v2, Streamlit, OpenAI-compatible SDK client (Gemini / Groq / OpenRouter), `Decimal`, openpyxl, pytest.
+
+## Sample data
+Two invented statements ship with the app. A realistic one (50 transactions, five planted problems, so 45 approved with the offline auditor)
+and a stress test (26 transactions, about a dozen problems). The 90% is a property of the invented data, not a measured accuracy.
 
 ## Quality assurance
 A dedicated QA pass found 26 defects and gaps (10 high, 9 medium, 7 low), all fixed. Each functional fix has a regression test (32 of the 46 in the regression file were confirmed to fail on the pre-fix code); the speed, caching and documentation fixes are not test-covered. The most serious: an amount like

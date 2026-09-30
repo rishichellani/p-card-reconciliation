@@ -1,0 +1,512 @@
+{
+  "_comment": "Sample justifications for data/sample_realistic.csv, used by the 'Load sample justifications' button. Entries with an '_issue' note are the five planted problems; every other row is a clean, specific, policy-compliant justification. Sample data only, not written by employees.",
+  "R-2001": {
+    "business_purpose": "GitHub Team seats for the seven engineers on the Platform squad; renewal of the plan already in the approved tool catalog.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Github Inc",
+      "total": "84.00",
+      "receipt_date": "2026-09-01"
+    }
+  },
+  "R-2002": {
+    "business_purpose": "August AWS usage for the CI and staging environments used by the Platform squad (cost center 4100).",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Amazon Web Services",
+      "total": "1420.55",
+      "receipt_date": "2026-09-02"
+    }
+  },
+  "R-2003": {
+    "business_purpose": "Annual IntelliJ IDEA licence for the backend engineer who joins the Platform squad on Sept 8; the tool is in the approved catalog.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Jetbrains",
+      "total": "249.00",
+      "receipt_date": "2026-09-03"
+    }
+  },
+  "R-2004": {
+    "business_purpose": "Kubernetes security course required for my on-call rotation, agreed with my manager Ana Lopez.",
+    "attendees": [],
+    "receipt": {
+      "present": false,
+      "vendor_name": null,
+      "total": null,
+      "receipt_date": null
+    }
+  },
+  "R-2005": {
+    "business_purpose": "Ride from Denver airport to the Northwind office for the Sept 10 architecture review.",
+    "attendees": [],
+    "receipt": {
+      "present": false,
+      "vendor_name": null,
+      "total": null,
+      "receipt_date": null
+    }
+  },
+  "R-2006": {
+    "business_purpose": "Two nights lodging (Sept 9-10, $243 per night) in Denver for the Northwind architecture review.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Marriott Denver",
+      "total": "486.00",
+      "receipt_date": "2026-09-10"
+    }
+  },
+  "R-2007": {
+    "business_purpose": "Economy return flight from Denver to Seattle after the Northwind architecture review on Sept 11, booked 12 days ahead.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Delta Air Lines",
+      "total": "412.30",
+      "receipt_date": "2026-09-11"
+    }
+  },
+  "R-2008": {
+    "business_purpose": "Printer paper, toner and whiteboard markers for the Platform squad room; stock ran out on Sept 15.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Staples",
+      "total": "132.75",
+      "receipt_date": "2026-09-16"
+    }
+  },
+  "R-2009": {
+    "business_purpose": "Monthly Datadog APM seats for the Platform squad's production monitoring; already in the approved tool catalog.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Datadog",
+      "total": "340.00",
+      "receipt_date": "2026-09-17"
+    }
+  },
+  "R-2010": {
+    "business_purpose": "O'Reilly Learning month for my Site Reliability certification prep, agreed with my manager Ana Lopez.",
+    "attendees": [],
+    "receipt": {
+      "present": false,
+      "vendor_name": null,
+      "total": null,
+      "receipt_date": null
+    }
+  },
+  "R-2011": {
+    "business_purpose": "Ride to the Boulder data center for the disaster-recovery test on Sept 24.",
+    "attendees": [],
+    "receipt": {
+      "present": false,
+      "vendor_name": null,
+      "total": null,
+      "receipt_date": null
+    }
+  },
+  "R-2012": {
+    "business_purpose": "Economy airfare from Denver to Chicago for the Northwind renewal meeting on Sept 3, booked 14 days ahead.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Delta Air Lines",
+      "total": "684.20",
+      "receipt_date": "2026-09-02"
+    }
+  },
+  "R-2013": {
+    "business_purpose": "Two nights lodging (Sept 2-3, $268 per night) in Chicago for the Northwind renewal meeting.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Hilton Chicago",
+      "total": "536.00",
+      "receipt_date": "2026-09-03"
+    }
+  },
+  "R-2014": {
+    "business_purpose": "Dinner with the Northwind procurement team to review renewal terms for opportunity OPP-2291.",
+    "attendees": [
+      "Marcus Webb (Acme)",
+      "Jordan Lee (Northwind)",
+      "Priya Shah (Northwind)",
+      "Carlos Ortiz (Northwind)",
+      "Mei Chen (Northwind)"
+    ],
+    "receipt": {
+      "present": true,
+      "vendor_name": "The Capital Grille",
+      "total": "312.75",
+      "receipt_date": "2026-09-03"
+    }
+  },
+  "R-2015": {
+    "business_purpose": "Ride from the Chicago hotel to O'Hare after the Northwind renewal meeting on Sept 4.",
+    "attendees": [],
+    "receipt": {
+      "present": false,
+      "vendor_name": null,
+      "total": null,
+      "receipt_date": null
+    }
+  },
+  "R-2016": {
+    "business_purpose": "Two additional Sales Cloud seats for the account executives starting Sept 8, approved under IT ticket IT-4417.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Salesforce",
+      "total": "300.00",
+      "receipt_date": "2026-09-08"
+    }
+  },
+  "R-2017": {
+    "business_purpose": "Working lunch with two Fabrikam evaluators during the Sept 15 product demo to discuss the rollout timeline.",
+    "attendees": [
+      "Marcus Webb (Acme)",
+      "Dana Wu (Fabrikam)",
+      "Ravi Iyer (Fabrikam)"
+    ],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Panera Bread",
+      "total": "96.40",
+      "receipt_date": "2026-09-15"
+    }
+  },
+  "R-2018": {
+    "business_purpose": "Annual Zoom Pro licence for the Denver sales team's customer calls; renewal of the existing plan.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Zoom Video",
+      "total": "149.90",
+      "receipt_date": "2026-09-17"
+    }
+  },
+  "R-2019": {
+    "business_purpose": "Airfare to Chicago for the Oct 6-8 Midwest Sales Summit, booked Sept 21, 15 days ahead.",
+    "attendees": [],
+    "receipt": {
+      "present": false,
+      "vendor_name": null,
+      "total": null,
+      "receipt_date": null
+    },
+    "_issue": "airfare over $75 with no receipt on file: flagged by the receipt rule"
+  },
+  "R-2020": {
+    "business_purpose": "Business cards and folders for the Sept 24 customer workshop in Denver.",
+    "attendees": [],
+    "receipt": {
+      "present": false,
+      "vendor_name": null,
+      "total": null,
+      "receipt_date": null
+    }
+  },
+  "R-2021": {
+    "business_purpose": "Fuel for the rental car on the Sept 24-25 customer workshop drive to Colorado Springs.",
+    "attendees": [],
+    "receipt": {
+      "present": false,
+      "vendor_name": null,
+      "total": null,
+      "receipt_date": null
+    }
+  },
+  "R-2022": {
+    "business_purpose": "Client entertainment during the Las Vegas trade show.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "MGM Grand Casino",
+      "total": "500.00",
+      "receipt_date": "2026-09-11"
+    },
+    "_issue": "gambling category: rejected by a hard rule, the model is never asked"
+  },
+  "R-2023": {
+    "business_purpose": "Team bonding night out after a tough quarter.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "The Drunken Pig",
+      "total": "386.00",
+      "receipt_date": "2026-09-18"
+    },
+    "_issue": "alcohol venue, no attendees named, 'team bonding': flagged by the policy audit"
+  },
+  "R-2024": {
+    "business_purpose": "Canva Teams annual renewal for the four Marketing designers; already in the approved tool catalog.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Canva",
+      "total": "119.99",
+      "receipt_date": "2026-09-01"
+    }
+  },
+  "R-2025": {
+    "business_purpose": "Marketing Hub Starter seats for the demand-gen team's Q3 email campaigns; in the approved tool catalog.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Hubspot",
+      "total": "450.00",
+      "receipt_date": "2026-09-02"
+    }
+  },
+  "R-2026": {
+    "business_purpose": "Paid social spend for the approved Q3 'Autumn Launch' campaign (CMP-0917), September flight.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Facebook Ads",
+      "total": "1750.00",
+      "receipt_date": "2026-09-08"
+    }
+  },
+  "R-2028": {
+    "business_purpose": "LinkedIn sponsored content for the approved 'Autumn Launch' campaign (CMP-0917), targeting IT directors.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Linkedin Ads",
+      "total": "1200.00",
+      "receipt_date": "2026-09-14"
+    }
+  },
+  "R-2029": {
+    "business_purpose": "Printed brochures and a banner for the Sept 24 Denver trade-show booth, approved under campaign CMP-0917.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Vistaprint",
+      "total": "212.40",
+      "receipt_date": "2026-09-15"
+    }
+  },
+  "R-2030": {
+    "business_purpose": "Working lunch with two Bright Agency designers to review the Autumn Launch creative on Sept 17.",
+    "attendees": [
+      "Elena Rossi (Acme)",
+      "Nora Kim (Bright Agency)",
+      "Luis Park (Bright Agency)"
+    ],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Panera Bread",
+      "total": "88.20",
+      "receipt_date": "2026-09-17"
+    }
+  },
+  "R-2031": {
+    "business_purpose": "Annual Creative Cloud licences for the two new designers, approved under IT ticket IT-4432.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Adobe",
+      "total": "599.88",
+      "receipt_date": "2026-09-18"
+    }
+  },
+  "R-2032": {
+    "business_purpose": "Registration for the Sept 30 B2B Marketing Summit, relevant to my demand-generation role; agreed with my manager Chris Doyle.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Eventbrite",
+      "total": "79.00",
+      "receipt_date": "2026-09-23"
+    }
+  },
+  "R-2033": {
+    "business_purpose": "Thank-you gift for a client contact.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Tiffany & Co",
+      "total": "890.00",
+      "receipt_date": "2026-09-14"
+    },
+    "_issue": "luxury gift over $100 with no named recipient: rejected by the policy audit"
+  },
+  "R-2034": {
+    "business_purpose": "HVAC filters and hardware for the scheduled quarterly maintenance of the third-floor air handlers.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Home Depot",
+      "total": "342.18",
+      "receipt_date": "2026-09-01"
+    }
+  },
+  "R-2035": {
+    "business_purpose": "Twelve replacement fire extinguishers and inspection tags to meet the September safety-audit deadline.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Grainger",
+      "total": "2240.00",
+      "receipt_date": "2026-09-03"
+    }
+  },
+  "R-2036": {
+    "business_purpose": "Ceiling tiles and adhesive to repair the water-damaged tiles in conference room B, ticket FAC-2210.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Home Depot",
+      "total": "128.40",
+      "receipt_date": "2026-09-08"
+    }
+  },
+  "R-2037": {
+    "business_purpose": "Fuel for the facilities van on the Sept 10 supplier site visits.",
+    "attendees": [],
+    "receipt": {
+      "present": false,
+      "vendor_name": null,
+      "total": null,
+      "receipt_date": null
+    }
+  },
+  "R-2038": {
+    "business_purpose": "Anchor bolts and brackets for the warehouse shelving installation scheduled for Sept 16-17.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Fastenal",
+      "total": "615.50",
+      "receipt_date": "2026-09-15"
+    }
+  },
+  "R-2039": {
+    "business_purpose": "Weatherstripping and door sweeps for the loading-dock doors, ticket FAC-2233.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Lowes",
+      "total": "89.60",
+      "receipt_date": "2026-09-17"
+    }
+  },
+  "R-2040": {
+    "business_purpose": "Packing tape and shipping boxes for the Sept 25 office relocation of the finance team.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Uline",
+      "total": "412.00",
+      "receipt_date": "2026-09-21"
+    }
+  },
+  "R-2041": {
+    "business_purpose": "Fuel for the facilities van on the Sept 23 furniture delivery run.",
+    "attendees": [],
+    "receipt": {
+      "present": false,
+      "vendor_name": null,
+      "total": null,
+      "receipt_date": null
+    }
+  },
+  "R-2042": {
+    "business_purpose": "Replacement LED panels for the second-floor open office under the energy-savings project FAC-2250.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Grainger",
+      "total": "1180.00",
+      "receipt_date": "2026-09-25"
+    }
+  },
+  "R-2043": {
+    "business_purpose": "Zoom Pro licence for the Finance team's audit calls; renewal of the existing plan.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Zoom Video",
+      "total": "149.90",
+      "receipt_date": "2026-09-02"
+    }
+  },
+  "R-2044": {
+    "business_purpose": "Financial modelling certification course for my FP&A analyst role, agreed with my manager Hiro Tanaka.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Cfi Education",
+      "total": "199.00",
+      "receipt_date": "2026-09-09"
+    }
+  },
+  "R-2045": {
+    "business_purpose": "Binders, dividers and printer paper for the September quarter-end close.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Staples",
+      "total": "96.30",
+      "receipt_date": "2026-09-11"
+    }
+  },
+  "R-2046": {
+    "business_purpose": "Replacement laptop for a failed unit assigned to the Finance analyst, IT ticket IT-4501.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Apple Store",
+      "total": "899.00",
+      "receipt_date": "2026-09-15"
+    }
+  },
+  "R-2047": {
+    "business_purpose": "Notion team plan for the Finance team's close checklist; the tool is in the approved catalog.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Notion",
+      "total": "160.00",
+      "receipt_date": "2026-09-22"
+    }
+  },
+  "R-2048": {
+    "business_purpose": "Two monitor stands and cable organisers for the new Finance desks on the fourth floor, ticket FAC-2260.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Amazon Mktplace",
+      "total": "187.40",
+      "receipt_date": "2026-09-24"
+    }
+  },
+  "R-2049": {
+    "business_purpose": "Fuel for the team car.",
+    "attendees": [],
+    "receipt": {
+      "present": false,
+      "vendor_name": null,
+      "total": null,
+      "receipt_date": null
+    },
+    "_issue": "cardholder left the company: rejected by a hard rule, the model is never asked"
+  },
+  "R-2050": {
+    "business_purpose": "Cloudflare Pro plan for the public documentation site; the tool is in the approved catalog.",
+    "attendees": [],
+    "receipt": {
+      "present": true,
+      "vendor_name": "Cloudflare",
+      "total": "200.00",
+      "receipt_date": "2026-09-25"
+    }
+  }
+}

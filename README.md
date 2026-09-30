@@ -106,6 +106,20 @@ The workbook has a Read-me sheet, Transactions (most severe first, with rule fin
 Quarantined, ERP Journal and Audit trail. It is also downloadable from the dashboard sidebar. Exports are derived
 copies; the immutable artifacts in `output/` stay the source of truth.
 
+## Sample statements
+
+The Live workflow offers two built-in statements, plus your own CSV.
+- **Realistic sample** (`data/sample_realistic.csv`, justifications in `data/sample_justifications_realistic.json`): 50 valid transactions
+  across five cardholders and a terminated one. With the mock auditor, 45 are approved (90%). The five exceptions are planted on purpose:
+  a casino charge and a terminated employee's card (hard rules), a luxury gift and a "team bonding" bar tab (judged by the policy audit),
+  and an airfare with no receipt (receipt rule). Six extra broken rows show validation setting rows aside. The 90% is a property of this
+  invented data, not a measured accuracy. With a live LLM the split can differ, because a strict model may flag things the mock does not.
+- **Stress-test sample** (`data/transactions.csv`): 26 transactions with about a dozen problems of every kind (duplicates, split purchases,
+  over-limit, vague justifications, home-office items, missing receipts). Use it to see how many different things the checks catch.
+
+A full live audit of the realistic sample makes about 47 model calls (roughly 90,000 tokens), which takes around 12 minutes at the free-tier
+pace and uses close to half of Groq's daily token allowance for the default model. The mock auditor is instant.
+
 ## Statement file format
 
 Stage 1 is deliberately strict: it rejects or sets aside anything it would otherwise have to guess.
@@ -121,7 +135,7 @@ Stage 1 is deliberately strict: it rejects or sets aside anything it would other
 
 ## Quality assurance
 
-`pytest -q` runs about 90 offline tests (about 89% line coverage). Beyond unit tests they cover: adversarial statement files, spreadsheet
+`pytest -q` runs about 100 offline tests (about 89% line coverage). Beyond unit tests they cover: adversarial statement files, spreadsheet
 formula injection in every export, hostile text through every raw-HTML block of the UI, oversized and malformed submissions, hostile backup
 archives, tampering with every artifact and the submissions log, the passcode gate, damaged data (each page must show a message, not a
 traceback), and an independent recomputation of the journal totals. Each functional defect found during QA has a regression test; most were checked to fail on the pre-fix code.

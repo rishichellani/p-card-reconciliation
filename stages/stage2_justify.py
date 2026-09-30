@@ -78,16 +78,30 @@ def _simulate(routed: RoutedTransaction, category: str, seed: int) -> Justificat
     return Justification(business_purpose=purpose, attendees=attendees, receipt=receipt)
 
 
+SAMPLE_SOURCES = ("justification_overrides.json", "sample_justifications_realistic.json")
+
+
 def _load_overrides(data_dir: Path) -> dict[str, dict]:
-    path = data_dir / "justification_overrides.json"
-    if not path.exists():
-        log.info("No justification_overrides.json found; using pure simulation")
-        return {}
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        raise PipelineError(f"justification_overrides.json is not valid JSON: {exc}") from exc
-    return {k: v for k, v in data.items() if not k.startswith("_")}
+    """Hand-written sample justifications keyed by txn_id, merged from every source file that exists.
+
+    The stress-test file holds only planted scenarios. The realistic file marks its few planted problems with an
+    "_issue" note; every other entry in it is a clean, compliant justification. Each entry gets "_planted" for callers.
+    """
+    merged: dict[str, dict] = {}
+    for name in SAMPLE_SOURCES:
+        path = data_dir / name
+        if not path.exists():
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            raise PipelineError(f"{name} is not valid JSON: {exc}") from exc
+        for k, v in data.items():
+            if not k.startswith("_"):
+                merged[k] = {**v, "_planted": name == "justification_overrides.json" or "_issue" in v}
+    if not merged:
+        log.info("No sample justification files found; using pure simulation")
+    return merged
 
 
 def sample_for(routed_list: list[RoutedTransaction], rules: PolicyRules, seed: int,
@@ -104,7 +118,9 @@ def sample_for(routed_list: list[RoutedTransaction], rules: PolicyRules, seed: i
             continue  # refunds need no justification
         if txn.txn_id in overrides:
             try:
-                out[txn.txn_id] = (Justification.model_validate({**overrides[txn.txn_id], "source": "override"}), "sample_scenario")
+                entry = overrides[txn.txn_id]
+                kind = "sample_scenario" if entry["_planted"] else "sample_template"
+                out[txn.txn_id] = (Justification.model_validate({**entry, "source": "override" if entry["_planted"] else "simulated"}), kind)
                 continue
             except ValidationError as exc:
                 log.error("Override for %s is invalid, using a template: %s", txn.txn_id, exc)
@@ -151,7 +167,8 @@ def run(ctx: RunContext) -> str:
         justification = _simulate(routed, category, ctx.seed)
         if txn.txn_id in overrides:
             try:
-                justification = Justification.model_validate({**overrides[txn.txn_id], "source": "override"})
+                entry = overrides[txn.txn_id]
+                justification = Justification.model_validate({**entry, "source": "override" if entry["_planted"] else "simulated"})
             except ValidationError as exc:
                 log.error("Override for %s is invalid, using simulated value: %s", txn.txn_id, exc)
         if justification.submitted_at is None:  # simulated entry time: 1-4 days after posting, office hours

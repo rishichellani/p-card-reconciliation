@@ -21,6 +21,10 @@ from utils.loaders import load_json_model
 
 log = logging.getLogger(__name__)
 NEW = "New batch"
+SAMPLES = {  # label -> file in data/
+    "Realistic sample (50 transactions, about 90% clean)": "sample_realistic.csv",
+    "Stress-test sample (26 transactions, many problems)": "transactions.csv",
+}
 TEMPLATE = "txn_id,post_date,card_last4,merchant_name,mcc,amount,currency,statement_memo\n"
 
 # A pending selection must be applied before the selectbox is created (Streamlit forbids setting it afterwards).
@@ -67,8 +71,11 @@ if flash := st.session_state.pop("flash", None):
 # --------------------------------------------------------------------------- new batch
 if pick == NEW:
     st.subheader("Start a batch")
-    source = st.radio("Bank statement", ["Sample statement (32 rows, some deliberately messy)", "Upload my own CSV"])
+    source = st.radio("Bank statement", [*SAMPLES, "Upload my own CSV"])
     uploaded = None
+    if source in SAMPLES:
+        st.caption("Both samples also include a few deliberately broken rows so you can see validation set them aside. "
+                   "The realistic one has five planted problems among 50 transactions; the stress test has about a dozen among 26.")
     if source.startswith("Upload"):
         uploaded = st.file_uploader("Statement CSV", type="csv", help="Up to 5 MB")
         with st.expander("Required columns"):
@@ -78,10 +85,10 @@ if pick == NEW:
     label = st.text_input("Batch name (optional)", max_chars=80, placeholder="e.g. September statement")
     st.caption("Only the cardholders in `data/employees.json` can be matched. Rows that fail validation are set aside, "
                "not fixed silently.")
-    ready = source.startswith("Sample") or uploaded is not None
+    ready = source in SAMPLES or uploaded is not None
     if st.button("Create batch and validate", type="primary", disabled=not ready, icon=":material/upload_file:"):
         try:
-            data = (workspace.SAMPLE_DATA / "transactions.csv").read_bytes() if source.startswith("Sample") else uploaded.getvalue()
+            data = (workspace.SAMPLE_DATA / SAMPLES[source]).read_bytes() if source in SAMPLES else uploaded.getvalue()
             with st.spinner("Validating the statement..."):
                 ctx = workspace.create_batch(data, label=label)
             st.session_state["pending_pick"] = ctx.run_id
