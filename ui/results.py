@@ -221,7 +221,8 @@ with tab_txn:
         column_config={
             "txn_id": "Txn", "date": "Date", "employee": "Cardholder", "merchant": "Merchant", "category": "Category",
             "amount": st.column_config.NumberColumn("Amount", format="$%.2f"),
-            "rules": "Rules", "llm": f"{kind} verdict", "status": "Final status", "findings": "Rule findings",
+            "rules": "Rules", "llm": f"{kind} verdict", "status": "Final status",
+            "findings": st.column_config.TextColumn("Rule findings", width="medium"),  # codes like INACTIVE_CARDHOLDER must not be cut off
         },
     )
 
