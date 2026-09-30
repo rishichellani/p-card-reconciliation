@@ -287,6 +287,10 @@ if step == STEPS[2]:
                                       help="Comma-separated. Each needs its API key configured.")
             try:
                 found = load_providers(order=providers)
+                n_calls = len(needs_just) - len(missing)
+                minutes = n_calls * found[0].min_interval / 60
+                st.caption(f"Live audits are paced to stay inside free-tier limits: up to about {minutes:.0f} min for "
+                           f"{n_calls} submitted transactions (hard-rule rejections skip the model).")
                 st.caption("Will use: " + ", ".join(f"{p.name} ({p.model})" for p in found) + ". "
                            "The justification text, merchant, amount and department are sent to these providers. "
                            "Names, emails and card numbers are not. Free tiers may use prompts for training.")

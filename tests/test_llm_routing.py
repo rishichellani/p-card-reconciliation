@@ -93,3 +93,42 @@ def test_probe_reports_each_provider(monkeypatch):
     result = {name: (ok, detail) for name, _, ok, detail in llm_client.probe(providers("gemini", "groq"))}
     assert result["gemini"][0] is True
     assert result["groq"][0] is False and "credentials rejected" in result["groq"][1]
+
+
+class _Resp:
+    """Just enough of an HTTP response for openai's status-error classes."""
+    def __init__(self, status, headers=None):
+        self.status_code, self.headers, self.request = status, headers or {}, None
+
+
+def _rate_limited(message, retry_after):
+    import openai
+    return openai.RateLimitError(message, response=_Resp(429, {"retry-after": retry_after} if retry_after else {}), body=None)
+
+
+def _client_raising(exc):
+    class _Comp:
+        def create(self, **kw): raise exc
+    class _Chat: completions = _Comp()
+    class _Sdk: chat = _Chat()
+    c = LLMClient(providers("groq"), sleep=lambda s: None, clock=lambda: 0.0)
+    c._sdk = lambda p: _Sdk()
+    return c
+
+
+def test_daily_limit_is_recognised_and_stops_the_provider_without_leaking_ids():
+    exc = _rate_limited("Rate limit reached for model `x` in organization `org_01abc` on tokens per day (TPD): Limit 200000", "718")
+    c = _client_raising(exc)
+    with pytest.raises(LLMResponseError) as e:
+        c.complete("s", "u")
+    assert "daily limit reached, retry in about 12 min" in str(e.value)
+    assert "org_01abc" not in str(e.value)
+    assert c._state["groq"].dead                      # not retried for the rest of the run
+
+
+def test_per_minute_limit_is_a_short_cooldown_not_a_permanent_failure():
+    c = _client_raising(_rate_limited("Rate limit reached on tokens per minute (TPM): Limit 8000", "12"))
+    with pytest.raises(LLMResponseError) as e:
+        c.complete("s", "u")
+    assert "per-minute limit" in str(e.value) and "12s" in str(e.value)
+    assert not c._state["groq"].dead

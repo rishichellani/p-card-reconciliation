@@ -23,7 +23,7 @@ PROVIDERS: dict[str, tuple[str, str, str, str, float]] = {
     "gemini": ("GEMINI_API_KEY", "https://generativelanguage.googleapis.com/v1beta/openai/",
                "GEMINI_MODEL", "gemini-3.8-flash", 5.0),
     "groq": ("GROQ_API_KEY", "https://api.groq.com/openai/v1",
-             "GROQ_MODEL", "openai/gpt-oss-120b", 2.5),
+             "GROQ_MODEL", "openai/gpt-oss-120b", 15.0),  # free tier: 8K tokens/min, ~1.9K per audit => ~4 audits/min
     "openrouter": ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1",
                    "OPENROUTER_MODEL", "meta-llama/llama-3.3-70b-instruct:free", 3.5),
 }
@@ -48,6 +48,12 @@ class LLMReply:
     text: str
     provider: str
     model: str
+
+
+def _describe_delay(seconds: float | None) -> str:
+    if seconds is None:
+        return ""
+    return f", retry in about {seconds / 60:.0f} min" if seconds >= 90 else f", retry in about {seconds:.0f}s"
 
 
 class ProviderError(Exception):
@@ -220,10 +226,21 @@ class LLMClient:
             except openai.RateLimitError as exc:
                 retry = exc.response.headers.get("retry-after") if exc.response is not None else None
                 try:
-                    delay = float(retry) if retry else 30.0
+                    delay = float(retry) if retry else None
                 except ValueError:
-                    delay = 30.0
-                raise ProviderError("rate limited", retry_after=delay) from exc
+                    delay = None
+                text = str(exc).lower()
+                if any(k in text for k in ("(tpd)", "(rpd)", "per day", "perday")):
+                    kind = "daily limit"
+                elif any(k in text for k in ("(tpm)", "(rpm)", "per minute", "perminute")):
+                    kind = "per-minute limit"
+                else:
+                    kind = "rate limit"
+                # A daily quota (or a very long wait) will not clear during this run: stop using the provider for it.
+                if kind == "daily limit" or (delay is not None and delay > 300):
+                    raise ProviderError(f"{kind} reached{_describe_delay(delay)}", permanent=True) from exc
+                raise ProviderError(f"rate limited ({kind}){_describe_delay(delay)}",
+                                    retry_after=delay if delay is not None else 30.0) from exc
             except openai.APIConnectionError as exc:  # includes timeouts
                 raise ProviderError(f"network error: {exc}") from exc
             except openai.APIStatusError as exc:

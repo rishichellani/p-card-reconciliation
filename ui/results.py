@@ -13,7 +13,7 @@ import streamlit as st
 
 from ui.theme import SEVERITY_RANK, STATUS, badge, icon, money
 from utils.artifacts import CSV_MANIFEST, STAGE_FILES, verify_run
-from utils.export import build_trace, provenance_note, source_label, write_workbook
+from utils.export import auditor_kind, build_trace, provenance_note, source_label, write_workbook
 
 from utils.workspace import OUTPUT  # the same folder the Live workflow writes to
 
@@ -99,6 +99,7 @@ data = load_run(run_id)
 s1, s3 = data["env"][1]["payload"], data["env"][3]["payload"]
 journal, manifest = data["journal"], data["manifest"]
 df = txn_frame(s3["items"])
+kind = auditor_kind(s3["auditor"])  # "LLM" or "Mock auditor": never call the keyword heuristic an LLM
 counts = df["status_key"].value_counts()
 spend = df.groupby("status_key")["amount"].sum()
 
@@ -111,7 +112,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-note = provenance_note(s3["items"])
+note = provenance_note(s3["items"], s3["auditor"])
 if note:
     st.warning(note, icon=":material/science:")
 
@@ -167,7 +168,8 @@ with tab_over:
                        f"{'matches' if tie else 'DOES NOT match'} the statement total <span class='pc-num'>{money(control)}</span> "
                        "(purchases minus refunds)")
             + f'<li><span class="pc-badge" style="--c:#1d4ed8">{icon("info")}Info</span>'
-              f'<span>LLM audited {llm_n} of {len(df)}; the rest were decided by hard rules or sent to manual review</span></li>'
+              f'<span>{"LLM audited" if kind == "LLM" else "The mock auditor (offline keyword heuristic, not an LLM) reviewed"} '
+              f'{llm_n} of {len(df)}; the rest were decided by hard rules or sent to manual review</span></li>'
         )
         st.markdown(f'<div class="pc-panel"><h3>Controls</h3><ul class="pc-list">{items}</ul></div>', unsafe_allow_html=True)
 
@@ -194,7 +196,7 @@ with tab_txn:
         column_config={
             "txn_id": "Txn", "date": "Date", "employee": "Cardholder", "merchant": "Merchant", "category": "Category",
             "amount": st.column_config.NumberColumn("Amount", format="$%.2f"),
-            "rules": "Rules", "llm": "LLM verdict", "status": "Final status", "findings": "Rule findings",
+            "rules": "Rules", "llm": f"{kind} verdict", "status": "Final status", "findings": "Rule findings",
         },
     )
 
@@ -239,7 +241,7 @@ with tab_txn:
                 tag = badge(sev) if sev else f'<span class="pc-badge" style="--c:#1d4ed8">{icon("info")}Info</span>'
                 st.markdown(f'<div class="pc-finding">{tag}<span><span class="pc-mono">{f["code"]}</span> '
                             f'{html.escape(f["message"])}</span></div>', unsafe_allow_html=True)
-        st.markdown("**LLM audit**")
+        st.markdown(f"**{kind} audit**")
         if llm:
             verdict = {"APPROVE": "APPROVED", "FLAG": "FLAGGED", "REJECT": "REJECTED"}[llm["verdict"]]
             flags = f"<br>Red flags: {html.escape(', '.join(llm['red_flags']))}" if llm["red_flags"] else ""
@@ -250,11 +252,11 @@ with tab_txn:
                 f'<span class="pc-mono">{html.escape(llm["served_by"] or "unknown")}</span></span></p>'
                 f'<p style="margin:0">{html.escape(llm["rationale"])}{flags}</p></div>', unsafe_allow_html=True)
         elif item["llm_error"]:
-            st.warning(f"LLM audit failed, sent to manual review: {item['llm_error']}")
+            st.warning(f"{kind} audit failed, sent to manual review: {item['llm_error']}")
         elif any(f["code"] == "MISSING_JUSTIFICATION" for f in item["findings"]):
-            st.info("LLM skipped: no justification was submitted, so there was nothing to judge.")
+            st.info(f"{kind} skipped: no justification was submitted, so there was nothing to judge.")
         else:
-            st.info("LLM skipped: decided by a deterministic hard rule.")
+            st.info(f"{kind} skipped: decided by a deterministic hard rule.")
 
 # --------------------------------------------------------------------------- follow a transaction
 with tab_follow:
