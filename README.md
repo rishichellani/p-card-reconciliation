@@ -163,3 +163,7 @@ Each JSON artifact stores the SHA-256 of its payload and of the upstream payload
 - The mock auditor is a keyword heuristic for offline demos and tests.
 - Free-tier providers may use submitted prompts for model improvement. Use only mock or non-sensitive data with them.
 - Transactions are audited sequentially. Money is `Decimal` throughout and serialised as strings.
+
+## License
+
+MIT. See `LICENSE`. The data in this repo is invented sample data.
