@@ -73,6 +73,12 @@ def badge(status: str) -> str:
     return f'<span class="pc-badge" style="--c:{color}">{icon(ic)}{label}</span>'
 
 
+def check_badge(ok: bool) -> str:
+    """Pass/Fail for a control check. Audit outcomes (Approved, Rejected...) are for transactions, not for checks."""
+    color, ic, label = ("#15803d", "check", "Pass") if ok else ("#b91c1c", "octagon", "Fail")
+    return f'<span class="pc-badge" style="--c:{color}">{icon(ic)}{label}</span>'
+
+
 def money(v) -> str:
     return f"${Decimal(str(v)):,.2f}"
 

@@ -11,7 +11,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from ui.theme import SEVERITY_RANK, STATUS, badge, icon, money
+from ui.theme import SEVERITY_RANK, STATUS, badge, check_badge, icon, money
 from utils.artifacts import CSV_MANIFEST, STAGE_FILES, verify_run
 from utils.export import auditor_kind, build_trace, provenance_note, source_label, write_workbook
 
@@ -172,7 +172,7 @@ with tab_over:
         llm_n = int((df["llm"] != "-").sum())
 
         def row(ok: bool, text: str) -> str:
-            return f'<li>{badge("APPROVED" if ok else "REJECTED")}<span>{text}</span></li>'
+            return f'<li>{check_badge(ok)}<span>{text}</span></li>'
 
         items = (
             row(not data["problems"], "Artifact hash chain " + ("verified" if not data["problems"] else "FAILED"))

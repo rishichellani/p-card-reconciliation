@@ -208,3 +208,13 @@ def test_screens_account_for_every_row_and_explain_the_refund():
     at.run()
     status = next(m.value for m in at.markdown if "justifications submitted" in m.value)
     assert "0 of 49 justifications submitted" in status and "50 transactions in the batch; 1 refund needs none" in status
+
+
+def test_control_checks_say_pass_not_approved():
+    ctx = audited_batch("checks")
+    at = app(results_run=ctx.run_id)
+    at.switch_page("ui/results.py")
+    at.run()
+    controls = next(m.value for m in at.markdown if "<h3>Controls</h3>" in m.value)
+    plain = re.sub(r"<[^>]+>", " ", controls)
+    assert plain.count("Pass") == 3 and "Approved" not in plain and "Rejected" not in plain   # hash chain, balance, tie-out
