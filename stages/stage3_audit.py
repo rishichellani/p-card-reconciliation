@@ -17,6 +17,7 @@ from schemas.models import (
 )
 from stages.deterministic_checks import run_checks, status_from_findings
 from stages.llm_auditor import Auditor, LLMAuditor, MockAuditor
+from utils import llm_cache
 from utils.artifacts import read_json_artifact, write_json_artifact
 from utils.context import RunContext
 from utils.errors import LLMResponseError, LLMUnavailableError, PipelineError
@@ -56,7 +57,8 @@ def run(ctx: RunContext, auditor: Auditor | None = None, progress=None) -> str:
 
     det_findings = run_checks(s2.items, employees, rules)
     audited: list[AuditedTransaction] = []
-    llm_ok = streak = 0
+    llm_ok = streak = reused = 0
+    cached = llm_cache.load(ctx.run_dir)  # verdicts from an earlier, interrupted attempt at this same audit
 
     for n, item in enumerate(s2.items, start=1):
         txn = item.routed.transaction
@@ -75,7 +77,15 @@ def run(ctx: RunContext, auditor: Auditor | None = None, progress=None) -> str:
                      ",".join(f.code for f in findings if f.severity is Severity.REJECT))
         else:
             try:
-                llm_result = auditor.audit(item, info.category, findings)
+                key = auditor.cache_key(item, info.category, findings) if hasattr(auditor, "cache_key") else None
+                if key is not None and key in cached:
+                    llm_result = cached[key]
+                    reused += 1
+                    log.info("[%d/%d] %s verdict reused from an earlier attempt", n, len(s2.items), txn.txn_id)
+                else:
+                    llm_result = auditor.audit(item, info.category, findings)
+                    if key is not None:
+                        llm_cache.append(ctx.run_dir, key, txn.txn_id, llm_result)
                 llm_status = VERDICT_TO_STATUS[llm_result.verdict]
                 if llm_result.verdict == "APPROVE" and llm_result.confidence < rules.min_llm_confidence:
                     llm_status = AuditStatus.FLAGGED
@@ -116,5 +126,5 @@ def run(ctx: RunContext, auditor: Auditor | None = None, progress=None) -> str:
         items=audited,
         quarantined_count=s2.quarantined_count,
     )
-    log.info("Stage 3: %s", dict(counts))
-    return write_json_artifact(ctx, 3, payload, upstream_sha=s2_sha, counts=dict(counts))
+    log.info("Stage 3: %s (%d verdicts reused from an earlier attempt)", dict(counts), reused)
+    return write_json_artifact(ctx, 3, payload, upstream_sha=s2_sha, counts={**counts, "llm_reused": reused})

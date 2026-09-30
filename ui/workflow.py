@@ -13,7 +13,7 @@ from schemas.models import PolicyRules, ReceiptMetadata, Stage1Payload, parse_mo
 from stages.stage1_ingest import REQUIRED_COLUMNS
 from stages.stage2_justify import sample_for
 from ui.theme import icon, money
-from utils import submissions, workspace
+from utils import llm_cache, submissions, workspace
 from utils.artifacts import STAGE_FILES, read_json_artifact
 from utils.errors import PipelineError
 from utils.llm_client import load_providers, probe
@@ -314,7 +314,10 @@ if step == STEPS[2]:
             try:
                 found = load_providers(order=providers)
                 n_calls = len(needs_just) - len(missing)
-                minutes = n_calls * found[0].min_interval / 60
+                saved = min(llm_cache.count(run_dir), n_calls)
+                if saved:
+                    st.info(f"{saved} model verdicts from an earlier attempt are saved and will be reused, so a retry only pays for the rest.")
+                minutes = max(n_calls - saved, 0) * found[0].min_interval / 60
                 st.caption(f"Live audits are paced to stay inside free-tier limits: up to about {minutes:.0f} min for "
                            f"{n_calls} submitted transactions (hard-rule rejections skip the model).")
                 st.caption("Will use: " + ", ".join(f"{p.name} ({p.model})" for p in found) + ". "

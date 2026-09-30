@@ -72,7 +72,7 @@ A Streamlit app with two pages.
 employee directory and the policy rules: type, required or not, validation, and what each field drives downstream.
 
 ## Testing
-102 offline tests cover money and date parsing, quarantine behaviour, provider failover, credential disabling, JSON repair
+106 offline tests cover money and date parsing, quarantine behaviour, provider failover, credential disabling, JSON repair
 and retry, the hash chain and tamper detection, the append-only log, missing-justification handling, backup and restore
 (including tampered and unsafe archives), and total versus partial LLM outage. A `--mock-llm` mode runs the whole
 pipeline with no keys.
@@ -97,6 +97,7 @@ This is a prototype, not a production system.
 - **Receipts are typed in:** there is no image upload or OCR, and nothing verifies that the typed values match a real receipt.
 - **Storage:** on a hosted free tier, files are lost when the app restarts, so the app has backup and restore. A real
   deployment needs a database or persistent disk.
+- **Free-tier quotas:** a full live audit of the 50-transaction sample needs about 47 model calls. Groq's free tier allows a couple of those a day and Gemini's only 20 requests a day, so the audit is built to stop cleanly and resume, reusing the verdicts it already has.
 - **Free-tier LLMs:** verdict quality varies, quotas run out, and providers may use prompts for training. During
   development the audit ran live on Groq and Gemini, and on a 26-transaction statement the failover kept the run going
   through rate limits and a provider error. Treat verdicts as a first pass for a human reviewer, not a decision.

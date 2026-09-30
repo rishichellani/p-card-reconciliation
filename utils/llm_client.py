@@ -128,6 +128,7 @@ class LLMClient:
         self._sleep, self._clock = sleep, clock
         self._state = {p.name: _State() for p in providers}
         self._sdk_clients: dict[str, object] = {}
+        self._last_error: dict[str, str] = {}  # why each provider last failed
 
     @property
     def provider_names(self) -> list[str]:
@@ -158,8 +159,11 @@ class LLMClient:
                 self._sleep(wait)
                 continue
             break
-        alive = [p.name for p in ordered if not self._state[p.name].dead]
-        detail = "; ".join(errors) if errors else f"no provider available (usable={alive or 'none'})"
+        if errors:
+            detail = "; ".join(errors)
+        else:  # every provider was already switched off: say why, not just "none available"
+            why = "; ".join(f"{name}: {msg}" for name, msg in self._last_error.items())
+            detail = f"no provider is available ({why})" if why else "no provider is available"
         raise LLMResponseError(f"all LLM providers failed: {detail}")
 
     def _soonest_cooldown(self, providers: list[ProviderConfig]) -> float | None:
@@ -175,6 +179,7 @@ class LLMClient:
         st.last_call = self._clock()
 
     def _record_failure(self, p: ProviderConfig, st: _State, exc: ProviderError) -> None:
+        self._last_error[p.name] = str(exc)
         if exc.permanent:
             st.dead = True
             log.error("Provider %s disabled for this run: %s", p.name, exc)

@@ -14,6 +14,7 @@ from typing import Protocol
 from pydantic import ValidationError
 
 from schemas.models import Finding, JustifiedTransaction, LLMAuditResult
+from utils.artifacts import sha256_hex
 from utils.errors import LLMResponseError
 from utils.llm_client import LLMClient
 
@@ -95,6 +96,10 @@ class LLMAuditor:
         self.system = SYSTEM_TEMPLATE.format(policy=policy_text)
         self.max_attempts = max_attempts
         self.name = f"llm-router[{'>'.join(client.provider_names)}]"
+
+    def cache_key(self, item: JustifiedTransaction, category: str, findings: list[Finding]) -> str:
+        """Identifies the exact request (policy text + transaction facts + justification) a stored verdict answers."""
+        return sha256_hex((self.system + "\n" + build_user_message(item, category, findings)).encode("utf-8"))
 
     def audit(self, item: JustifiedTransaction, category: str, findings: list[Finding]) -> LLMAuditResult:
         txn_id = item.routed.transaction.txn_id

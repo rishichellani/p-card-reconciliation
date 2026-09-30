@@ -195,6 +195,10 @@ tests/       test_pipeline.py  test_llm_routing.py
   60 s cooldown; rejected credentials or an unknown model disable it for the run.
 - Per-provider throttling keeps calls inside free-tier rate limits (override with `LLM_MIN_INTERVAL_SECONDS`).
 - JSON mode is used when the endpoint supports it, and dropped automatically when it does not.
+- The audit **resumes**: every verdict obtained is saved in the batch (`llm_cache.jsonl`, bound to the exact prompt by a hash and re-validated
+  when read). If the audit stops, a retry reuses those verdicts and only pays for the rest, so a big batch can be finished across
+  several quota windows. The cache is a convenience, not evidence; the hash-chained Stage 3 artifact remains the record.
+- When providers are switched off, the error says why each stopped (for example "groq: daily limit reached, retry in about 12 min").
 - If every provider fails for a transaction, that transaction becomes `MANUAL_REVIEW` and the run continues. The only
   fatal LLM condition is having no API key at all.
 
@@ -211,6 +215,8 @@ Each JSON artifact stores the SHA-256 of its payload and of the upstream payload
 
 ## Notes and limits
 
+- **Free-tier quotas are small and change.** When tested, Gemini's free tier allowed only 20 requests a day for `gemini-3.8-flash`, so it
+  cannot carry a 47-call audit; Groq allowed about 8,000 tokens a minute and 200,000 a day for `gpt-oss-120b`. Check with **Test connection**.
 - Free tiers are rate-limited: a full live run with one provider takes a few minutes because of throttling.
 - Free-model verdict quality varies. Treat this as a prototype, not a compliance control.
 - The mock auditor is a keyword heuristic for offline demos and tests.

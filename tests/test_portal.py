@@ -249,3 +249,92 @@ def test_a_streak_of_failures_after_early_successes_still_stops_the_audit(batch)
     with pytest.raises(LLMUnavailableError):                               # first call works, then everything fails
         stage3_audit.run(ctx, auditor=_FlakyAuditor(fail_on=set(range(2, 100))))
     assert not (ctx.run_dir / "03_compliance_audited.json").exists()
+
+
+class _CachingAuditor:
+    """Stands in for the real auditor: cacheable, counts real calls, and can be told to fail from a given call on."""
+    name = "counting"
+
+    def __init__(self, fail_from=None):
+        self.calls, self.fail_from = 0, fail_from
+
+    def cache_key(self, item, category, findings):
+        return f"{item.routed.transaction.txn_id}|{item.justification.business_purpose}"
+
+    def audit(self, item, category, findings):
+        from schemas.models import LLMAuditResult
+        from utils.errors import LLMResponseError
+        self.calls += 1
+        if self.fail_from is not None and self.calls >= self.fail_from:
+            raise LLMResponseError("provider down")
+        return LLMAuditResult(verdict="APPROVE", rationale="Specific and compliant.", confidence=0.9, served_by="groq:test")
+
+
+def test_an_interrupted_audit_resumes_and_only_pays_for_the_rest(batch):
+    from dataclasses import replace
+    from stages import stage3_audit
+    from utils import llm_cache
+    from utils.errors import LLMUnavailableError
+    ctx, routed = batch
+    _load_samples(ctx, routed)
+    workspace.run_stage(replace(ctx, mock_llm=True), 2)
+
+    first = _CachingAuditor(fail_from=4)                    # three real verdicts, then the provider goes down
+    with pytest.raises(LLMUnavailableError):
+        stage3_audit.run(ctx, auditor=first)
+    assert not (ctx.run_dir / "03_compliance_audited.json").exists()
+    assert llm_cache.count(ctx.run_dir) == 3                # the paid-for verdicts were kept
+
+    second = _CachingAuditor()                              # provider is back
+    stage3_audit.run(ctx, auditor=second)
+    s3 = read_json_artifact(ctx, 3, Stage3Payload)[1]
+    judged = sum(1 for a in s3.items if a.llm_result)
+    assert judged > 3 and second.calls == judged - 3        # only the remainder was requested again
+    assert all(a.llm_result.served_by == "groq:test" for a in s3.items if a.llm_result)   # provenance survives reuse
+
+
+def test_a_stored_verdict_is_bound_to_the_exact_request():
+    from schemas.models import (Justification, JustifiedTransaction, RawTransaction, ReceiptMetadata, RoutedTransaction)
+    from stages.llm_auditor import LLMAuditor
+
+    class NoClient:
+        provider_names = ["groq"]
+
+    def item(purpose, amount="10.00"):
+        t = RawTransaction(txn_id="T-1", post_date="2026-09-01", card_last4="4821", merchant_name="ACME", mcc="5734", amount=amount)
+        r = RoutedTransaction(transaction=t, employee_id="E1001", employee_name="P", department="Eng", cost_center="4100",
+                              approver_id=None, employee_active=True)
+        return JustifiedTransaction(routed=r, justification=Justification(business_purpose=purpose, receipt=ReceiptMetadata(present=False)))
+
+    a = LLMAuditor("policy v1", NoClient())
+    base = a.cache_key(item("Monthly seats for the platform team"), "SOFTWARE", [])
+    assert base == a.cache_key(item("Monthly seats for the platform team"), "SOFTWARE", [])                    # same request: reusable
+    assert base != a.cache_key(item("Monthly seats for the sales team"), "SOFTWARE", [])                       # justification edited
+    assert base != a.cache_key(item("Monthly seats for the platform team", amount="99.00"), "SOFTWARE", [])    # transaction facts changed
+    assert base != LLMAuditor("policy v2", NoClient()).cache_key(item("Monthly seats for the platform team"), "SOFTWARE", [])  # policy edited
+
+
+def test_a_damaged_cache_line_is_ignored_not_trusted(batch):
+    from utils import llm_cache
+    ctx, _ = batch
+    (ctx.run_dir / llm_cache.CACHE_NAME).write_text('{"key": "k1", "result": {"verdict": "APPROVE", "rationale": "x", "confidence": 9}}\nnot json\n')
+    assert llm_cache.load(ctx.run_dir) == {}                # invalid result and broken line: nothing is reused
+
+
+def test_when_all_providers_are_off_the_error_says_why_each_one_stopped():
+    import openai
+    from utils.errors import LLMResponseError
+    from utils.llm_client import LLMClient, ProviderError, load_providers
+
+    class Down(LLMClient):
+        def _request(self, p, st, system, user):
+            raise ProviderError("daily limit reached, retry in about 12 min" if p.name == "groq" else "daily limit reached", permanent=True)
+
+    c = Down(load_providers({"GROQ_API_KEY": "k", "GEMINI_API_KEY": "k"}, order="groq,gemini"), sleep=lambda s: None, clock=lambda: 0.0)
+    with pytest.raises(LLMResponseError):
+        c.complete("s", "u")                                 # first call: both providers fail and are switched off
+    with pytest.raises(LLMResponseError) as e:
+        c.complete("s", "u")                                 # second call: nothing left to try
+    text = str(e.value)
+    assert "groq: daily limit reached, retry in about 12 min" in text and "gemini: daily limit reached" in text
+    assert "usable=none" not in text
