@@ -72,7 +72,7 @@ A Streamlit app with two pages.
 employee directory and the policy rules: type, required or not, validation, and what each field drives downstream.
 
 ## Testing
-100 offline tests cover money and date parsing, quarantine behaviour, provider failover, credential disabling, JSON repair
+101 offline tests cover money and date parsing, quarantine behaviour, provider failover, credential disabling, JSON repair
 and retry, the hash chain and tamper detection, the append-only log, missing-justification handling, backup and restore
 (including tampered and unsafe archives), and total versus partial LLM outage. A `--mock-llm` mode runs the whole
 pipeline with no keys.

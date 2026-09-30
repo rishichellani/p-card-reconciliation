@@ -101,3 +101,12 @@ def test_stress_test_sample_is_unchanged_and_still_full_of_problems(tmp_path, mo
     workspace.run_audit(ctx, mock_llm=True, providers=None)
     counts = Counter(a.final_status.value for a in read_json_artifact(ctx, 3, Stage3Payload)[1].items)
     assert counts["APPROVED"] < 15 and counts["REJECTED"] >= 4
+
+
+def test_sample_labels_do_not_call_hand_written_text_random(realistic):
+    from utils.export import SOURCE_LABEL, source_label
+    assert "random" not in " ".join(SOURCE_LABEL.values()).lower()
+    _, _, _, s3 = realistic
+    clean = next(a for a in s3.items if a.txn_id == "R-2001").justified.justification.model_dump(mode="json")
+    planted = next(a for a in s3.items if a.txn_id == "R-2033").justified.justification.model_dump(mode="json")
+    assert source_label(clean) == "SAMPLE DATA (demo text)" and source_label(planted) == "SAMPLE DATA (planted demo scenario)"

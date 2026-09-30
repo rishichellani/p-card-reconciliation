@@ -29,7 +29,7 @@ LOCK = threading.RLock()  # also held by Stage 2 while it snapshots the log
 
 class SubmissionEntry(BaseModel):
     seq: int = Field(ge=1)
-    # Who wrote it: a person in the app, or the "Load sample justifications" button (random template / planted scenario).
+    # Who wrote it: a person in the app, or the "Load sample justifications" button (demo text / planted problem).
     source: Literal["employee", "sample_template", "sample_scenario"] = "employee"
     txn_id: str
     employee_id: str

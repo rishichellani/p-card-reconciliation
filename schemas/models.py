@@ -228,7 +228,7 @@ class Justification(BaseModel):
     business_purpose: str
     attendees: list[str] = Field(default_factory=list)
     receipt: ReceiptMetadata
-    # "simulated" = random template, "override" = hand-planted demo scenario. A real portal feed would use "portal".
+    # "simulated" = demo text (hand-written or template-generated), "override" = planted demo problem. A real portal feed would use "portal".
     source: Literal["simulated", "override", "portal"] = "simulated"
     submitted_by: str | None = None
     submitted_at: datetime | None = None

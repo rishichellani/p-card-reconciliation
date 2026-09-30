@@ -27,7 +27,7 @@ def _num(v) -> float | None:
 
 
 SOURCE_LABEL = {
-    "simulated": "SAMPLE DATA (random template)",
+    "simulated": "SAMPLE DATA (demo text)",  # hand-written for the demo, or generated from templates for other files
     "override": "SAMPLE DATA (planted demo scenario)",
     "portal": "Entered by employee in app",
 }
