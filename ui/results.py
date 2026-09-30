@@ -190,6 +190,17 @@ with tab_over:
         net_liability = Decimal(str(round(on_liability["credit"].sum() - on_liability["debit"].sum(), 2)))
         tie = net_liability == control
         llm_n = int((df["llm"] != "-").sum())
+        skipped = df[df["llm"] == "-"]
+        why = {  # why each transaction that never reached the model was not judged by it
+            "refund, no justification needed": int((skipped["amount"] < 0).sum()),
+            "rejected by a hard rule": int(((skipped["amount"] >= 0) & (skipped["status_key"] == "REJECTED")
+                                            & ~skipped["findings"].str.contains("MISSING_JUSTIFICATION")).sum()),
+            "no justification submitted": int(skipped["findings"].str.contains("MISSING_JUSTIFICATION").sum()),
+            "model unavailable, sent to manual review": int(((skipped["amount"] >= 0) & (skipped["status_key"] == "MANUAL_REVIEW")
+                                                             & ~skipped["findings"].str.contains("MISSING_JUSTIFICATION")).sum()),
+        }
+        rest = "; ".join(f"{n} {label}" for label, n in why.items() if n)
+        rest = f" The other {len(skipped)}: {rest}." if len(skipped) else ""
 
         def row(ok: bool, text: str) -> str:
             return f'<li>{check_badge(ok)}<span>{text}</span></li>'
@@ -203,7 +214,7 @@ with tab_over:
                        "(purchases minus refunds)")
             + f'<li><span class="pc-badge" style="--c:#1d4ed8">{icon("info")}Info</span>'
               f'<span>{"LLM audited" if kind == "LLM" else "The mock auditor (offline keyword heuristic, not an LLM) reviewed"} '
-              f'{llm_n} of {len(df)}; the rest were decided by hard rules or sent to manual review</span></li>'
+              f'{llm_n} of {len(df)}.{rest}</span></li>'
         )
         st.markdown(f'<div class="pc-panel"><h3>Controls</h3><ul class="pc-list">{items}</ul></div>', unsafe_allow_html=True)
 

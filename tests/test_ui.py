@@ -323,5 +323,6 @@ def test_bundled_example_run_appears_on_results_and_verifies(monkeypatch):
     assert sel.value == "run_20260930T153959Z" and "example" in sel.format_func(sel.value)
     text = re.sub(r"<[^>]+>", " ", " ".join(m.value for m in at.markdown))
     assert "Fail" not in text.split("Controls")[-1][:600]                   # integrity checks pass on the shipped run
+    assert "audited 47 of 50. The other 3: 1 refund, no justification needed; 2 rejected by a hard rule." in text   # no invented "manual review"
     from utils.artifacts import verify_run
     assert verify_run(real / "run_20260930T153959Z") == []
