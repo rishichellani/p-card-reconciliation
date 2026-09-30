@@ -194,3 +194,17 @@ def test_results_controls_name_the_auditor_honestly_and_explain_gross_vs_net():
     assert "mock auditor (offline keyword heuristic, not an LLM)" in plain
     assert "gross: includes $250.00 of refunds on both sides" in plain
     assert "Net card liability $24,833.60 matches the statement total $24,833.60" in plain
+
+
+def test_screens_account_for_every_row_and_explain_the_refund():
+    at = app().run()
+    assert any("50 valid transactions" in c.value and "49 need a justification" in c.value for c in at.caption)   # before creating
+    btn(at, "Create batch and validate").click().run()
+    assert any("56 rows read: 50 routed to cardholders, 6 set aside as invalid" in s.value for s in at.success)
+    stmt = " ".join(c.value for c in at.caption)
+    assert "56 rows in the file: 50 valid transactions routed" in stmt and "6 set aside as invalid" in stmt
+    assert "1 of the 50 is a refund, so 49 need a justification" in stmt
+    at.session_state["wf_step"] = "2. Justifications"
+    at.run()
+    status = next(m.value for m in at.markdown if "justifications submitted" in m.value)
+    assert "0 of 49 justifications submitted" in status and "50 transactions in the batch; 1 refund needs none" in status

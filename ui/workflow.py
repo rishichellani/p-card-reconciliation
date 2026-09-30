@@ -21,9 +21,13 @@ from utils.loaders import load_json_model
 
 log = logging.getLogger(__name__)
 NEW = "New batch"
-SAMPLES = {  # label -> file in data/
-    "Realistic sample (50 transactions, about 90% clean)": "sample_realistic.csv",
-    "Stress-test sample (26 transactions, many problems)": "transactions.csv",
+SAMPLES = {  # label -> (file in data/, what is in it)
+    "Realistic sample (50 transactions, about 90% clean)":
+        ("sample_realistic.csv", "56 rows: 50 valid transactions (one is a refund, so 49 need a justification) plus 6 deliberately "
+                                 "broken rows that validation sets aside. Five problems are planted among the 50."),
+    "Stress-test sample (26 transactions, many problems)":
+        ("transactions.csv", "32 rows: 26 valid transactions (one is a refund, so 25 need a justification) plus 6 deliberately "
+                             "broken rows that validation sets aside. About a dozen problems are planted among the 26."),
 }
 TEMPLATE = "txn_id,post_date,card_last4,merchant_name,mcc,amount,currency,statement_memo\n"
 
@@ -74,8 +78,7 @@ if pick == NEW:
     source = st.radio("Bank statement", [*SAMPLES, "Upload my own CSV"])
     uploaded = None
     if source in SAMPLES:
-        st.caption("Both samples also include a few deliberately broken rows so you can see validation set them aside. "
-                   "The realistic one has five planted problems among 50 transactions; the stress test has about a dozen among 26.")
+        st.caption(SAMPLES[source][1])
     if source.startswith("Upload"):
         uploaded = st.file_uploader("Statement CSV", type="csv", help="Up to 5 MB")
         with st.expander("Required columns"):
@@ -88,11 +91,13 @@ if pick == NEW:
     ready = source in SAMPLES or uploaded is not None
     if st.button("Create batch and validate", type="primary", disabled=not ready, icon=":material/upload_file:"):
         try:
-            data = (workspace.SAMPLE_DATA / SAMPLES[source]).read_bytes() if source in SAMPLES else uploaded.getvalue()
+            data = (workspace.SAMPLE_DATA / SAMPLES[source][0]).read_bytes() if source in SAMPLES else uploaded.getvalue()
             with st.spinner("Validating the statement..."):
                 ctx = workspace.create_batch(data, label=label)
+            made = read_json_artifact(ctx, 1, Stage1Payload)[1]
             st.session_state["pending_pick"] = ctx.run_id
-            st.session_state["flash"] = "Batch created. Statement validated and routed to cardholders."
+            st.session_state["flash"] = (f"Batch created. {len(made.routed) + len(made.quarantined)} rows read: {len(made.routed)} routed "
+                                         f"to cardholders, {len(made.quarantined)} set aside as invalid.")
             st.rerun()
         except PipelineError as exc:
             st.error(f"Could not create the batch: {exc}")
@@ -132,6 +137,11 @@ if step == STEPS[0]:
     c[0].metric("Transactions routed", len(routed))
     c[1].metric("Rows set aside", len(s1.quarantined))
     c[2].metric("Control total", money(s1.control_total_usd))
+    refunds = len(routed) - len(needs_just)
+    st.caption(f"{len(routed) + len(s1.quarantined)} rows in the file: {len(routed)} valid transactions routed to cardholders and "
+               f"{len(s1.quarantined)} set aside as invalid (they are extra rows, not taken from the {len(routed)}). "
+               + (f"{refunds} of the {len(routed)} {'is a refund' if refunds == 1 else 'are refunds'}, so {len(needs_just)} "
+                  f"need{'s' if len(needs_just) == 1 else ''} a justification." if refunds else f"All {len(routed)} need a justification."))
     st.markdown(f'<p><strong>Statement period:</strong> <span class="pc-num">{s1.statement_period_start}</span> to '
                 f'<span class="pc-num">{s1.statement_period_end}</span></p>', unsafe_allow_html=True)
     rows = []
@@ -156,8 +166,12 @@ if step == STEPS[0]:
 # --------------------------------------------------------------------------- 2. justifications
 if step == STEPS[1]:
     done = len(needs_just) - len(missing)
+    refunds = len(routed) - len(needs_just)
     st.markdown(f'<p role="status"><strong>{done} of {len(needs_just)} justifications submitted.</strong> '
-                f'{len(missing)} still needed.</p>', unsafe_allow_html=True)
+                f'{len(missing)} still needed.'
+                + (f' <span class="pc-muted">({len(routed)} transactions in the batch; {refunds} '
+                   f'{"refund needs" if refunds == 1 else "refunds need"} none.)</span>' if refunds else "") + '</p>',
+                unsafe_allow_html=True)
     st.progress(done / len(needs_just) if needs_just else 1.0)
 
     if closed:
