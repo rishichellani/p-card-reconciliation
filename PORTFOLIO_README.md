@@ -1,73 +1,93 @@
 # P-Card & Expense Reconciliation: a Deterministic + LLM Hybrid Pipeline
 
-A local, production-style prototype that turns a raw corporate purchasing-card statement into a balanced, audit-ready
-ERP journal entry. It uses free-tier LLM APIs (Gemini, Groq, OpenRouter) for the one step that needs judgement.
+A prototype that takes a corporate purchasing-card statement, collects employee justifications, audits them against a
+written spending policy, and produces a balanced ERP journal entry. Deterministic code owns everything computable. A
+free-tier LLM (Gemini, Groq or OpenRouter) is used for the one step that needs judgement.
+
+Code: https://github.com/rishichellani/p-card-reconciliation
 
 ## The problem
 Finance teams reconcile hundreds of card transactions a month. Most checks are arithmetic and rules. One is not:
-*does this employee's explanation actually satisfy our spending policy?* ("Team bonding" at a bar is not the same as
-"dinner with Northwind procurement to discuss renewal terms".)
+*does this employee's explanation actually satisfy our spending policy?* "Team bonding" at a bar is not the same as
+"dinner with Northwind procurement to discuss renewal terms".
 
 ## The design principle: use the LLM only where rules cannot
 | Deterministic Python (no LLM) | LLM (qualitative only) |
 |---|---|
 | CSV/schema validation, quarantine of dirty rows | Is the justification specific and plausible? |
-| Card → employee → cost center routing | Does it satisfy meal, gift, travel and home-office policy text? |
+| Card to employee to cost center routing | Does it satisfy meal, gift, travel and home-office policy text? |
 | Limits, receipt matching, duplicates, split purchases | Is it personal use dressed up as business use? |
 | GL mapping, `Decimal` money, balanced double entry | |
 
 Rule findings can only be **escalated** by the model, never downgraded. If the LLM approves something a rule flagged,
 the flag stands.
 
-## Architecture
+## How it flows
 ```
-transactions.csv ─► 1 Ingest & route ─► 2 Justifications ─► 3 Compliance audit ─► 4 ERP journal
-employees.json      01_raw_statement    02_user_justified   03_compliance_        04_erp_journal_
-spending_policy.md  .json               .json               audited.json          entry.csv
-                    Pydantic, no LLM    seeded simulation   rules + LLM router    Decimal, no LLM
+bank statement CSV
+   -> 1 Validate & route     (Pydantic; bad rows set aside with reasons)
+   -> 2 Justifications       (entered by cardholders in the app, or loaded as clearly-labelled sample data)
+   -> 3 Compliance audit     (rule checks first, then the LLM judges the justification against the policy text)
+   -> 4 ERP journal          (balanced, tied to the statement total)
 ```
-- **Strict schemas:** Pydantic models at every stage boundary. Amounts like `$1,234.50` and `(250.00)` are parsed and
-  bad rows (bad date, `N/A` amount, missing merchant, non-USD, duplicate ID, unknown card) are quarantined with
-  reasons rather than crashing the run. In the demo, 6 of 32 rows are quarantined and the run still completes.
-- **Structured LLM contract:** the model must return JSON `{verdict, policy_sections, rationale, confidence, red_flags}`.
-  It is extracted, normalised and schema-validated. Invalid output is retried on a different provider.
-- **Prompt-injection posture:** employee text is untrusted input, wrapped in delimiters and flagged as data in the prompt.
+Each stage writes a JSON artifact (`01_raw_statement.json` ... `04_erp_journal_entry.csv`) instead of holding state
+in memory.
 
-## Resilient multi-provider LLM routing
+## The app
+A Streamlit app with two pages.
+- **Live workflow:** create a batch from a statement, let each cardholder add a business purpose, attendees and receipt
+  details, then run the audit. A transaction with no justification is flagged `MISSING_JUSTIFICATION` and skips the LLM.
+  Nothing is invented. A **Load sample justifications** button fills the rest with labelled sample data (including a
+  few planted problem cases) so the whole flow can be seen without typing 25 entries.
+- **Results:** outcome summary and controls, a filterable transaction table with per-transaction detail, a
+  **Follow a transaction** view that walks one transaction through all four stages, quarantined rows, the ERP journal,
+  the audit trail, and an Excel export.
+
+## Controls and audit trail
+- **Immutable artifacts:** each stage's output is written once and made read-only. Re-running a stage into the same run
+  is refused.
+- **Hash chain:** every artifact stores the SHA-256 of its own payload and of the previous stage's payload, from the
+  source CSV to the journal. `--verify RUN_ID` re-checks the whole chain, and editing any file is detected.
+- **Append-only justification log:** each submission records who and when and commits to the previous entry's hash.
+  A later submission supersedes an earlier one but never erases it. The log closes when the audit snapshots it.
+- **Provenance is explicit:** every justification is labelled as entered by an employee or as sample data, in the app
+  and in the Excel export, with a warning banner whenever sample data is present.
+- **Journal checks:** the exporter refuses to write unless debits equal credits and the net card liability ties to
+  the statement control total (purchases minus refunds). Every audited transaction must be represented.
+- **Prompt-injection posture:** employee text is untrusted input, wrapped in delimiters and marked as data in the prompt.
+  The LLM sees the justification, merchant, amount and department, not names, emails or card numbers.
+
+## Resilient LLM routing
 `utils/llm_client.py` is a small reusable client for any OpenAI-compatible endpoint.
-- Priority failover across Gemini → Groq → OpenRouter, using whichever keys are configured.
-- Per-provider throttling for free-tier rate limits, cooldown after repeated failures, and permanent disable for bad
-  credentials or a retired model.
-- Automatic fallback when an endpoint does not support JSON mode.
-- If every provider fails for a transaction, it becomes `MANUAL_REVIEW` and the pipeline keeps going.
+- Priority failover across Gemini, Groq and OpenRouter, using whichever keys are configured.
+- Per-provider throttling for free-tier rate limits, a cooldown after repeated failures, and permanent disable for
+  rejected credentials or a retired model.
+- JSON mode is used when supported and dropped automatically when not. Invalid output is retried on a different provider.
+- A partial outage sends only the affected transactions to `MANUAL_REVIEW`. A **total** outage (the first three
+  attempts all fail) stops the audit without saving anything, so it can be retried instead of baking an all-manual-review
+  result into the record. A **Test connection** button shows which provider works before anything is locked.
 
-## Immutable, tamper-evident audit trail
-Every stage persists a JSON artifact instead of holding state in memory.
-- Artifacts are **write-once** (atomic link, then read-only). Re-running a stage into an existing run is refused.
-- Each envelope stores `payload_sha256` and `upstream_sha256`, forming a hash chain from the source CSV to the journal.
-- The ERP CSV has a manifest with its own hash. `--verify RUN_ID` re-checks the whole chain; editing any file is detected.
-- Every LLM decision is stored with its rationale, cited policy sections, confidence and `provider:model` that served it.
-
-## ERP output controls
-The exporter refuses to write a journal unless:
-1. total debits equal total credits (`Decimal`, no floating point),
-2. the P-Card clearing liability ties exactly to the statement control total captured in stage 1, and
-3. every audited transaction is represented.
-
-Approved spend posts to the expense GL. Flagged, rejected and manual-review items post to an employee receivable until
-resolved, so the card liability always reconciles to the bank.
+## Data dictionary and reviewability
+`docs/` holds Excel views of the input files and a data dictionary defining every field of the bank statement, the
+employee directory and the policy rules: type, required or not, validation, and what each field drives downstream.
 
 ## Testing
-22 offline tests cover money and date parsing, quarantine behaviour, missing-file handling, provider failover,
-credential disabling, all-providers-down degradation, JSON repair and retry, and a full end-to-end run that asserts
-balance, tie-out, write-once behaviour and tamper detection. A `--mock-llm` mode runs the whole pipeline with no keys.
+35 offline tests cover money and date parsing, quarantine behaviour, provider failover, credential disabling, JSON repair
+and retry, the hash chain and tamper detection, the append-only log, missing-justification handling, backup and restore
+(including tampered and unsafe archives), and total versus partial LLM outage. A `--mock-llm` mode runs the whole
+pipeline with no keys.
 
 ## Tech
-Python 3.10+, Pydantic v2, OpenAI-compatible SDK client (Gemini / Groq / OpenRouter), `Decimal`, pytest.
+Python 3.10+, Pydantic v2, Streamlit, OpenAI-compatible SDK client (Gemini / Groq / OpenRouter), `Decimal`, openpyxl, pytest.
 
 ## Honest limitations
-Prototype scope: simulated justifications and receipts (stage 2 stands in for an expense-portal/OCR feed), sequential
-LLM calls, and free-tier models whose verdict quality varies. Verified live against Groq (`openai/gpt-oss-120b`) and Gemini
-(`gemini-3.8-flash`): on a 26-transaction run, transient rate limits and a Gemini 503 sent 1 item to `MANUAL_REVIEW`
-while the run still completed and verified. Free tiers may use prompts for model improvement, so use only
-non-sensitive data.
+This is a prototype, not a production system.
+- **Sample data:** the statement, employees and policy are invented. No real cardholder data has been used.
+- **No login:** in the app you choose who you are. An optional shared passcode gates access, but it is not identity control.
+- **Receipts are typed in:** there is no image upload or OCR, and nothing verifies that the typed values match a real receipt.
+- **Storage:** on a hosted free tier, files are lost when the app restarts, so the app has backup and restore. A real
+  deployment needs a database or persistent disk.
+- **Free-tier LLMs:** verdict quality varies, quotas run out, and providers may use prompts for training. During
+  development the audit ran live on Groq and Gemini, and on a 26-transaction statement the failover kept the run going
+  through rate limits and a provider error. Treat verdicts as a first pass for a human reviewer, not a decision.
+- **Scale:** transactions are audited one at a time. It has not been load-tested.
