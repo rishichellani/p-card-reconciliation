@@ -7,6 +7,7 @@ model is quarantined by Stage 1 instead of crashing the run.
 from __future__ import annotations
 
 import re
+import unicodedata
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
 from enum import Enum
@@ -17,7 +18,10 @@ from pydantic import BaseModel, ConfigDict, Field, computed_field, field_validat
 TWO_PLACES = Decimal("0.01")
 DATE_FORMATS = ("%Y-%m-%d", "%m/%d/%Y", "%d-%b-%Y", "%Y/%m/%d")
 MAX_ABS_AMOUNT = Decimal("1000000")
-_MONEY_RE = re.compile(r"^\(?-?\$?\d[\d,]*(\.\d+)?\)?$")
+# Proper US grouping only ("1,234.50", "1234.50"). "1,23" and "12 34" are rejected, not guessed: guessing turns a
+# European "1,23" into $123.00. ASCII digits only; parentheses or a leading minus mean a credit.
+_MONEY_RE = re.compile(r"^(?P<open>\()?(?P<sign>-)?(?P<cur>\$)?(?P<num>(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?)(?P<close>\))?$", re.ASCII)
+MIN_DATE, MAX_DATE = date(2000, 1, 1), date(2099, 12, 31)
 
 
 def parse_money(value: Any) -> Decimal:
@@ -27,16 +31,14 @@ def parse_money(value: Any) -> Decimal:
     elif isinstance(value, (int, float)) and not isinstance(value, bool):
         d = Decimal(str(value))
     elif isinstance(value, str):
-        s = value.strip().replace(" ", "")
-        if not _MONEY_RE.match(s):
+        m = _MONEY_RE.match(value.strip())
+        if not m or bool(m["open"]) != bool(m["close"]):
             raise ValueError(f"not a valid money amount: {value!r}")
-        negative = s.startswith("(") or s.startswith("-") or s.startswith("(-")
-        digits = s.strip("()-").replace("$", "").replace(",", "").lstrip("-")
         try:
-            d = Decimal(digits)
+            d = Decimal(m["num"].replace(",", ""))
         except InvalidOperation as exc:
             raise ValueError(f"not a valid money amount: {value!r}") from exc
-        d = -d if negative else d
+        d = -d if (m["sign"] or m["open"]) else d
     else:
         raise ValueError(f"unsupported amount type: {type(value).__name__}")
     if not d.is_finite():
@@ -50,15 +52,23 @@ def parse_money(value: Any) -> Decimal:
 
 def parse_date(value: Any) -> date:
     if isinstance(value, datetime):
-        return value.date()
-    if isinstance(value, date):
-        return value
-    if isinstance(value, str):
+        found = value.date()
+    elif isinstance(value, date):
+        found = value
+    elif isinstance(value, str):
+        found = None
         for fmt in DATE_FORMATS:
             try:
-                return datetime.strptime(value.strip(), fmt).date()
+                found = datetime.strptime(value.strip(), fmt).date()
+                break
             except ValueError:
                 continue
+    else:
+        found = None
+    if found is not None:
+        if not MIN_DATE <= found <= MAX_DATE:
+            raise ValueError(f"date out of range ({MIN_DATE} to {MAX_DATE}): {value!r}")
+        return found
     raise ValueError(f"unrecognised date: {value!r} (accepted: {', '.join(DATE_FORMATS)})")
 
 
@@ -68,13 +78,13 @@ def parse_date(value: Any) -> date:
 class Employee(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
 
-    employee_id: str = Field(pattern=r"^E\d{4}$")
+    employee_id: str = Field(pattern=r"^E[0-9]{4}$")
     name: str
     email: str
     department: str
-    cost_center: str = Field(pattern=r"^\d{4}$")
+    cost_center: str = Field(pattern=r"^[0-9]{4}$")
     manager_id: str | None = None
-    card_last4: str | None = Field(default=None, pattern=r"^\d{4}$")
+    card_last4: str | None = Field(default=None, pattern=r"^[0-9]{4}$")
     single_txn_limit: Decimal = Field(ge=0)
     monthly_limit: Decimal = Field(ge=0)
     active: bool = True
@@ -102,7 +112,7 @@ class EmployeeDirectory(BaseModel):
 
 class MccInfo(BaseModel):
     category: str
-    gl_account: str = Field(pattern=r"^\d{4}$")
+    gl_account: str = Field(pattern=r"^[0-9]{4}$")
 
 
 class PolicyRules(BaseModel):
@@ -113,10 +123,10 @@ class PolicyRules(BaseModel):
     duplicate_window_days: int = Field(ge=0)
     min_justification_chars: int = Field(ge=0)
     min_llm_confidence: float = Field(ge=0, le=1)
-    liability_account: str = Field(pattern=r"^\d{4}$")
-    suspense_account: str = Field(pattern=r"^\d{4}$")
+    liability_account: str = Field(pattern=r"^[0-9]{4}$")
+    suspense_account: str = Field(pattern=r"^[0-9]{4}$")
     default_category: str
-    default_gl_account: str = Field(pattern=r"^\d{4}$")
+    default_gl_account: str = Field(pattern=r"^[0-9]{4}$")
     gl_accounts: dict[str, str]
     mcc_map: dict[str, MccInfo]
     blocked_mccs: dict[str, str]
@@ -137,12 +147,23 @@ class RawTransaction(BaseModel):
 
     txn_id: str = Field(min_length=1, max_length=32)
     post_date: date
-    card_last4: str = Field(pattern=r"^\d{4}$")
+    card_last4: str = Field(pattern=r"^[0-9]{4}$")
     merchant_name: str = Field(min_length=1, max_length=120)
-    mcc: str = Field(pattern=r"^\d{4}$")
+    mcc: str = Field(pattern=r"^[0-9]{4}$")
     amount: Decimal
     currency: Literal["USD"] = "USD"
-    statement_memo: str = ""
+    statement_memo: str = Field(default="", max_length=500)
+
+    @field_validator("txn_id", "merchant_name", "statement_memo", mode="before")
+    @classmethod
+    def _clean_text(cls, v: Any) -> Any:
+        """Tabs/newlines become spaces; any other control character (NUL, bell, escape...) rejects the row."""
+        if not isinstance(v, str):
+            return v
+        v = re.sub(r"[\t\r\n]+", " ", v)
+        if any(unicodedata.category(ch) == "Cc" for ch in v):
+            raise ValueError("contains control characters")
+        return v
 
     @field_validator("post_date", mode="before")
     @classmethod
@@ -321,9 +342,9 @@ class JournalLine(BaseModel):
     journal_id: str
     line_no: int = Field(ge=1)
     posting_date: date
-    gl_account: str = Field(pattern=r"^\d{4}$")
+    gl_account: str = Field(pattern=r"^[0-9]{4}$")
     gl_account_name: str
-    cost_center: str = Field(pattern=r"^\d{4}$")
+    cost_center: str = Field(pattern=r"^[0-9]{4}$")
     debit: Decimal = Field(ge=0)
     credit: Decimal = Field(ge=0)
     currency: Literal["USD"] = "USD"

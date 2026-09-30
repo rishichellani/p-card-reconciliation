@@ -49,6 +49,11 @@ class Auditor(Protocol):
     def audit(self, item: JustifiedTransaction, category: str, findings: list[Finding]) -> LLMAuditResult: ...
 
 
+def _json_for_prompt(obj) -> str:
+    """JSON with < and > escaped, so untrusted text can never contain a literal </employee_submission> and break out."""
+    return json.dumps(obj, indent=2).replace("<", "\\u003c").replace(">", "\\u003e")
+
+
 def build_user_message(item: JustifiedTransaction, category: str, findings: list[Finding]) -> str:
     t, j = item.routed.transaction, item.justification
     facts = {
@@ -64,8 +69,8 @@ def build_user_message(item: JustifiedTransaction, category: str, findings: list
     }
     submission = {"business_purpose": j.business_purpose, "attendees": j.attendees}
     return (
-        f"Transaction facts (verified by system):\n{json.dumps(facts, indent=2)}\n\n"
-        f"<employee_submission>\n{json.dumps(submission, indent=2)}\n</employee_submission>"
+        f"Transaction facts (verified by system):\n{_json_for_prompt(facts)}\n\n"
+        f"<employee_submission>\n{_json_for_prompt(submission)}\n</employee_submission>"
     )
 
 

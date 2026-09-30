@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import os
 import threading
+from functools import lru_cache
 from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
@@ -19,6 +20,7 @@ from pydantic import BaseModel, Field, ValidationError
 from schemas.models import ReceiptMetadata, RoutedTransaction
 from utils.artifacts import STAGE_FILES, canonical_bytes, sha256_hex
 from utils.errors import ArtifactIntegrityError, PipelineError
+from utils.safe import strip_controls
 
 LOG_NAME = "submissions.jsonl"
 GENESIS = "0" * 64
@@ -65,6 +67,43 @@ def read_log(run_dir: Path) -> list[SubmissionEntry]:
     return entries
 
 
+@lru_cache(maxsize=8)
+def _routed_index_cached(path: str, mtime_ns: int) -> dict[str, str]:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))["payload"]
+    return {r["transaction"]["txn_id"]: r["employee_id"] for r in payload["routed"]}
+
+
+def _routed_index(run_dir: Path) -> dict[str, str]:
+    """txn_id -> employee_id for the batch's validated statement (cached by file mtime)."""
+    path = run_dir / STAGE_FILES[1]
+    try:
+        return _routed_index_cached(str(path), path.stat().st_mtime_ns)
+    except FileNotFoundError as exc:
+        raise PipelineError("This batch has no validated statement yet.") from exc
+
+
+def _tail(path: Path) -> tuple[int, str]:
+    """(seq, entry_hash) of the last log line, read from the end of the file so a save stays fast as the log grows.
+
+    The whole chain is verified whenever the log is read (every page load and at audit time), so a tampered earlier
+    line is still caught; appending never hides it.
+    """
+    if not path.exists() or path.stat().st_size == 0:
+        return 0, GENESIS
+    with path.open("rb") as fh:
+        fh.seek(0, os.SEEK_END)
+        fh.seek(max(0, fh.tell() - 65536))
+        lines = [ln for ln in fh.read().split(b"\n") if ln.strip()]
+    try:
+        last = json.loads(lines[-1])
+        return int(last["seq"]), str(last["entry_hash"])
+    except (json.JSONDecodeError, KeyError, ValueError, IndexError) as exc:
+        raise ArtifactIntegrityError(f"{LOG_NAME} ends with an unreadable line") from exc
+
+
+MAX_ATTENDEES, MAX_ATTENDEE_CHARS, MAX_VENDOR_CHARS, MAX_RECEIPT_TOTAL = 20, 100, 120, Decimal("1000000")
+
+
 def log_sha256(run_dir: Path) -> str | None:
     path = run_dir / LOG_NAME
     return sha256_hex(path.read_bytes()) if path.exists() else None
@@ -84,30 +123,42 @@ def submit(
     source: str = "employee",
 ) -> SubmissionEntry:
     """Record one justification. The cardholder of the transaction is the submitter."""
-    purpose = business_purpose.strip()
+    purpose = strip_controls(business_purpose, keep="\n\t").strip()
     if not purpose:
         raise PipelineError("Business purpose is required.")
     if len(purpose) > 1000:
         raise PipelineError("Business purpose is limited to 1000 characters.")
-    attendees = [a.strip() for a in attendees if a.strip()]
-    if receipt.present and (not (receipt.vendor_name or "").strip() or receipt.total is None):
+    attendees = [strip_controls(a).strip() for a in attendees if strip_controls(a).strip()]
+    if len(attendees) > MAX_ATTENDEES:
+        raise PipelineError(f"At most {MAX_ATTENDEES} attendees can be listed (you entered {len(attendees)}).")
+    if any(len(a) > MAX_ATTENDEE_CHARS for a in attendees):
+        raise PipelineError(f"Each attendee entry is limited to {MAX_ATTENDEE_CHARS} characters.")
+    vendor = strip_controls(receipt.vendor_name or "").strip()
+    if receipt.present and (not vendor or receipt.total is None):
         raise PipelineError("A receipt needs a vendor name and a total.")
-    if receipt.total is not None and receipt.total < Decimal("0"):
-        raise PipelineError("Receipt total cannot be negative.")
+    if len(vendor) > MAX_VENDOR_CHARS:
+        raise PipelineError(f"Vendor name is limited to {MAX_VENDOR_CHARS} characters.")
+    if receipt.total is not None and not (Decimal("0") <= receipt.total <= MAX_RECEIPT_TOTAL):
+        raise PipelineError(f"Receipt total must be between 0 and {MAX_RECEIPT_TOTAL:,}.")
+    owner = _routed_index(run_dir).get(routed.transaction.txn_id)
+    if owner is None:
+        raise PipelineError(f"{routed.transaction.txn_id} is not a transaction in this batch.")
+    if owner != routed.employee_id:
+        raise PipelineError(f"{routed.transaction.txn_id} does not belong to {routed.employee_name}.")
     with LOCK:
         if (run_dir / STAGE_FILES[2]).exists():
             raise PipelineError("Submissions are closed: the audit has already been run for this batch.")
-        entries = read_log(run_dir)
+        last_seq, last_hash = _tail(run_dir / LOG_NAME)
         body = {
-            "seq": len(entries) + 1, "source": source, "txn_id": routed.transaction.txn_id, "employee_id": routed.employee_id,
+            "seq": last_seq + 1, "source": source, "txn_id": routed.transaction.txn_id, "employee_id": routed.employee_id,
             "employee_name": routed.employee_name,
             "submitted_at": (now or datetime.now(timezone.utc)).replace(microsecond=0, tzinfo=None).isoformat(),
             "business_purpose": purpose, "attendees": attendees,
             "receipt": ReceiptMetadata(present=receipt.present,
-                                       vendor_name=(receipt.vendor_name or "").strip() or None if receipt.present else None,
+                                       vendor_name=vendor or None if receipt.present else None,
                                        total=receipt.total if receipt.present else None,
                                        receipt_date=receipt.receipt_date if receipt.present else None).model_dump(mode="json"),
-            "prev_hash": entries[-1].entry_hash if entries else GENESIS,
+            "prev_hash": last_hash,
         }
         body["entry_hash"] = _entry_hash(body)
         entry = SubmissionEntry.model_validate(body)

@@ -15,6 +15,7 @@ from openpyxl.utils import get_column_letter
 
 from utils.artifacts import CSV_MANIFEST, STAGE_FILES, verify_run
 from utils.errors import PipelineError
+from utils.safe import neutralize, strip_controls
 
 STATUS_FILL = {"APPROVED": "C6EFCE", "FLAGGED": "FFEB9C", "MANUAL_REVIEW": "BDD7EE", "REJECTED": "FFC7CE"}
 STATUS_LABEL = {"APPROVED": "Approved", "FLAGGED": "Flagged", "MANUAL_REVIEW": "Manual review", "REJECTED": "Rejected"}
@@ -239,7 +240,11 @@ def write_workbook(run_dir: Path, path: Path) -> Path:
         ws = wb.create_sheet(name)
         ws.append(headers)
         for row in rows:
-            ws.append(row)
+            ws.append([strip_controls(v, keep="\n") if isinstance(v, str) else v for v in row])  # openpyxl raises on control chars
+        for cells in ws.iter_rows():
+            for c in cells:
+                if isinstance(c.value, str) and c.data_type == "f":
+                    c.data_type = "s"  # store as text: a value starting with "=" must never become a live formula
         _style(ws, headers, wide)
         for i, h in enumerate(headers, start=1):
             letter = get_column_letter(i)
@@ -270,6 +275,6 @@ def write_csvs(run_dir: Path, out_dir: Path) -> list[Path]:
         with p.open("w", newline="", encoding="utf-8-sig") as fh:  # BOM so Excel opens UTF-8 correctly
             w = csv.writer(fh)
             w.writerow(headers)
-            w.writerows(rows)
+            w.writerows([[neutralize(v) for v in row] for row in rows])
         paths.append(p)
     return paths

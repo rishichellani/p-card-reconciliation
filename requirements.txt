@@ -1,5 +1,4 @@
 openai>=1.50
 pydantic>=2.9
 streamlit>=1.55
-pytest>=8
 openpyxl>=3.1

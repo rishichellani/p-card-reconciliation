@@ -21,7 +21,7 @@ Requires Python 3.10+.
 ```bash
 cd p-card-pipeline
 python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements.txt          # add: pip install -r requirements-dev.txt  to run the tests
 ```
 
 ### Get a free API key (any one is enough; more than one gives automatic failover)
@@ -105,6 +105,30 @@ python export_review.py RUN_ID
 The workbook has a Read-me sheet, Transactions (most severe first, with rule findings and LLM rationale), Findings,
 Quarantined, ERP Journal and Audit trail. It is also downloadable from the dashboard sidebar. Exports are derived
 copies; the immutable artifacts in `output/` stay the source of truth.
+
+## Statement file format
+
+Stage 1 is deliberately strict: it rejects or sets aside anything it would otherwise have to guess.
+- **Columns:** `txn_id, post_date, card_last4, merchant_name, mcc, amount` are required (`currency`, `statement_memo` optional).
+  Header case and stray spaces do not matter. The delimiter may be a comma, semicolon or tab. A column may not appear twice.
+- **Amounts:** US style only. `1,234.50`, `1234.5`, `$1,234.50`, `-5.00`, `(5.00)` are fine. `1,23`, `12 34`, `1e3`, `.5`, non-ASCII
+  digits and anything over $1,000,000 are rejected. A European `1,23` is never read as $123.
+- **Dates:** `YYYY-MM-DD`, `MM/DD/YYYY`, `DD-Mon-YYYY`, `YYYY/MM/DD`, between 2000 and 2099. Slash dates are read as **month first**;
+  `31/12/2026` is rejected and `02/01/2026` means February 1.
+- **Text:** tabs and line breaks become spaces; any other control character sets the row aside. `statement_memo` is capped at 500 characters.
+- **Currency:** USD only.
+- Set-aside rows are listed with reasons; if *every* row is invalid the error shows the first reasons.
+
+## Quality assurance
+
+`pytest -q` runs about 90 offline tests (about 89% line coverage). Beyond unit tests they cover: adversarial statement files, spreadsheet
+formula injection in every export, hostile text through every raw-HTML block of the UI, oversized and malformed submissions, hostile backup
+archives, tampering with every artifact and the submissions log, the passcode gate, damaged data (each page must show a message, not a
+traceback), and an independent recomputation of the journal totals. Each functional defect found during QA has a regression test; most were checked to fail on the pre-fix code.
+
+Known limits: the hash chain is *tamper-evident*, not tamper-proof. Someone who can rewrite every file and recompute every hash could forge a
+run; anchoring the final hash outside the folder (or signing it) would close that. Real-browser rendering, accessibility and phone layouts
+are not covered by automated tests.
 
 ## Layout
 

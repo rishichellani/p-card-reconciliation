@@ -10,6 +10,7 @@ import json
 import logging
 import shutil
 import tempfile
+import time
 import zipfile
 from contextlib import contextmanager
 from dataclasses import replace
@@ -69,12 +70,18 @@ def create_batch(csv_bytes: bytes, label: str = "", mock_llm: bool = True, provi
         raise PipelineError("The statement file is empty.")
     if len(csv_bytes) > MAX_UPLOAD_BYTES:
         raise PipelineError(f"The statement file is larger than {MAX_UPLOAD_BYTES // (1024 * 1024)} MB.")
-    run_id = datetime.now(timezone.utc).strftime("run_%Y%m%dT%H%M%SZ")
-    run_dir = OUTPUT / run_id
-    if run_dir.exists():
-        raise PipelineError("A batch was created in the same second; please try again.")
+    for _ in range(4):  # two people can click in the same second on a shared app: mkdir is the atomic claim on the id
+        run_id = datetime.now(timezone.utc).strftime("run_%Y%m%dT%H%M%SZ")
+        run_dir = OUTPUT / run_id
+        try:
+            run_dir.mkdir(parents=True)
+            break
+        except FileExistsError:
+            time.sleep(1.05)
+    else:
+        raise PipelineError("Could not allocate a unique batch id; please try again.")
     inputs = run_dir / "inputs"
-    inputs.mkdir(parents=True)
+    inputs.mkdir()
     try:
         for name in INPUT_FILES:
             shutil.copy(SAMPLE_DATA / name, inputs / name)
@@ -118,8 +125,14 @@ def batch_info(run_dir: Path) -> dict:
 def list_batches() -> list[dict]:
     if not OUTPUT.exists():
         return []
-    return sorted((batch_info(d) for d in OUTPUT.iterdir() if (d / "batch.json").exists()),
-                  key=lambda b: b["run_id"], reverse=True)
+    found = []
+    for d in OUTPUT.iterdir():
+        if (d / "batch.json").exists():
+            try:
+                found.append(batch_info(d))
+            except (OSError, ValueError, KeyError):  # one damaged batch must not take the whole page down
+                log.warning("Skipping unreadable batch %s", d.name)
+    return sorted(found, key=lambda b: b["run_id"], reverse=True)
 
 
 def run_audit(ctx: RunContext, mock_llm: bool, providers: str | None, progress=None) -> None:

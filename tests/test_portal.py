@@ -189,17 +189,17 @@ class _DownAuditor:
 
 
 class _FlakyAuditor:
-    """Works for the first calls, then fails: a partial outage must NOT abort the audit."""
+    """Fails on the given call numbers only: scattered failures must NOT abort the audit."""
     name = "flaky"
 
-    def __init__(self):
-        self.calls = 0
+    def __init__(self, fail_on):
+        self.calls, self.fail_on = 0, set(fail_on)
 
     def audit(self, item, category, findings):
         from utils.errors import LLMResponseError
         from schemas.models import LLMAuditResult
         self.calls += 1
-        if self.calls > 2:
+        if self.calls in self.fail_on:
             raise LLMResponseError("temporary failure")
         return LLMAuditResult(verdict="APPROVE", rationale="Looks specific and compliant.", confidence=0.9)
 
@@ -234,6 +234,18 @@ def test_partial_llm_outage_still_completes_with_manual_review(batch):
     ctx, routed = batch
     _load_samples(ctx, routed)
     workspace.run_stage(replace(ctx, mock_llm=True), 2)
-    stage3_audit.run(ctx, auditor=_FlakyAuditor())
+    stage3_audit.run(ctx, auditor=_FlakyAuditor(fail_on={3, 4}))          # two failures in a row, then it recovers
     s3 = read_json_artifact(ctx, 3, Stage3Payload)[1]
-    assert s3.status_counts.get("MANUAL_REVIEW", 0) > 0 and any(a.llm_result for a in s3.items)
+    assert s3.status_counts.get("MANUAL_REVIEW", 0) == 2 and sum(1 for a in s3.items if a.llm_result) > 2
+
+
+def test_a_streak_of_failures_after_early_successes_still_stops_the_audit(batch):
+    from dataclasses import replace
+    from stages import stage3_audit
+    from utils.errors import LLMUnavailableError
+    ctx, routed = batch
+    _load_samples(ctx, routed)
+    workspace.run_stage(replace(ctx, mock_llm=True), 2)
+    with pytest.raises(LLMUnavailableError):                               # first call works, then everything fails
+        stage3_audit.run(ctx, auditor=_FlakyAuditor(fail_on=set(range(2, 100))))
+    assert not (ctx.run_dir / "03_compliance_audited.json").exists()

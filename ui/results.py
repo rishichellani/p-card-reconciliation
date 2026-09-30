@@ -56,6 +56,12 @@ def txn_frame(items: list[dict]) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+@st.cache_data(show_spinner=False)
+def workbook_bytes(run_id: str) -> tuple[str, bytes]:
+    path = write_workbook(OUTPUT / run_id, OUTPUT.parent / "exports" / run_id / f"pcard_review_{run_id}.xlsx")  # a run never changes
+    return path.name, path.read_bytes()
+
+
 # --------------------------------------------------------------------------- sidebar
 with st.sidebar:
     st.header("P-Card Pipeline")
@@ -63,11 +69,14 @@ with st.sidebar:
     wanted = st.session_state.get("results_run")
     run_id = st.selectbox("Run", runs, index=runs.index(wanted) if wanted in runs else 0) if runs else None
     if run_id:
-        xlsx_path = write_workbook(OUTPUT / run_id, ROOT / "exports" / run_id / f"pcard_review_{run_id}.xlsx")
-        st.download_button("Download Excel workbook", xlsx_path.read_bytes(), icon=":material/download:", width="stretch",
-                           file_name=xlsx_path.name,
-                           mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                           help="All sheets: transactions, findings, quarantined rows, ERP journal, audit trail")
+        try:
+            xlsx_name, xlsx_blob = workbook_bytes(run_id)
+            st.download_button("Download Excel workbook", xlsx_blob, icon=":material/download:", width="stretch",
+                               file_name=xlsx_name,
+                               mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                               help="All sheets: transactions, findings, quarantined rows, ERP journal, audit trail")
+        except Exception as exc:  # noqa: BLE001 - an export problem must never take the results page down
+            st.caption(f"Excel export is unavailable for this run ({type(exc).__name__}).")
 
     st.divider()
     st.subheader("Run a simulated demo")
@@ -95,7 +104,12 @@ if not run_id:
     st.info("No completed runs yet. Start one in Live workflow, or run a simulated demo from the sidebar.")
     st.stop()
 
-data = load_run(run_id)
+try:
+    data = load_run(run_id)
+except (OSError, ValueError, KeyError) as exc:
+    st.title("P-Card & Expense Reconciliation")
+    st.error(f"This run cannot be read ({type(exc).__name__}). Its files may be damaged. Choose another run in the sidebar.")
+    st.stop()
 s1, s3 = data["env"][1]["payload"], data["env"][3]["payload"]
 journal, manifest = data["journal"], data["manifest"]
 df = txn_frame(s3["items"])

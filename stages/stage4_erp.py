@@ -20,10 +20,11 @@ from schemas.models import (
     PolicyRules,
     Stage3Payload,
 )
-from utils.artifacts import CSV_MANIFEST, STAGE_FILES, read_json_artifact, sha256_hex, write_immutable
+from utils.artifacts import CSV_MANIFEST, STAGE_FILES, canonical_bytes, read_json_artifact, sha256_hex, write_immutable
 from utils.context import RunContext
 from utils.errors import PipelineError
 from utils.loaders import load_json_model
+from utils.safe import neutralize
 
 log = logging.getLogger(__name__)
 
@@ -87,6 +88,7 @@ def run(ctx: RunContext) -> str:
     for l in lines:
         row = l.model_dump(mode="json")
         row["debit"], row["credit"] = f"{l.debit:.2f}", f"{l.credit:.2f}"
+        row["description"] = neutralize(row["description"])  # merchant text: never let a spreadsheet run it as a formula
         writer.writerow({k: row[k] for k in CSV_COLUMNS})
     data = buf.getvalue().encode("utf-8")
 
@@ -97,6 +99,7 @@ def run(ctx: RunContext) -> str:
         "total_debits": str(sum((l.debit for l in lines), Decimal("0"))),
         "control_total_usd": str(s3.control_total_usd), "auditor": s3.auditor,
     }
+    manifest["manifest_sha256"] = sha256_hex(canonical_bytes(manifest))
     write_immutable(ctx.run_dir / CSV_MANIFEST, (json.dumps(manifest, indent=2) + "\n").encode("utf-8"))
     log.info("Stage 4: journal %s, %d lines, gross debits = gross credits = $%s; net clearing liability ties to control total $%s (purchases minus refunds)",
              journal_id, len(lines), manifest["total_debits"], s3.control_total_usd)

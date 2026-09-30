@@ -72,13 +72,19 @@ A Streamlit app with two pages.
 employee directory and the policy rules: type, required or not, validation, and what each field drives downstream.
 
 ## Testing
-35 offline tests cover money and date parsing, quarantine behaviour, provider failover, credential disabling, JSON repair
+93 offline tests cover money and date parsing, quarantine behaviour, provider failover, credential disabling, JSON repair
 and retry, the hash chain and tamper detection, the append-only log, missing-justification handling, backup and restore
 (including tampered and unsafe archives), and total versus partial LLM outage. A `--mock-llm` mode runs the whole
 pipeline with no keys.
 
 ## Tech
 Python 3.10+, Pydantic v2, Streamlit, OpenAI-compatible SDK client (Gemini / Groq / OpenRouter), `Decimal`, openpyxl, pytest.
+
+## Quality assurance
+A dedicated QA pass found 26 defects and gaps (10 high, 9 medium, 7 low), all fixed. Each functional fix has a regression test (32 of the 46 in the regression file were confirmed to fail on the pre-fix code); the speed, caching and documentation fixes are not test-covered. The most serious: an amount like
+`1,23` was silently read as $123.00; merchant or justification text starting with `=` became a live formula in the Excel export;
+a control character in a merchant name crashed the export; and a run of LLM failures could finish "successfully" with most items in
+manual review. Coverage is about 89% of lines, including the UI through Streamlit's test harness.
 
 ## Honest limitations
 This is a prototype, not a production system.
@@ -90,4 +96,6 @@ This is a prototype, not a production system.
 - **Free-tier LLMs:** verdict quality varies, quotas run out, and providers may use prompts for training. During
   development the audit ran live on Groq and Gemini, and on a 26-transaction statement the failover kept the run going
   through rate limits and a provider error. Treat verdicts as a first pass for a human reviewer, not a decision.
-- **Scale:** transactions are audited one at a time. It has not been load-tested.
+- **Tamper-evident, not tamper-proof:** the hash chain reveals edits, but someone who can rewrite every file and recompute every hash could forge a run. Anchoring or signing the final hash would close that.
+- **Scale:** transactions are audited one at a time. A 1,000-transaction statement runs end to end in seconds with the mock auditor; live audits are paced by free-tier rate limits.
+- **Not covered by automated tests:** real-browser rendering, accessibility and phone layouts.

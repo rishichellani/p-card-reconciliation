@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 import io
 import logging
+from collections import Counter
 from decimal import Decimal
 
 from pydantic import ValidationError
@@ -25,6 +26,16 @@ log = logging.getLogger(__name__)
 REQUIRED_COLUMNS = {"txn_id", "post_date", "card_last4", "merchant_name", "mcc", "amount"}
 
 
+def _detect_delimiter(text: str) -> str:
+    """Comma, semicolon or tab, whichever makes the header line contain the required columns (Excel in some locales exports ';')."""
+    first = text.lstrip("\ufeff").splitlines()[0] if text.strip() else ""
+    for cand in (",", ";", "\t"):
+        cols = {c.strip().lower() for c in next(csv.reader([first], delimiter=cand), [])}
+        if REQUIRED_COLUMNS <= cols:
+            return cand
+    return ","
+
+
 def _reasons(exc: ValidationError) -> list[str]:
     return [f"{'.'.join(str(p) for p in e['loc']) or 'row'}: {e['msg']}" for e in exc.errors()]
 
@@ -36,11 +47,16 @@ def run(ctx: RunContext) -> str:
     csv_path = ctx.data_dir / "transactions.csv"
     raw = read_bytes(csv_path)
     try:
-        reader = csv.DictReader(io.StringIO(raw.decode("utf-8-sig")))
-        header = set(reader.fieldnames or [])
-        missing = REQUIRED_COLUMNS - header
+        text = raw.decode("utf-8-sig")
+        reader = csv.DictReader(io.StringIO(text), delimiter=_detect_delimiter(text))
+        found = [(f or "").strip().lower() for f in (reader.fieldnames or [])]  # header case and stray spaces do not matter
+        reader.fieldnames = found
+        dupes = sorted(n for n, c in Counter(found).items() if c > 1 and n)
+        if dupes:
+            raise PipelineError(f"transactions.csv has duplicate column names {dupes}; each column may appear once")
+        missing = REQUIRED_COLUMNS - set(found)
         if missing:
-            raise PipelineError(f"transactions.csv is missing required columns: {sorted(missing)}")
+            raise PipelineError(f"transactions.csv is missing required columns {sorted(missing)}; found columns: {found}")
         rows = list(enumerate(reader, start=2))  # row 1 is the header
     except UnicodeDecodeError as exc:
         raise PipelineError(f"transactions.csv is not valid UTF-8: {exc}") from exc
@@ -98,7 +114,8 @@ def run(ctx: RunContext) -> str:
         )
 
     if not routed:
-        raise PipelineError("No valid transactions survived validation; nothing to process")
+        why = "; ".join(f"row {q.row_number}: {q.reasons[0][:90]}" for q in quarantined[:3])
+        raise PipelineError(f"No valid transactions survived validation ({len(quarantined)} rows rejected). First reasons: {why}")
 
     dates = [r.transaction.post_date for r in routed]
     payload = Stage1Payload(

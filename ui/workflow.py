@@ -92,16 +92,21 @@ if pick == NEW:
     st.stop()
 
 # --------------------------------------------------------------------------- existing batch
-ctx = workspace.load_ctx(pick)
-run_dir = ctx.run_dir
-info = workspace.batch_info(run_dir)
-_, s1, _ = read_json_artifact(ctx, 1, Stage1Payload)
-rules = load_json_model(ctx.data_dir / "policy_rules.json", PolicyRules)
-routed = {r.transaction.txn_id: r for r in s1.routed}
-entries = submissions.read_log(run_dir)
-latest = submissions.latest_by_txn(entries)
-closed = (run_dir / STAGE_FILES[2]).exists()
-complete = (run_dir / STAGE_FILES[4]).exists()
+try:
+    ctx = workspace.load_ctx(pick)
+    run_dir = ctx.run_dir
+    info = workspace.batch_info(run_dir)
+    _, s1, _ = read_json_artifact(ctx, 1, Stage1Payload)
+    rules = load_json_model(ctx.data_dir / "policy_rules.json", PolicyRules)
+    routed = {r.transaction.txn_id: r for r in s1.routed}
+    entries = submissions.read_log(run_dir)
+    latest = submissions.latest_by_txn(entries)
+    closed = (run_dir / STAGE_FILES[2]).exists()
+    complete = (run_dir / STAGE_FILES[4]).exists()
+except (PipelineError, OSError, ValueError, KeyError) as exc:
+    st.error(f"This batch cannot be opened: {exc}")
+    st.caption("Its files may have been damaged or edited. Choose another batch in the sidebar, or restore a backup.")
+    st.stop()
 needs_just = [t for t, r in routed.items() if r.transaction.amount > 0]
 missing = [t for t in needs_just if t not in latest]
 

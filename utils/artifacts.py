@@ -21,7 +21,7 @@ from utils.errors import ArtifactIntegrityError, PipelineError
 
 log = logging.getLogger(__name__)
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"
 STAGE_FILES = {
     1: "01_raw_statement.json",
     2: "02_user_justified.json",
@@ -61,18 +61,17 @@ def write_json_artifact(
 ) -> str:
     payload_dict = payload.model_dump(mode="json")
     payload_sha = sha256_hex(canonical_bytes(payload_dict))
-    envelope = {
-        "meta": {
-            "run_id": ctx.run_id,
-            "stage": stage,
-            "schema_version": SCHEMA_VERSION,
-            "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "upstream_sha256": upstream_sha,
-            "payload_sha256": payload_sha,
-            "counts": counts,
-        },
-        "payload": payload_dict,
+    meta = {
+        "run_id": ctx.run_id,
+        "stage": stage,
+        "schema_version": SCHEMA_VERSION,
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "upstream_sha256": upstream_sha,
+        "payload_sha256": payload_sha,
+        "counts": counts,
     }
+    meta["meta_sha256"] = sha256_hex(canonical_bytes(meta))  # so timestamps and counts cannot be edited unnoticed either
+    envelope = {"meta": meta, "payload": payload_dict}
     path = ctx.run_dir / STAGE_FILES[stage]
     write_immutable(path, (json.dumps(envelope, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
     log.info("Wrote %s (payload sha256=%s...)", path.name, payload_sha[:12])
@@ -87,6 +86,12 @@ def _load_envelope(path: Path) -> tuple[dict, dict, str]:
         meta, payload = envelope["meta"], envelope["payload"]
     except (json.JSONDecodeError, KeyError, TypeError) as exc:
         raise ArtifactIntegrityError(f"{path.name} is not a valid artifact envelope: {exc}") from exc
+    if meta.get("schema_version") not in (None, "1.0") and meta.get("meta_sha256") is None:
+        raise ArtifactIntegrityError(f"{path.name} is missing its metadata hash")
+    if meta.get("meta_sha256") is not None:  # schema 1.0 artifacts predate this field and are still accepted
+        body = {k: v for k, v in meta.items() if k != "meta_sha256"}
+        if sha256_hex(canonical_bytes(body)) != meta["meta_sha256"]:
+            raise ArtifactIntegrityError(f"{path.name} metadata (run id, timestamps, counts) has been modified")
     actual = sha256_hex(canonical_bytes(payload))
     if actual != meta.get("payload_sha256"):
         raise ArtifactIntegrityError(
@@ -136,6 +141,9 @@ def verify_run(run_dir: Path, allow_partial: bool = False) -> list[str]:
     csv_path, manifest_path = run_dir / STAGE_FILES[4], run_dir / CSV_MANIFEST
     if csv_path.exists() and manifest_path.exists():
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        body = {k: v for k, v in manifest.items() if k != "manifest_sha256"}
+        if manifest.get("manifest_sha256") and sha256_hex(canonical_bytes(body)) != manifest["manifest_sha256"]:
+            problems.append(f"{manifest_path.name} has been modified")
         if sha256_hex(csv_path.read_bytes()) != manifest.get("csv_sha256"):
             problems.append(f"{csv_path.name} has been modified after export")
         if shas.get(3) and manifest.get("upstream_sha256") != shas[3]:

@@ -41,6 +41,9 @@ def main() -> int:
     args = parse_args()
 
     if args.verify:
+        if not (args.output_dir / args.verify).is_dir():
+            print(f"Run '{args.verify}' was not found in {args.output_dir}", file=sys.stderr)
+            return 1
         problems = verify_run(args.output_dir / args.verify)
         for prob in problems:
             print(f"INTEGRITY FAILURE: {prob}", file=sys.stderr)
