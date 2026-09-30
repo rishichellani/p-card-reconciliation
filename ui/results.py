@@ -189,13 +189,24 @@ with tab_over:
 
 # --------------------------------------------------------------------------- transactions
 with tab_txn:
-    order = sorted(STATUS, key=SEVERITY_RANK.get)
-    default = [s for s in order if s != "APPROVED"]
-    c1, c2 = st.columns([3, 2])
-    chosen = c1.multiselect("Show status", order, default=default, format_func=lambda k: STATUS[k][0],
-                            help="Defaults to items that need review. Add Approved to see everything.")
-    query = c2.text_input("Search", placeholder="Merchant, employee or finding code")
-    view = df[df["status_key"].isin(chosen)].copy()
+    # One status at a time (clicking "Approved" shows only approved). A multi-select just added to the others, so the top of a
+    # severity-sorted list looked unchanged and the change was hidden below the fold.
+    counts_now = df["status_key"].value_counts()
+    FILTERS = {
+        "needs": ("Needs review", {"REJECTED", "MANUAL_REVIEW", "FLAGGED"}),
+        "all": ("All", set(STATUS)),
+        "approved": ("Approved", {"APPROVED"}),
+        "flagged": ("Flagged", {"FLAGGED"}),
+        "rejected": ("Rejected", {"REJECTED"}),
+        "manual": ("Manual review", {"MANUAL_REVIEW"}),
+    }
+    def n_for(key: str) -> int:
+        return int(sum(counts_now.get(k, 0) for k in FILTERS[key][1]))
+    st.markdown("**Show**")
+    picked = st.segmented_control("Show", list(FILTERS), default="needs", key="txn_filter", label_visibility="collapsed",
+                                  format_func=lambda k: f"{FILTERS[k][0]} ({n_for(k)})") or "needs"
+    query = st.text_input("Search", placeholder="Merchant, employee or finding code")
+    view = df[df["status_key"].isin(FILTERS[picked][1])].copy()
     view["_rank"] = view["status_key"].map(SEVERITY_RANK)
     view = view.sort_values(["_rank", "amount"], ascending=[True, False])
     if query:
@@ -206,7 +217,7 @@ with tab_txn:
                + (f" {hidden} hidden by filters." if hidden else ""))
     st.dataframe(
         view[["txn_id", "date", "employee", "merchant", "category", "amount", "rules", "llm", "status", "findings"]],
-        hide_index=True, width="stretch",
+        hide_index=True, width="stretch", height=min(38 + 35 * max(len(view), 1), 470),  # show short lists in full, scroll long ones
         column_config={
             "txn_id": "Txn", "date": "Date", "employee": "Cardholder", "merchant": "Merchant", "category": "Category",
             "amount": st.column_config.NumberColumn("Amount", format="$%.2f"),

@@ -218,3 +218,24 @@ def test_control_checks_say_pass_not_approved():
     controls = next(m.value for m in at.markdown if "<h3>Controls</h3>" in m.value)
     plain = re.sub(r"<[^>]+>", " ", controls)
     assert plain.count("Pass") == 3 and "Approved" not in plain and "Rejected" not in plain   # hash chain, balance, tie-out
+
+
+def test_status_filter_shows_only_the_chosen_status():
+    from collections import Counter
+    from schemas.models import Stage3Payload
+    ctx = audited_batch("filter")
+    truth = Counter(a.final_status.value for a in read_json_artifact(ctx, 3, Stage3Payload)[1].items)
+    n = sum(truth.values())
+
+    def shown(filter_key):
+        at = app(results_run=ctx.run_id, txn_filter=filter_key)
+        at.switch_page("ui/results.py")
+        at.run()
+        assert not at.exception
+        cap = next(c.value for c in at.caption if c.value.startswith("Showing"))
+        return int(cap.split()[1]), cap
+
+    assert shown("needs")[0] == n - truth["APPROVED"]
+    assert shown("approved")[0] == truth["APPROVED"]                        # only approved, nothing else
+    assert shown("rejected")[0] == truth["REJECTED"]
+    assert shown("all")[0] == n
