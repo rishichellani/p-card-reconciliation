@@ -11,24 +11,41 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
+from ui.live_gate import live_allowed, live_unlocked
 from ui.theme import SEVERITY_RANK, STATUS, badge, check_badge, icon, money
 from utils.artifacts import CSV_MANIFEST, STAGE_FILES, verify_run
 from utils.export import auditor_kind, build_trace, provenance_note, source_label, write_workbook
 
+from utils import workspace
 from utils.workspace import OUTPUT  # the same folder the Live workflow writes to
 
 ROOT = Path(__file__).resolve().parent.parent
 
+
 # --------------------------------------------------------------------------- data
-def list_runs() -> list[str]:
-    if not OUTPUT.exists():
+def _complete(base: Path) -> list[str]:
+    if not base.exists():
         return []
-    return sorted((d.name for d in OUTPUT.iterdir() if (d / STAGE_FILES[4]).exists()), reverse=True)
+    return [d.name for d in base.iterdir() if (d / STAGE_FILES[4]).exists()]
+
+
+def run_path(run_id: str) -> Path:
+    """Where a run lives: the working output folder first, then the bundled examples."""
+    return OUTPUT / run_id if (OUTPUT / run_id).exists() else workspace.EXAMPLES / run_id
+
+
+def list_runs() -> list[str]:
+    return sorted(set(_complete(OUTPUT)) | set(_complete(workspace.EXAMPLES)), reverse=True)
+
+
+def run_label(run_id: str) -> str:
+    tag = " (example, real LLM run)" if run_id in _complete(workspace.EXAMPLES) and not (OUTPUT / run_id).exists() else ""
+    return run_id + tag
 
 
 @st.cache_data(show_spinner=False)
 def load_run(run_id: str) -> dict:
-    d = OUTPUT / run_id
+    d = run_path(run_id)
     env = {s: json.loads((d / STAGE_FILES[s]).read_text()) for s in (1, 2, 3)}
     return {
         "env": env,
@@ -58,7 +75,7 @@ def txn_frame(items: list[dict]) -> pd.DataFrame:
 
 @st.cache_data(show_spinner=False)
 def workbook_bytes(run_id: str) -> tuple[str, bytes]:
-    path = write_workbook(OUTPUT / run_id, OUTPUT.parent / "exports" / run_id / f"pcard_review_{run_id}.xlsx")  # a run never changes
+    path = write_workbook(run_path(run_id), OUTPUT.parent / "exports" / run_id / f"pcard_review_{run_id}.xlsx")  # a run never changes
     return path.name, path.read_bytes()
 
 
@@ -67,7 +84,7 @@ with st.sidebar:
     st.header("P-Card Pipeline")
     runs = list_runs()
     wanted = st.session_state.get("results_run")
-    run_id = st.selectbox("Run", runs, index=runs.index(wanted) if wanted in runs else 0) if runs else None
+    run_id = st.selectbox("Run", runs, index=runs.index(wanted) if wanted in runs else 0, format_func=run_label) if runs else None
     if run_id:
         try:
             xlsx_name, xlsx_blob = workbook_bytes(run_id)
@@ -84,7 +101,10 @@ with st.sidebar:
     mode = st.radio("Auditor", ["Mock (offline, instant)", "Live LLM (Groq / Gemini)"])
     providers = st.text_input("Provider order", "groq,gemini", disabled=mode.startswith("Mock"),
                               help="Comma-separated priority list. Needs the matching API keys in .env")
-    if st.button("Run pipeline", icon=":material/play_arrow:", type="primary", width="stretch"):
+    live_ok = mode.startswith("Mock") or live_unlocked("results")
+    if st.button("Run pipeline", icon=":material/play_arrow:", type="primary", width="stretch", disabled=not live_ok):
+        if not mode.startswith("Mock") and not live_allowed():
+            st.stop()
         cmd = [sys.executable, str(ROOT / "run_pipeline.py")]
         cmd += ["--mock-llm"] if mode.startswith("Mock") else ["--providers", providers]
         with st.spinner("Running. Live mode takes a few minutes because of free-tier throttling."):
@@ -163,7 +183,7 @@ with tab_over:
         debits = Decimal(manifest["total_debits"])
         control = Decimal(manifest["control_total_usd"])
         refunds = Decimal(str(round(-df.loc[df["amount"] < 0, "amount"].sum(), 2)))
-        rules_path = OUTPUT / run_id / "inputs" / "policy_rules.json"
+        rules_path = run_path(run_id) / "inputs" / "policy_rules.json"
         rules_path = rules_path if rules_path.exists() else ROOT / "data" / "policy_rules.json"
         liability = json.loads(rules_path.read_text())["liability_account"]
         on_liability = journal[journal["gl_account"] == liability]
@@ -287,7 +307,7 @@ with tab_txn:
 # --------------------------------------------------------------------------- follow a transaction
 with tab_follow:
     st.caption("The life of one transaction across the four pipeline stages, in order. Pick any transaction, including approved ones.")
-    trace = build_trace(OUTPUT / run_id)
+    trace = build_trace(run_path(run_id))
     names = df.set_index("txn_id")
     order_ids = list(df.assign(_r=df["status_key"].map(SEVERITY_RANK)).sort_values(["_r", "amount"], ascending=[True, False])["txn_id"])
     tid = st.selectbox("Transaction", order_ids, key="follow_pick",
@@ -325,7 +345,7 @@ with tab_je:
     st.dataframe(jv, hide_index=True, width="stretch",
                  column_config={"debit": st.column_config.NumberColumn(format="%.2f"),
                                 "credit": st.column_config.NumberColumn(format="%.2f")})
-    st.download_button("Download journal CSV", (OUTPUT / run_id / STAGE_FILES[4]).read_bytes(), icon=":material/download:",
+    st.download_button("Download journal CSV", (run_path(run_id) / STAGE_FILES[4]).read_bytes(), icon=":material/download:",
                        file_name=f"{manifest['journal_id']}.csv", mime="text/csv")
 
 # --------------------------------------------------------------------------- audit trail

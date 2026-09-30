@@ -26,6 +26,7 @@ from utils.submissions import LOG_NAME, read_log
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "output"
 SAMPLE_DATA = ROOT / "data"
+EXAMPLES = ROOT / "examples"  # committed read-only runs shown on Results; never written to
 INPUT_FILES = ("employees.json", "policy_rules.json", "spending_policy.md")
 MAX_UPLOAD_BYTES = 5 * 1024 * 1024
 MAX_RESTORE_BYTES = 50 * 1024 * 1024

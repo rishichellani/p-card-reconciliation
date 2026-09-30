@@ -17,7 +17,7 @@ load_dotenv(ROOT.parent / ".env")
 # Streamlit Cloud keeps secrets in st.secrets; expose the ones the pipeline reads as environment variables.
 try:
     for _key in ("GEMINI_API_KEY", "GROQ_API_KEY", "OPENROUTER_API_KEY", "LLM_PROVIDERS", "LLM_MIN_INTERVAL_SECONDS",
-                 "GEMINI_MODEL", "GROQ_MODEL", "OPENROUTER_MODEL", "APP_PASSCODE"):
+                 "GEMINI_MODEL", "GROQ_MODEL", "OPENROUTER_MODEL", "APP_PASSCODE", "LIVE_LLM_PASSCODE"):
         if _key in st.secrets:
             os.environ.setdefault(_key, str(st.secrets[_key]))
 except Exception:  # no secrets file locally: that is fine

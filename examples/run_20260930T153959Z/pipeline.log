@@ -1,0 +1,112 @@
+15:39:59 | WARNING | stages.stage1_ingest | R-2049: card of inactive employee E1006 - routed with flag
+15:39:59 | WARNING | stages.stage1_ingest | Row 52 quarantined: amount: Value error, not a valid money amount: 'N/A'
+15:39:59 | WARNING | stages.stage1_ingest | Row 53 quarantined: post_date: Value error, unrecognised date: 'not-a-date' (accepted: %Y-%m-%d, %m/%d/%Y, %d-%b-%Y, %Y/%m/%d)
+15:39:59 | WARNING | stages.stage1_ingest | Row 54 quarantined: unknown card 0000
+15:39:59 | WARNING | stages.stage1_ingest | Row 55 quarantined: merchant_name: String should have at least 1 character
+15:39:59 | WARNING | stages.stage1_ingest | Row 56 quarantined: currency: Input should be 'USD'
+15:39:59 | WARNING | stages.stage1_ingest | Row 57 quarantined: duplicate txn_id R-2001
+15:39:59 | INFO    | stages.stage1_ingest | Stage 1: 56 rows read -> 50 routed, 6 quarantined, control total $19767.23
+15:39:59 | INFO    | utils.artifacts | Wrote 01_raw_statement.json (payload sha256=076982a2a971...)
+15:41:13 | INFO    | stages.stage2_justify | Stage 2 (portal): 49 of 50 transactions have a submitted justification
+15:41:13 | INFO    | utils.artifacts | Wrote 02_user_justified.json (payload sha256=cf8c976061db...)
+15:41:14 | INFO    | stages.stage3_audit | LLM providers (priority order): groq/openai/gpt-oss-120b, gemini/gemini-3.8-flash
+15:41:14 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:41:14 | INFO    | stages.stage3_audit | [1/50] R-2001 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:41:30 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:41:30 | INFO    | stages.stage3_audit | [2/50] R-2002 det=APPROVED llm=FLAG(0.85) -> FLAGGED
+15:41:44 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:41:44 | INFO    | stages.stage3_audit | [3/50] R-2003 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:41:59 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:41:59 | INFO    | stages.stage3_audit | [4/50] R-2004 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:42:15 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:42:15 | INFO    | stages.stage3_audit | [5/50] R-2005 det=APPROVED llm=APPROVE(0.96) -> APPROVED
+15:42:29 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:42:29 | INFO    | stages.stage3_audit | [6/50] R-2006 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:42:44 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:42:44 | INFO    | stages.stage3_audit | [7/50] R-2007 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:42:59 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:42:59 | INFO    | stages.stage3_audit | [8/50] R-2008 det=APPROVED llm=APPROVE(0.98) -> APPROVED
+15:43:15 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:43:15 | INFO    | stages.stage3_audit | [9/50] R-2009 det=APPROVED llm=APPROVE(0.96) -> APPROVED
+15:43:30 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:43:30 | INFO    | stages.stage3_audit | [10/50] R-2010 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:43:44 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:43:44 | INFO    | stages.stage3_audit | [11/50] R-2011 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:43:59 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:43:59 | INFO    | stages.stage3_audit | [12/50] R-2012 det=APPROVED llm=APPROVE(0.98) -> APPROVED
+15:44:14 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:44:14 | INFO    | stages.stage3_audit | [13/50] R-2013 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:44:29 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:44:29 | INFO    | stages.stage3_audit | [14/50] R-2014 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:44:44 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:44:44 | INFO    | stages.stage3_audit | [15/50] R-2015 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:44:59 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:44:59 | INFO    | stages.stage3_audit | [16/50] R-2016 det=APPROVED llm=APPROVE(0.96) -> APPROVED
+15:45:14 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:45:14 | INFO    | stages.stage3_audit | [17/50] R-2017 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:45:30 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:45:30 | INFO    | stages.stage3_audit | [18/50] R-2018 det=APPROVED llm=APPROVE(0.98) -> APPROVED
+15:45:45 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:45:45 | INFO    | stages.stage3_audit | [19/50] R-2019 det=FLAGGED llm=APPROVE(0.97) -> FLAGGED
+15:46:01 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:46:01 | INFO    | stages.stage3_audit | [20/50] R-2020 det=APPROVED llm=APPROVE(0.96) -> APPROVED
+15:46:14 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:46:14 | INFO    | stages.stage3_audit | [21/50] R-2021 det=APPROVED llm=APPROVE(0.96) -> APPROVED
+15:46:14 | INFO    | stages.stage3_audit | [22/50] R-2022 deterministic REJECT (BLOCKED_MCC); LLM skipped
+15:46:29 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:46:29 | INFO    | stages.stage3_audit | [23/50] R-2023 det=APPROVED llm=FLAG(0.95) -> FLAGGED
+15:46:45 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:46:45 | INFO    | stages.stage3_audit | [24/50] R-2024 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:46:59 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:46:59 | INFO    | stages.stage3_audit | [25/50] R-2025 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:47:14 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:47:14 | INFO    | stages.stage3_audit | [26/50] R-2026 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:47:14 | INFO    | stages.stage3_audit | [27/50] R-2027 no justification submitted; LLM skipped (APPROVED)
+15:47:29 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:47:29 | INFO    | stages.stage3_audit | [28/50] R-2028 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:47:44 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:47:44 | INFO    | stages.stage3_audit | [29/50] R-2029 det=APPROVED llm=APPROVE(0.98) -> APPROVED
+15:48:00 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:48:00 | INFO    | stages.stage3_audit | [30/50] R-2030 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:48:16 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:48:16 | INFO    | stages.stage3_audit | [31/50] R-2031 det=APPROVED llm=APPROVE(0.98) -> APPROVED
+15:48:30 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:48:30 | INFO    | stages.stage3_audit | [32/50] R-2032 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:48:47 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:48:47 | INFO    | stages.stage3_audit | [33/50] R-2033 det=APPROVED llm=REJECT(0.99) -> REJECTED
+15:49:00 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:49:00 | INFO    | stages.stage3_audit | [34/50] R-2034 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:49:14 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:49:14 | INFO    | stages.stage3_audit | [35/50] R-2035 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:49:29 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:49:29 | INFO    | stages.stage3_audit | [36/50] R-2036 det=APPROVED llm=APPROVE(0.98) -> APPROVED
+15:49:46 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:49:46 | INFO    | stages.stage3_audit | [37/50] R-2037 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:50:00 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:50:00 | INFO    | stages.stage3_audit | [38/50] R-2038 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:50:15 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:50:15 | INFO    | stages.stage3_audit | [39/50] R-2039 det=APPROVED llm=APPROVE(0.98) -> APPROVED
+15:50:29 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:50:29 | INFO    | stages.stage3_audit | [40/50] R-2040 det=APPROVED llm=APPROVE(0.98) -> APPROVED
+15:50:44 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:50:44 | INFO    | stages.stage3_audit | [41/50] R-2041 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:50:59 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:50:59 | INFO    | stages.stage3_audit | [42/50] R-2042 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:51:14 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:51:14 | INFO    | stages.stage3_audit | [43/50] R-2043 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:51:29 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:51:29 | INFO    | stages.stage3_audit | [44/50] R-2044 det=APPROVED llm=APPROVE(0.98) -> APPROVED
+15:51:44 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:51:44 | INFO    | stages.stage3_audit | [45/50] R-2045 det=APPROVED llm=APPROVE(0.98) -> APPROVED
+15:52:02 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:52:02 | INFO    | stages.stage3_audit | [46/50] R-2046 det=APPROVED llm=APPROVE(0.96) -> APPROVED
+15:52:14 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:52:14 | INFO    | stages.stage3_audit | [47/50] R-2047 det=APPROVED llm=APPROVE(0.97) -> APPROVED
+15:52:29 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:52:29 | INFO    | stages.stage3_audit | [48/50] R-2048 det=APPROVED llm=APPROVE(0.98) -> APPROVED
+15:52:29 | INFO    | stages.stage3_audit | [49/50] R-2049 deterministic REJECT (INACTIVE_CARDHOLDER); LLM skipped
+15:52:44 | INFO    | httpx2 | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+15:52:44 | INFO    | stages.stage3_audit | [50/50] R-2050 det=APPROVED llm=APPROVE(0.96) -> APPROVED
+15:52:44 | INFO    | stages.stage3_audit | Stage 3: {'APPROVED': 44, 'FLAGGED': 3, 'REJECTED': 3} (0 verdicts reused from an earlier attempt)
+15:52:44 | INFO    | utils.artifacts | Wrote 03_compliance_audited.json (payload sha256=993ba8d22e0e...)
+15:52:44 | INFO    | stages.stage4_erp | Stage 4: journal PCARD-202609-53959Z, 100 lines, gross debits = gross credits = $20267.23; net clearing liability ties to control total $19767.23 (purchases minus refunds)

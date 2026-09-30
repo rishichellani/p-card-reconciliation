@@ -76,7 +76,7 @@ Two pages:
 journal, and the audit trail. Batches from the live workflow and simulated demos both appear here.
 
 Identity: there is no login. "Choose who you are" is a demo convenience, so anyone who can open the page can act as any
-cardholder. Set `APP_PASSCODE` (env var or Streamlit secret) to require a shared passcode before the app opens.
+cardholder. Set `APP_PASSCODE` (env var or Streamlit secret) to require a shared passcode before the app opens. Set `LIVE_LLM_PASSCODE` to lock only the live LLM option: visitors can still use the offline auditor and browse results, but cannot spend your API quota. `examples/` holds a real live run (read-only) that the Results page always lists, even after a hosted app restarts.
 
 ### Running with Docker
 
@@ -99,7 +99,7 @@ Community Cloud deploys straight from a GitHub repo (it does not run Docker) and
 
 1. Push the `p-card-pipeline` folder to a GitHub repo as its root. `.gitignore` already excludes `.env`, `output/` and secrets.
 2. On share.streamlit.io create an app: main file `app.py`. `requirements.txt` is picked up automatically.
-3. In *Settings > Secrets* paste the values from `.streamlit/secrets.toml.example`: at least one LLM key and an `APP_PASSCODE`.
+3. In *Settings > Secrets* paste the values from `.streamlit/secrets.toml.example`: at least one LLM key, and for a public demo a `LIVE_LLM_PASSCODE` so strangers cannot use your quota.
 4. In *Settings > Sharing* restrict viewers if your plan allows it. Apps are public by default.
 
 Limits to know before you rely on it:

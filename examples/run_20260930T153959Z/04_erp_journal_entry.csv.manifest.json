@@ -1,0 +1,11 @@
+{
+  "run_id": "run_20260930T153959Z",
+  "journal_id": "PCARD-202609-53959Z",
+  "csv_sha256": "a6350471a266794768df7d9b2659997db7d9b8d541b5e7d49470445fb084b1c4",
+  "upstream_sha256": "993ba8d22e0e08d0bf20f05d593148981a762b8e360c9e5e2a083c7cf7bfec01",
+  "line_count": 100,
+  "total_debits": "20267.23",
+  "control_total_usd": "19767.23",
+  "auditor": "llm-router[groq>gemini]",
+  "manifest_sha256": "55f4caccd277e5310d3dd4ba7eee51ca5de24b931815d9e093e2f61159e49dd2"
+}

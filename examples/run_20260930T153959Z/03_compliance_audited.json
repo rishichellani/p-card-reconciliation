@@ -1,0 +1,2728 @@
+{
+  "meta": {
+    "run_id": "run_20260930T153959Z",
+    "stage": 3,
+    "schema_version": "1.1",
+    "created_at": "2026-09-30T15:52:44+00:00",
+    "upstream_sha256": "cf8c976061db3437b6a6241a6e96d99b23ea95773687447db94b226e973cae94",
+    "payload_sha256": "993ba8d22e0e08d0bf20f05d593148981a762b8e360c9e5e2a083c7cf7bfec01",
+    "counts": {
+      "APPROVED": 44,
+      "FLAGGED": 3,
+      "REJECTED": 3,
+      "llm_reused": 0
+    },
+    "meta_sha256": "1c45b2a9acfa7275cfcfb06dec5d4aa5b22eaa2305771d0e5037e4bc2c59c355"
+  },
+  "payload": {
+    "control_total_usd": "19767.23",
+    "auditor": "llm-router[groq>gemini]",
+    "status_counts": {
+      "APPROVED": 44,
+      "FLAGGED": 3,
+      "REJECTED": 3
+    },
+    "items": [
+      {
+        "txn_id": "R-2001",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2001",
+              "post_date": "2026-09-01",
+              "card_last4": "4821",
+              "merchant_name": "GITHUB INC",
+              "mcc": "5734",
+              "amount": "84.00",
+              "currency": "USD",
+              "statement_memo": "GITHUB INC 2001"
+            },
+            "employee_id": "E1001",
+            "employee_name": "Priya Nair",
+            "department": "Engineering",
+            "cost_center": "4100",
+            "approver_id": "E1010",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "GitHub Team seats for the seven engineers on the Platform squad; renewal of the plan already in the approved tool catalog.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Github Inc",
+              "total": "84.00",
+              "receipt_date": "2026-09-01"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "SOFTWARE",
+        "gl_account": "6210",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.1",
+            "s8.1",
+            "s8.2"
+          ],
+          "rationale": "The justification clearly identifies the users (seven engineers on the Platform squad), the product (GitHub Team seats), and confirms it is a renewal of an already approved tool, meeting software subscription requirements.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2002",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2002",
+              "post_date": "2026-09-02",
+              "card_last4": "4821",
+              "merchant_name": "AMAZON WEB SERVICES",
+              "mcc": "7372",
+              "amount": "1420.55",
+              "currency": "USD",
+              "statement_memo": "AMAZON WEB SERVICES 2002"
+            },
+            "employee_id": "E1001",
+            "employee_name": "Priya Nair",
+            "department": "Engineering",
+            "cost_center": "4100",
+            "approver_id": "E1010",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "August AWS usage for the CI and staging environments used by the Platform squad (cost center 4100).",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Amazon Web Services",
+              "total": "1420.55",
+              "receipt_date": "2026-09-02"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "SOFTWARE",
+        "gl_account": "6210",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "FLAG",
+          "policy_sections": [
+            "s2.1"
+          ],
+          "rationale": "The purpose is specific and plausible for AWS usage, but the policy requires prior IT approval for new SaaS subscriptions over $500/year, which is not mentioned.",
+          "confidence": 0.85,
+          "red_flags": [
+            "missing IT approval"
+          ],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": false
+        },
+        "llm_error": null,
+        "final_status": "FLAGGED"
+      },
+      {
+        "txn_id": "R-2003",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2003",
+              "post_date": "2026-09-03",
+              "card_last4": "4821",
+              "merchant_name": "JETBRAINS",
+              "mcc": "5734",
+              "amount": "249.00",
+              "currency": "USD",
+              "statement_memo": "JETBRAINS 2003"
+            },
+            "employee_id": "E1001",
+            "employee_name": "Priya Nair",
+            "department": "Engineering",
+            "cost_center": "4100",
+            "approver_id": "E1010",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Annual IntelliJ IDEA licence for the backend engineer who joins the Platform squad on Sept 8; the tool is in the approved catalog.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Jetbrains",
+              "total": "249.00",
+              "receipt_date": "2026-09-03"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "SOFTWARE",
+        "gl_account": "6210",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.1",
+            "s8.1",
+            "s8.2"
+          ],
+          "rationale": "The justification clearly identifies the user, the software, and confirms it is in the approved catalog, meeting the software subscription policy and not exceeding the $500 pre‑approval threshold.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2004",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2004",
+              "post_date": "2026-09-09",
+              "card_last4": "4821",
+              "merchant_name": "UDEMY",
+              "mcc": "8299",
+              "amount": "49.99",
+              "currency": "USD",
+              "statement_memo": "UDEMY 2004"
+            },
+            "employee_id": "E1001",
+            "employee_name": "Priya Nair",
+            "department": "Engineering",
+            "cost_center": "4100",
+            "approver_id": "E1010",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Kubernetes security course required for my on-call rotation, agreed with my manager Ana Lopez.",
+            "attendees": [],
+            "receipt": {
+              "present": false,
+              "vendor_name": null,
+              "total": null,
+              "receipt_date": null
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "TRAINING",
+        "gl_account": "6220",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.4",
+            "s9.2"
+          ],
+          "rationale": "The submission cites a specific Kubernetes security course tied to the employee's on‑call duties and notes manager approval, meeting the training eligibility and justification requirements.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2005",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2005",
+              "post_date": "2026-09-10",
+              "card_last4": "4821",
+              "merchant_name": "UBER",
+              "mcc": "4121",
+              "amount": "28.40",
+              "currency": "USD",
+              "statement_memo": "UBER 2005"
+            },
+            "employee_id": "E1001",
+            "employee_name": "Priya Nair",
+            "department": "Engineering",
+            "cost_center": "4100",
+            "approver_id": "E1010",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Ride from Denver airport to the Northwind office for the Sept 10 architecture review.",
+            "attendees": [],
+            "receipt": {
+              "present": false,
+              "vendor_name": null,
+              "total": null,
+              "receipt_date": null
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "GROUND_TRANSPORT",
+        "gl_account": "6322",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.3",
+            "6.2"
+          ],
+          "rationale": "The justification names the trip, destination, date, and purpose (architecture review), meeting travel documentation requirements; ground transport is an allowed expense under business travel.",
+          "confidence": 0.96,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2006",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2006",
+              "post_date": "2026-09-10",
+              "card_last4": "4821",
+              "merchant_name": "MARRIOTT DENVER",
+              "mcc": "7011",
+              "amount": "486.00",
+              "currency": "USD",
+              "statement_memo": "MARRIOTT DENVER 2006"
+            },
+            "employee_id": "E1001",
+            "employee_name": "Priya Nair",
+            "department": "Engineering",
+            "cost_center": "4100",
+            "approver_id": "E1010",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Two nights lodging (Sept 9-10, $243 per night) in Denver for the Northwind architecture review.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Marriott Denver",
+              "total": "486.00",
+              "receipt_date": "2026-09-10"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "LODGING",
+        "gl_account": "6321",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.3",
+            "s6.2"
+          ],
+          "rationale": "The justification names the destination, dates, and purpose of the trip and the nightly rate is within the allowed $275 limit, meeting travel policy requirements.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2007",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2007",
+              "post_date": "2026-09-11",
+              "card_last4": "4821",
+              "merchant_name": "DELTA AIR LINES",
+              "mcc": "4511",
+              "amount": "412.30",
+              "currency": "USD",
+              "statement_memo": "DELTA AIR LINES 2007"
+            },
+            "employee_id": "E1001",
+            "employee_name": "Priya Nair",
+            "department": "Engineering",
+            "cost_center": "4100",
+            "approver_id": "E1010",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Economy return flight from Denver to Seattle after the Northwind architecture review on Sept 11, booked 12 days ahead.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Delta Air Lines",
+              "total": "412.30",
+              "receipt_date": "2026-09-11"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "AIRFARE",
+        "gl_account": "6320",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s6.1",
+            "s6.2"
+          ],
+          "rationale": "The justification names the trip, destinations, event, and dates, and confirms economy class booked well in advance, meeting travel policy requirements.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2008",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2008",
+              "post_date": "2026-09-16",
+              "card_last4": "4821",
+              "merchant_name": "STAPLES",
+              "mcc": "5943",
+              "amount": "132.75",
+              "currency": "USD",
+              "statement_memo": "STAPLES 2008"
+            },
+            "employee_id": "E1001",
+            "employee_name": "Priya Nair",
+            "department": "Engineering",
+            "cost_center": "4100",
+            "approver_id": "E1010",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Printer paper, toner and whiteboard markers for the Platform squad room; stock ran out on Sept 15.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Staples",
+              "total": "132.75",
+              "receipt_date": "2026-09-16"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "OFFICE_SUPPLIES",
+        "gl_account": "6110",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.2",
+            "s9.2"
+          ],
+          "rationale": "The justification clearly lists the specific items needed, the team (Platform squad), and the reason (stock depletion), which aligns with the office supplies eligibility. No policy violations are present.",
+          "confidence": 0.98,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2009",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2009",
+              "post_date": "2026-09-17",
+              "card_last4": "4821",
+              "merchant_name": "DATADOG",
+              "mcc": "5734",
+              "amount": "340.00",
+              "currency": "USD",
+              "statement_memo": "DATADOG 2009"
+            },
+            "employee_id": "E1001",
+            "employee_name": "Priya Nair",
+            "department": "Engineering",
+            "cost_center": "4100",
+            "approver_id": "E1010",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Monthly Datadog APM seats for the Platform squad's production monitoring; already in the approved tool catalog.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Datadog",
+              "total": "340.00",
+              "receipt_date": "2026-09-17"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "SOFTWARE",
+        "gl_account": "6210",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.1",
+            "s8.1",
+            "s8.2"
+          ],
+          "rationale": "The purpose clearly identifies the tool (Datadog APM), the users (Platform squad), and the business need (production monitoring) and notes it is already in the approved catalog, satisfying software subscription rules.",
+          "confidence": 0.96,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2010",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2010",
+              "post_date": "2026-09-22",
+              "card_last4": "4821",
+              "merchant_name": "O'REILLY MEDIA",
+              "mcc": "8299",
+              "amount": "39.99",
+              "currency": "USD",
+              "statement_memo": "O'REILLY MEDIA 2010"
+            },
+            "employee_id": "E1001",
+            "employee_name": "Priya Nair",
+            "department": "Engineering",
+            "cost_center": "4100",
+            "approver_id": "E1010",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "O'Reilly Learning month for my Site Reliability certification prep, agreed with my manager Ana Lopez.",
+            "attendees": [],
+            "receipt": {
+              "present": false,
+              "vendor_name": null,
+              "total": null,
+              "receipt_date": null
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "TRAINING",
+        "gl_account": "6220",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.4",
+            "9.2"
+          ],
+          "rationale": "The purpose clearly states the training (O'Reilly Learning month) for a specific certification relevant to the employee's role and notes manager approval, meeting the policy’s requirement for specific, plausible justification.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2011",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2011",
+              "post_date": "2026-09-24",
+              "card_last4": "4821",
+              "merchant_name": "UBER",
+              "mcc": "4121",
+              "amount": "31.20",
+              "currency": "USD",
+              "statement_memo": "UBER 2011"
+            },
+            "employee_id": "E1001",
+            "employee_name": "Priya Nair",
+            "department": "Engineering",
+            "cost_center": "4100",
+            "approver_id": "E1010",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Ride to the Boulder data center for the disaster-recovery test on Sept 24.",
+            "attendees": [],
+            "receipt": {
+              "present": false,
+              "vendor_name": null,
+              "total": null,
+              "receipt_date": null
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "GROUND_TRANSPORT",
+        "gl_account": "6322",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.3",
+            "s6.2"
+          ],
+          "rationale": "The justification names a specific destination (Boulder data center), purpose (disaster-recovery test), and date, meeting travel documentation requirements and falling under allowed ground transportation expenses.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2012",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2012",
+              "post_date": "2026-09-02",
+              "card_last4": "7734",
+              "merchant_name": "DELTA AIR LINES",
+              "mcc": "4511",
+              "amount": "684.20",
+              "currency": "USD",
+              "statement_memo": "DELTA AIR LINES 2012"
+            },
+            "employee_id": "E1002",
+            "employee_name": "Marcus Webb",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Economy airfare from Denver to Chicago for the Northwind renewal meeting on Sept 3, booked 14 days ahead.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Delta Air Lines",
+              "total": "684.20",
+              "receipt_date": "2026-09-02"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "AIRFARE",
+        "gl_account": "6320",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s6.1",
+            "s6.2"
+          ],
+          "rationale": "The justification names the destination, purpose (Northwind renewal meeting), date, and confirms economy class and advance booking, meeting travel policy requirements.",
+          "confidence": 0.98,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2013",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2013",
+              "post_date": "2026-09-03",
+              "card_last4": "7734",
+              "merchant_name": "HILTON CHICAGO",
+              "mcc": "7011",
+              "amount": "536.00",
+              "currency": "USD",
+              "statement_memo": "HILTON CHICAGO 2013"
+            },
+            "employee_id": "E1002",
+            "employee_name": "Marcus Webb",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Two nights lodging (Sept 2-3, $268 per night) in Chicago for the Northwind renewal meeting.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Hilton Chicago",
+              "total": "536.00",
+              "receipt_date": "2026-09-03"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "LODGING",
+        "gl_account": "6321",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s3.3",
+            "s6.2"
+          ],
+          "rationale": "The justification names the destination (Chicago), dates, and purpose (Northwind renewal meeting), meeting the travel documentation requirements, and the nightly rate is within the $275 limit.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2014",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2014",
+              "post_date": "2026-09-03",
+              "card_last4": "7734",
+              "merchant_name": "THE CAPITAL GRILLE",
+              "mcc": "5812",
+              "amount": "312.75",
+              "currency": "USD",
+              "statement_memo": "THE CAPITAL GRILLE 2014"
+            },
+            "employee_id": "E1002",
+            "employee_name": "Marcus Webb",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Dinner with the Northwind procurement team to review renewal terms for opportunity OPP-2291.",
+            "attendees": [
+              "Marcus Webb (Acme)",
+              "Jordan Lee (Northwind)",
+              "Priya Shah (Northwind)",
+              "Carlos Ortiz (Northwind)",
+              "Mei Chen (Northwind)"
+            ],
+            "receipt": {
+              "present": true,
+              "vendor_name": "The Capital Grille",
+              "total": "312.75",
+              "receipt_date": "2026-09-03"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "MEALS",
+        "gl_account": "6310",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s5.1"
+          ],
+          "rationale": "The submission lists all attendees with companies and a clear business topic (reviewing renewal terms for OPP-2291), satisfying the specific justification requirement for a business meal. The charge amount is within the $75 per‑person cap.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2015",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2015",
+              "post_date": "2026-09-04",
+              "card_last4": "7734",
+              "merchant_name": "LYFT",
+              "mcc": "4121",
+              "amount": "41.60",
+              "currency": "USD",
+              "statement_memo": "LYFT 2015"
+            },
+            "employee_id": "E1002",
+            "employee_name": "Marcus Webb",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Ride from the Chicago hotel to O'Hare after the Northwind renewal meeting on Sept 4.",
+            "attendees": [],
+            "receipt": {
+              "present": false,
+              "vendor_name": null,
+              "total": null,
+              "receipt_date": null
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "GROUND_TRANSPORT",
+        "gl_account": "6322",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "3.3",
+            "6.2"
+          ],
+          "rationale": "The justification clearly states the purpose, date, and locations of the ground transport related to a business meeting, meeting policy requirements for travel documentation.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2016",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2016",
+              "post_date": "2026-09-08",
+              "card_last4": "7734",
+              "merchant_name": "SALESFORCE",
+              "mcc": "5734",
+              "amount": "300.00",
+              "currency": "USD",
+              "statement_memo": "SALESFORCE 2016"
+            },
+            "employee_id": "E1002",
+            "employee_name": "Marcus Webb",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Two additional Sales Cloud seats for the account executives starting Sept 8, approved under IT ticket IT-4417.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Salesforce",
+              "total": "300.00",
+              "receipt_date": "2026-09-08"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "SOFTWARE",
+        "gl_account": "6210",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.1",
+            "s8.1"
+          ],
+          "rationale": "The justification specifies the users (account executives), the exact software (Sales Cloud seats), and references IT approval, meeting the software subscription policy requirements.",
+          "confidence": 0.96,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2017",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2017",
+              "post_date": "2026-09-15",
+              "card_last4": "7734",
+              "merchant_name": "PANERA BREAD",
+              "mcc": "5812",
+              "amount": "96.40",
+              "currency": "USD",
+              "statement_memo": "PANERA BREAD 2017"
+            },
+            "employee_id": "E1002",
+            "employee_name": "Marcus Webb",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Working lunch with two Fabrikam evaluators during the Sept 15 product demo to discuss the rollout timeline.",
+            "attendees": [
+              "Marcus Webb (Acme)",
+              "Dana Wu (Fabrikam)",
+              "Ravi Iyer (Fabrikam)"
+            ],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Panera Bread",
+              "total": "96.40",
+              "receipt_date": "2026-09-15"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "MEALS",
+        "gl_account": "6310",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s5.1"
+          ],
+          "rationale": "The justification lists all attendees with companies and a clear business topic, meeting the meal policy requirements, and the per‑person cost is within the $75 cap.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2018",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2018",
+              "post_date": "2026-09-17",
+              "card_last4": "7734",
+              "merchant_name": "ZOOM VIDEO",
+              "mcc": "5734",
+              "amount": "149.90",
+              "currency": "USD",
+              "statement_memo": "ZOOM VIDEO 2018"
+            },
+            "employee_id": "E1002",
+            "employee_name": "Marcus Webb",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Annual Zoom Pro licence for the Denver sales team's customer calls; renewal of the existing plan.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Zoom Video",
+              "total": "149.90",
+              "receipt_date": "2026-09-17"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "SOFTWARE",
+        "gl_account": "6210",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.1",
+            "8.1",
+            "9.2"
+          ],
+          "rationale": "The justification clearly identifies the user group (Denver sales team) and purpose (customer calls) for a Zoom Pro subscription under $500, which is an allowed SaaS expense without needing additional approval.",
+          "confidence": 0.98,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2019",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2019",
+              "post_date": "2026-09-21",
+              "card_last4": "7734",
+              "merchant_name": "UNITED AIRLINES",
+              "mcc": "4511",
+              "amount": "1120.00",
+              "currency": "USD",
+              "statement_memo": "UNITED AIRLINES 2019"
+            },
+            "employee_id": "E1002",
+            "employee_name": "Marcus Webb",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Airfare to Chicago for the Oct 6-8 Midwest Sales Summit, booked Sept 21, 15 days ahead.",
+            "attendees": [],
+            "receipt": {
+              "present": false,
+              "vendor_name": null,
+              "total": null,
+              "receipt_date": null
+            },
+            "source": "override",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "AIRFARE",
+        "gl_account": "6320",
+        "findings": [
+          {
+            "code": "MISSING_RECEIPT",
+            "severity": "FLAG",
+            "message": "receipt required over $75.00"
+          }
+        ],
+        "deterministic_status": "FLAGGED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s6.1",
+            "s6.2"
+          ],
+          "rationale": "The justification names the destination, event, dates, and booking lead time, satisfying travel policy requirements for economy airfare and specific trip identification.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "FLAGGED"
+      },
+      {
+        "txn_id": "R-2020",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2020",
+              "post_date": "2026-09-23",
+              "card_last4": "7734",
+              "merchant_name": "STAPLES",
+              "mcc": "5943",
+              "amount": "64.30",
+              "currency": "USD",
+              "statement_memo": "STAPLES 2020"
+            },
+            "employee_id": "E1002",
+            "employee_name": "Marcus Webb",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Business cards and folders for the Sept 24 customer workshop in Denver.",
+            "attendees": [],
+            "receipt": {
+              "present": false,
+              "vendor_name": null,
+              "total": null,
+              "receipt_date": null
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "OFFICE_SUPPLIES",
+        "gl_account": "6110",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.2",
+            "9.2"
+          ],
+          "rationale": "The purchase of business cards and folders for a specific customer workshop is a clear, work‑related office supply expense and the justification includes what, why, and when, meeting the policy’s specificity requirement.",
+          "confidence": 0.96,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2021",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2021",
+              "post_date": "2026-09-25",
+              "card_last4": "7734",
+              "merchant_name": "SHELL OIL",
+              "mcc": "5541",
+              "amount": "58.10",
+              "currency": "USD",
+              "statement_memo": "SHELL OIL 2021"
+            },
+            "employee_id": "E1002",
+            "employee_name": "Marcus Webb",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Fuel for the rental car on the Sept 24-25 customer workshop drive to Colorado Springs.",
+            "attendees": [],
+            "receipt": {
+              "present": false,
+              "vendor_name": null,
+              "total": null,
+              "receipt_date": null
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "FUEL",
+        "gl_account": "6323",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.3"
+          ],
+          "rationale": "The justification clearly states the fuel is for a rental car used on a specific business workshop trip (Sept 24-25 to Colorado Springs), which is an allowed expense under the travel fuel provision.",
+          "confidence": 0.96,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2022",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2022",
+              "post_date": "2026-09-11",
+              "card_last4": "7734",
+              "merchant_name": "MGM GRAND CASINO",
+              "mcc": "7995",
+              "amount": "500.00",
+              "currency": "USD",
+              "statement_memo": "MGM GRAND LAS VEGAS"
+            },
+            "employee_id": "E1002",
+            "employee_name": "Marcus Webb",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Client entertainment during the Las Vegas trade show.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "MGM Grand Casino",
+              "total": "500.00",
+              "receipt_date": "2026-09-11"
+            },
+            "source": "override",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "UNCATEGORIZED",
+        "gl_account": "6999",
+        "findings": [
+          {
+            "code": "BLOCKED_MCC",
+            "severity": "REJECT",
+            "message": "Gambling / casinos are prohibited (Policy s3.1)"
+          }
+        ],
+        "deterministic_status": "REJECTED",
+        "llm_result": null,
+        "llm_error": null,
+        "final_status": "REJECTED"
+      },
+      {
+        "txn_id": "R-2023",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2023",
+              "post_date": "2026-09-18",
+              "card_last4": "7734",
+              "merchant_name": "THE DRUNKEN PIG",
+              "mcc": "5813",
+              "amount": "386.00",
+              "currency": "USD",
+              "statement_memo": "THE DRUNKEN PIG 2023"
+            },
+            "employee_id": "E1002",
+            "employee_name": "Marcus Webb",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Team bonding night out after a tough quarter.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "The Drunken Pig",
+              "total": "386.00",
+              "receipt_date": "2026-09-18"
+            },
+            "source": "override",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "ENTERTAINMENT",
+        "gl_account": "6311",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "FLAG",
+          "policy_sections": [
+            "s5.4",
+            "s5.1"
+          ],
+          "rationale": "The justification cites a generic \"team bonding\" event without naming attendees or providing manager approval, which violates sections 5.1 and 5.4 requiring specific attendee lists and approved purposes.",
+          "confidence": 0.95,
+          "red_flags": [
+            "missing attendee list"
+          ],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": false
+        },
+        "llm_error": null,
+        "final_status": "FLAGGED"
+      },
+      {
+        "txn_id": "R-2024",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2024",
+              "post_date": "2026-09-01",
+              "card_last4": "1190",
+              "merchant_name": "CANVA",
+              "mcc": "5734",
+              "amount": "119.99",
+              "currency": "USD",
+              "statement_memo": "CANVA 2024"
+            },
+            "employee_id": "E1003",
+            "employee_name": "Elena Rossi",
+            "department": "Marketing",
+            "cost_center": "5300",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Canva Teams annual renewal for the four Marketing designers; already in the approved tool catalog.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Canva",
+              "total": "119.99",
+              "receipt_date": "2026-09-01"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "SOFTWARE",
+        "gl_account": "6210",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.1",
+            "s8.2"
+          ],
+          "rationale": "The justification specifies the tool, the users (four Marketing designers), and the purpose (annual renewal), which is a permitted software expense under the policy and below the $500 threshold for additional approval.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2025",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2025",
+              "post_date": "2026-09-02",
+              "card_last4": "1190",
+              "merchant_name": "HUBSPOT",
+              "mcc": "5734",
+              "amount": "450.00",
+              "currency": "USD",
+              "statement_memo": "HUBSPOT 2025"
+            },
+            "employee_id": "E1003",
+            "employee_name": "Elena Rossi",
+            "department": "Marketing",
+            "cost_center": "5300",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Marketing Hub Starter seats for the demand-gen team's Q3 email campaigns; in the approved tool catalog.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Hubspot",
+              "total": "450.00",
+              "receipt_date": "2026-09-02"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "SOFTWARE",
+        "gl_account": "6210",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.1",
+            "9.2"
+          ],
+          "rationale": "The justification clearly identifies the software (HubSpot), the users (demand‑gen team), and the purpose (Q3 email campaigns), which complies with the software subscription policy and meets the requirement for a specific business purpose.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2026",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2026",
+              "post_date": "2026-09-08",
+              "card_last4": "1190",
+              "merchant_name": "FACEBOOK ADS",
+              "mcc": "7311",
+              "amount": "1750.00",
+              "currency": "USD",
+              "statement_memo": "FACEBOOK ADS 2026"
+            },
+            "employee_id": "E1003",
+            "employee_name": "Elena Rossi",
+            "department": "Marketing",
+            "cost_center": "5300",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Paid social spend for the approved Q3 'Autumn Launch' campaign (CMP-0917), September flight.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Facebook Ads",
+              "total": "1750.00",
+              "receipt_date": "2026-09-08"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "MARKETING",
+        "gl_account": "6510",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.5",
+            "9.2"
+          ],
+          "rationale": "The justification names a specific, approved campaign (Q3 'Autumn Launch' CMP-0917) and the purpose (paid social spend), meeting the marketing expense criteria.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2027",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2027",
+              "post_date": "2026-09-09",
+              "card_last4": "1190",
+              "merchant_name": "FACEBOOK ADS",
+              "mcc": "7311",
+              "amount": "-250.00",
+              "currency": "USD",
+              "statement_memo": "FACEBOOK ADS 2027"
+            },
+            "employee_id": "E1003",
+            "employee_name": "Elena Rossi",
+            "department": "Marketing",
+            "cost_center": "5300",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "",
+            "attendees": [],
+            "receipt": {
+              "present": false,
+              "vendor_name": null,
+              "total": null,
+              "receipt_date": null
+            },
+            "source": "portal",
+            "submitted_by": null,
+            "submitted_at": null
+          }
+        },
+        "category": "MARKETING",
+        "gl_account": "6510",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": null,
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2028",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2028",
+              "post_date": "2026-09-14",
+              "card_last4": "1190",
+              "merchant_name": "LINKEDIN ADS",
+              "mcc": "7311",
+              "amount": "1200.00",
+              "currency": "USD",
+              "statement_memo": "LINKEDIN ADS 2028"
+            },
+            "employee_id": "E1003",
+            "employee_name": "Elena Rossi",
+            "department": "Marketing",
+            "cost_center": "5300",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "LinkedIn sponsored content for the approved 'Autumn Launch' campaign (CMP-0917), targeting IT directors.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Linkedin Ads",
+              "total": "1200.00",
+              "receipt_date": "2026-09-14"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "MARKETING",
+        "gl_account": "6510",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.5",
+            "9.2"
+          ],
+          "rationale": "The justification specifies the campaign name, ID, and target audience, meeting the requirement for a specific, plausible purpose and aligns with the approved marketing spend policy.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2029",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2029",
+              "post_date": "2026-09-15",
+              "card_last4": "1190",
+              "merchant_name": "VISTAPRINT",
+              "mcc": "5943",
+              "amount": "212.40",
+              "currency": "USD",
+              "statement_memo": "VISTAPRINT 2029"
+            },
+            "employee_id": "E1003",
+            "employee_name": "Elena Rossi",
+            "department": "Marketing",
+            "cost_center": "5300",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Printed brochures and a banner for the Sept 24 Denver trade-show booth, approved under campaign CMP-0917.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Vistaprint",
+              "total": "212.40",
+              "receipt_date": "2026-09-15"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "OFFICE_SUPPLIES",
+        "gl_account": "6110",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.5",
+            "9.2"
+          ],
+          "rationale": "The justification clearly identifies the items (brochures and banner), the specific event (Sept 24 Denver trade-show booth), and references an approved campaign, meeting the policy’s requirement for specific, plausible marketing spend.",
+          "confidence": 0.98,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2030",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2030",
+              "post_date": "2026-09-17",
+              "card_last4": "1190",
+              "merchant_name": "PANERA BREAD",
+              "mcc": "5812",
+              "amount": "88.20",
+              "currency": "USD",
+              "statement_memo": "PANERA BREAD 2030"
+            },
+            "employee_id": "E1003",
+            "employee_name": "Elena Rossi",
+            "department": "Marketing",
+            "cost_center": "5300",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Working lunch with two Bright Agency designers to review the Autumn Launch creative on Sept 17.",
+            "attendees": [
+              "Elena Rossi (Acme)",
+              "Nora Kim (Bright Agency)",
+              "Luis Park (Bright Agency)"
+            ],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Panera Bread",
+              "total": "88.20",
+              "receipt_date": "2026-09-17"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "MEALS",
+        "gl_account": "6310",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s5.1"
+          ],
+          "rationale": "The justification lists all attendees with companies and a clear business purpose (reviewing creative for the Autumn Launch), meeting the specific, plausible, and policy‑compliant requirements for a business meal.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2031",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2031",
+              "post_date": "2026-09-18",
+              "card_last4": "1190",
+              "merchant_name": "ADOBE",
+              "mcc": "5734",
+              "amount": "599.88",
+              "currency": "USD",
+              "statement_memo": "ADOBE 2031"
+            },
+            "employee_id": "E1003",
+            "employee_name": "Elena Rossi",
+            "department": "Marketing",
+            "cost_center": "5300",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Annual Creative Cloud licences for the two new designers, approved under IT ticket IT-4432.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Adobe",
+              "total": "599.88",
+              "receipt_date": "2026-09-18"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "SOFTWARE",
+        "gl_account": "6210",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.1",
+            "9.2"
+          ],
+          "rationale": "The justification specifies the users (two new designers), the purpose (Creative Cloud licences), and cites IT approval for a subscription over $500/year, meeting the software policy requirements.",
+          "confidence": 0.98,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2032",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2032",
+              "post_date": "2026-09-23",
+              "card_last4": "1190",
+              "merchant_name": "EVENTBRITE",
+              "mcc": "8299",
+              "amount": "79.00",
+              "currency": "USD",
+              "statement_memo": "EVENTBRITE 2032"
+            },
+            "employee_id": "E1003",
+            "employee_name": "Elena Rossi",
+            "department": "Marketing",
+            "cost_center": "5300",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Registration for the Sept 30 B2B Marketing Summit, relevant to my demand-generation role; agreed with my manager Chris Doyle.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Eventbrite",
+              "total": "79.00",
+              "receipt_date": "2026-09-23"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "TRAINING",
+        "gl_account": "6220",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.4",
+            "9.2"
+          ],
+          "rationale": "The submission provides a specific event name, date, relevance to the employee's role, and manager approval, meeting the training conference criteria.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2033",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2033",
+              "post_date": "2026-09-14",
+              "card_last4": "1190",
+              "merchant_name": "TIFFANY & CO",
+              "mcc": "5944",
+              "amount": "890.00",
+              "currency": "USD",
+              "statement_memo": "TIFFANY & CO 2033"
+            },
+            "employee_id": "E1003",
+            "employee_name": "Elena Rossi",
+            "department": "Marketing",
+            "cost_center": "5300",
+            "approver_id": "E1011",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Thank-you gift for a client contact.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Tiffany & Co",
+              "total": "890.00",
+              "receipt_date": "2026-09-14"
+            },
+            "source": "override",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "GIFTS",
+        "gl_account": "6520",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "REJECT",
+          "policy_sections": [
+            "s7.1",
+            "s7.3"
+          ],
+          "rationale": "The submission is for a Tiffany & Co gift, which is a luxury jewelry item prohibited under policy 7.3, and it far exceeds the $100 per recipient limit in 7.1. The justification lacks required details such as recipient name and business relationship, making it non‑compliant.",
+          "confidence": 0.99,
+          "red_flags": [
+            "luxury gift",
+            "exceeds $100 limit"
+          ],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": false
+        },
+        "llm_error": null,
+        "final_status": "REJECTED"
+      },
+      {
+        "txn_id": "R-2034",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2034",
+              "post_date": "2026-09-01",
+              "card_last4": "3306",
+              "merchant_name": "HOME DEPOT",
+              "mcc": "5251",
+              "amount": "342.18",
+              "currency": "USD",
+              "statement_memo": "HOME DEPOT 2034"
+            },
+            "employee_id": "E1004",
+            "employee_name": "Tom Okafor",
+            "department": "Facilities",
+            "cost_center": "6100",
+            "approver_id": "E1012",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "HVAC filters and hardware for the scheduled quarterly maintenance of the third-floor air handlers.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Home Depot",
+              "total": "342.18",
+              "receipt_date": "2026-09-01"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "FACILITIES",
+        "gl_account": "6410",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.6"
+          ],
+          "rationale": "The purchase of HVAC filters and hardware for scheduled quarterly maintenance is a specific, work‑related expense that falls under Facilities maintenance supplies, which is an allowed expense for the Facilities department.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2035",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2035",
+              "post_date": "2026-09-03",
+              "card_last4": "3306",
+              "merchant_name": "GRAINGER",
+              "mcc": "5085",
+              "amount": "2240.00",
+              "currency": "USD",
+              "statement_memo": "GRAINGER 2035"
+            },
+            "employee_id": "E1004",
+            "employee_name": "Tom Okafor",
+            "department": "Facilities",
+            "cost_center": "6100",
+            "approver_id": "E1012",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Twelve replacement fire extinguishers and inspection tags to meet the September safety-audit deadline.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Grainger",
+              "total": "2240.00",
+              "receipt_date": "2026-09-03"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "FACILITIES",
+        "gl_account": "6410",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.6"
+          ],
+          "rationale": "The purchase of fire extinguishers and inspection tags is a specific, necessary facilities maintenance expense for the safety audit, which is allowed under the Facilities supplies category.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2036",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2036",
+              "post_date": "2026-09-08",
+              "card_last4": "3306",
+              "merchant_name": "HOME DEPOT",
+              "mcc": "5251",
+              "amount": "128.40",
+              "currency": "USD",
+              "statement_memo": "HOME DEPOT 2036"
+            },
+            "employee_id": "E1004",
+            "employee_name": "Tom Okafor",
+            "department": "Facilities",
+            "cost_center": "6100",
+            "approver_id": "E1012",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Ceiling tiles and adhesive to repair the water-damaged tiles in conference room B, ticket FAC-2210.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Home Depot",
+              "total": "128.40",
+              "receipt_date": "2026-09-08"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "FACILITIES",
+        "gl_account": "6410",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.6",
+            "9.2"
+          ],
+          "rationale": "The purchase is a clearly defined facilities repair expense with specific items, location, and work ticket, which aligns with the allowed facilities maintenance category.",
+          "confidence": 0.98,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2037",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2037",
+              "post_date": "2026-09-10",
+              "card_last4": "3306",
+              "merchant_name": "SHELL OIL",
+              "mcc": "5541",
+              "amount": "74.20",
+              "currency": "USD",
+              "statement_memo": "SHELL OIL 2037"
+            },
+            "employee_id": "E1004",
+            "employee_name": "Tom Okafor",
+            "department": "Facilities",
+            "cost_center": "6100",
+            "approver_id": "E1012",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Fuel for the facilities van on the Sept 10 supplier site visits.",
+            "attendees": [],
+            "receipt": {
+              "present": false,
+              "vendor_name": null,
+              "total": null,
+              "receipt_date": null
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "FUEL",
+        "gl_account": "6323",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.6"
+          ],
+          "rationale": "The justification specifies fuel for the facilities van used on a dated supplier site visit, which is a permissible facilities maintenance expense. Amount is below the receipt threshold and no policy violations are evident.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2038",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2038",
+              "post_date": "2026-09-15",
+              "card_last4": "3306",
+              "merchant_name": "FASTENAL",
+              "mcc": "5085",
+              "amount": "615.50",
+              "currency": "USD",
+              "statement_memo": "FASTENAL 2038"
+            },
+            "employee_id": "E1004",
+            "employee_name": "Tom Okafor",
+            "department": "Facilities",
+            "cost_center": "6100",
+            "approver_id": "E1012",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Anchor bolts and brackets for the warehouse shelving installation scheduled for Sept 16-17.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Fastenal",
+              "total": "615.50",
+              "receipt_date": "2026-09-15"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "FACILITIES",
+        "gl_account": "6410",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.6",
+            "s9.2"
+          ],
+          "rationale": "The purchase is for anchor bolts and brackets needed for a specific warehouse shelving installation, which falls under facilities maintenance supplies and the justification is specific and plausible.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2039",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2039",
+              "post_date": "2026-09-17",
+              "card_last4": "3306",
+              "merchant_name": "LOWES",
+              "mcc": "5251",
+              "amount": "89.60",
+              "currency": "USD",
+              "statement_memo": "LOWES 2039"
+            },
+            "employee_id": "E1004",
+            "employee_name": "Tom Okafor",
+            "department": "Facilities",
+            "cost_center": "6100",
+            "approver_id": "E1012",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Weatherstripping and door sweeps for the loading-dock doors, ticket FAC-2233.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Lowes",
+              "total": "89.60",
+              "receipt_date": "2026-09-17"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "FACILITIES",
+        "gl_account": "6410",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.6"
+          ],
+          "rationale": "The purchase is clearly for facilities maintenance (weatherstripping and door sweeps) with a specific work ticket, which is an eligible expense under the policy.",
+          "confidence": 0.98,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2040",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2040",
+              "post_date": "2026-09-21",
+              "card_last4": "3306",
+              "merchant_name": "ULINE",
+              "mcc": "5943",
+              "amount": "412.00",
+              "currency": "USD",
+              "statement_memo": "ULINE 2040"
+            },
+            "employee_id": "E1004",
+            "employee_name": "Tom Okafor",
+            "department": "Facilities",
+            "cost_center": "6100",
+            "approver_id": "E1012",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Packing tape and shipping boxes for the Sept 25 office relocation of the finance team.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Uline",
+              "total": "412.00",
+              "receipt_date": "2026-09-21"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "OFFICE_SUPPLIES",
+        "gl_account": "6110",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.2"
+          ],
+          "rationale": "The purpose clearly specifies the items (packing tape and shipping boxes), the event (Sept 25 office relocation), and the affected group (finance team), which aligns with the office supplies allowance.",
+          "confidence": 0.98,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2041",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2041",
+              "post_date": "2026-09-23",
+              "card_last4": "3306",
+              "merchant_name": "SHELL OIL",
+              "mcc": "5541",
+              "amount": "68.75",
+              "currency": "USD",
+              "statement_memo": "SHELL OIL 2041"
+            },
+            "employee_id": "E1004",
+            "employee_name": "Tom Okafor",
+            "department": "Facilities",
+            "cost_center": "6100",
+            "approver_id": "E1012",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Fuel for the facilities van on the Sept 23 furniture delivery run.",
+            "attendees": [],
+            "receipt": {
+              "present": false,
+              "vendor_name": null,
+              "total": null,
+              "receipt_date": null
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "FUEL",
+        "gl_account": "6323",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.3"
+          ],
+          "rationale": "The justification clearly states the fuel is for the facilities van used on a specific delivery run, which is a legitimate business purpose under eligible expenses. No policy violations are evident.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2042",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2042",
+              "post_date": "2026-09-25",
+              "card_last4": "3306",
+              "merchant_name": "GRAINGER",
+              "mcc": "5085",
+              "amount": "1180.00",
+              "currency": "USD",
+              "statement_memo": "GRAINGER 2042"
+            },
+            "employee_id": "E1004",
+            "employee_name": "Tom Okafor",
+            "department": "Facilities",
+            "cost_center": "6100",
+            "approver_id": "E1012",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Replacement LED panels for the second-floor open office under the energy-savings project FAC-2250.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Grainger",
+              "total": "1180.00",
+              "receipt_date": "2026-09-25"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "FACILITIES",
+        "gl_account": "6410",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.6",
+            "9.2"
+          ],
+          "rationale": "The purchase is a clear facilities maintenance expense (LED panels) tied to a specific project, providing sufficient detail on what, where, and why, and aligns with the eligible facilities supplies category.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2043",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2043",
+              "post_date": "2026-09-02",
+              "card_last4": "9052",
+              "merchant_name": "ZOOM VIDEO",
+              "mcc": "5734",
+              "amount": "149.90",
+              "currency": "USD",
+              "statement_memo": "ZOOM VIDEO 2043"
+            },
+            "employee_id": "E1005",
+            "employee_name": "Dana Kim",
+            "department": "Finance",
+            "cost_center": "7100",
+            "approver_id": "E1013",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Zoom Pro licence for the Finance team's audit calls; renewal of the existing plan.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Zoom Video",
+              "total": "149.90",
+              "receipt_date": "2026-09-02"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "SOFTWARE",
+        "gl_account": "6210",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.1",
+            "s8.1"
+          ],
+          "rationale": "The justification clearly identifies the user group (Finance team) and purpose (audit calls) for a Zoom Pro subscription under $500/year, which complies with the software policy.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2044",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2044",
+              "post_date": "2026-09-09",
+              "card_last4": "9052",
+              "merchant_name": "CFI EDUCATION",
+              "mcc": "8299",
+              "amount": "199.00",
+              "currency": "USD",
+              "statement_memo": "CFI EDUCATION 2044"
+            },
+            "employee_id": "E1005",
+            "employee_name": "Dana Kim",
+            "department": "Finance",
+            "cost_center": "7100",
+            "approver_id": "E1013",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Financial modelling certification course for my FP&A analyst role, agreed with my manager Hiro Tanaka.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Cfi Education",
+              "total": "199.00",
+              "receipt_date": "2026-09-09"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "TRAINING",
+        "gl_account": "6220",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.4"
+          ],
+          "rationale": "The submission cites a specific certification course directly related to the employee's FP&A role and notes manager approval, meeting the training eligibility criteria.",
+          "confidence": 0.98,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2045",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2045",
+              "post_date": "2026-09-11",
+              "card_last4": "9052",
+              "merchant_name": "STAPLES",
+              "mcc": "5943",
+              "amount": "96.30",
+              "currency": "USD",
+              "statement_memo": "STAPLES 2045"
+            },
+            "employee_id": "E1005",
+            "employee_name": "Dana Kim",
+            "department": "Finance",
+            "cost_center": "7100",
+            "approver_id": "E1013",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Binders, dividers and printer paper for the September quarter-end close.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Staples",
+              "total": "96.30",
+              "receipt_date": "2026-09-11"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "OFFICE_SUPPLIES",
+        "gl_account": "6110",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.2",
+            "s9.2"
+          ],
+          "rationale": "The purchase is for office supplies directly supporting the quarter‑end close, a specific and legitimate business need, and complies with the eligible expenses policy.",
+          "confidence": 0.98,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2046",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2046",
+              "post_date": "2026-09-15",
+              "card_last4": "9052",
+              "merchant_name": "APPLE STORE",
+              "mcc": "5045",
+              "amount": "899.00",
+              "currency": "USD",
+              "statement_memo": "APPLE STORE 2046"
+            },
+            "employee_id": "E1005",
+            "employee_name": "Dana Kim",
+            "department": "Finance",
+            "cost_center": "7100",
+            "approver_id": "E1013",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Replacement laptop for a failed unit assigned to the Finance analyst, IT ticket IT-4501.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Apple Store",
+              "total": "899.00",
+              "receipt_date": "2026-09-15"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "EQUIPMENT",
+        "gl_account": "6120",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.2"
+          ],
+          "rationale": "The justification specifies the item (replacement laptop), the user (Finance analyst), and the reason (failed unit with IT ticket), meeting the requirement for a specific, plausible purpose under eligible equipment expenses.",
+          "confidence": 0.96,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2047",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2047",
+              "post_date": "2026-09-22",
+              "card_last4": "9052",
+              "merchant_name": "NOTION",
+              "mcc": "5734",
+              "amount": "160.00",
+              "currency": "USD",
+              "statement_memo": "NOTION 2047"
+            },
+            "employee_id": "E1005",
+            "employee_name": "Dana Kim",
+            "department": "Finance",
+            "cost_center": "7100",
+            "approver_id": "E1013",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Notion team plan for the Finance team's close checklist; the tool is in the approved catalog.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Notion",
+              "total": "160.00",
+              "receipt_date": "2026-09-22"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "SOFTWARE",
+        "gl_account": "6210",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.1",
+            "s8.1",
+            "s8.2"
+          ],
+          "rationale": "The justification clearly identifies the Finance team as users, specifies the Notion team plan for the close checklist, and the subscription is under $500/year and listed in the approved catalog, meeting software policy requirements.",
+          "confidence": 0.97,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2048",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2048",
+              "post_date": "2026-09-24",
+              "card_last4": "9052",
+              "merchant_name": "AMAZON MKTPLACE",
+              "mcc": "5999",
+              "amount": "187.40",
+              "currency": "USD",
+              "statement_memo": "AMAZON MKTPLACE 2048"
+            },
+            "employee_id": "E1005",
+            "employee_name": "Dana Kim",
+            "department": "Finance",
+            "cost_center": "7100",
+            "approver_id": "E1013",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Two monitor stands and cable organisers for the new Finance desks on the fourth floor, ticket FAC-2260.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Amazon Mktplace",
+              "total": "187.40",
+              "receipt_date": "2026-09-24"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "MISC_RETAIL",
+        "gl_account": "6999",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "2.2",
+            "9.2"
+          ],
+          "rationale": "The purpose clearly specifies the items (monitor stands and cable organisers), the business need (new Finance desks), and references a work ticket, meeting the policy’s requirement for specific, plausible justification of office supplies.",
+          "confidence": 0.98,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      },
+      {
+        "txn_id": "R-2049",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2049",
+              "post_date": "2026-09-16",
+              "card_last4": "6618",
+              "merchant_name": "SHELL OIL",
+              "mcc": "5541",
+              "amount": "62.10",
+              "currency": "USD",
+              "statement_memo": "SHELL OIL 2049"
+            },
+            "employee_id": "E1006",
+            "employee_name": "Sam Patel",
+            "department": "Sales",
+            "cost_center": "5200",
+            "approver_id": "E1011",
+            "employee_active": false
+          },
+          "justification": {
+            "business_purpose": "Fuel for the team car.",
+            "attendees": [],
+            "receipt": {
+              "present": false,
+              "vendor_name": null,
+              "total": null,
+              "receipt_date": null
+            },
+            "source": "override",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "FUEL",
+        "gl_account": "6323",
+        "findings": [
+          {
+            "code": "INACTIVE_CARDHOLDER",
+            "severity": "REJECT",
+            "message": "Sam Patel (E1006) is no longer an active employee"
+          }
+        ],
+        "deterministic_status": "REJECTED",
+        "llm_result": null,
+        "llm_error": null,
+        "final_status": "REJECTED"
+      },
+      {
+        "txn_id": "R-2050",
+        "justified": {
+          "routed": {
+            "transaction": {
+              "txn_id": "R-2050",
+              "post_date": "2026-09-25",
+              "card_last4": "4821",
+              "merchant_name": "CLOUDFLARE",
+              "mcc": "5734",
+              "amount": "200.00",
+              "currency": "USD",
+              "statement_memo": "CLOUDFLARE 2050"
+            },
+            "employee_id": "E1001",
+            "employee_name": "Priya Nair",
+            "department": "Engineering",
+            "cost_center": "4100",
+            "approver_id": "E1010",
+            "employee_active": true
+          },
+          "justification": {
+            "business_purpose": "Cloudflare Pro plan for the public documentation site; the tool is in the approved catalog.",
+            "attendees": [],
+            "receipt": {
+              "present": true,
+              "vendor_name": "Cloudflare",
+              "total": "200.00",
+              "receipt_date": "2026-09-25"
+            },
+            "source": "simulated",
+            "submitted_by": "Sample data",
+            "submitted_at": "2026-09-30T15:40:24"
+          }
+        },
+        "category": "SOFTWARE",
+        "gl_account": "6210",
+        "findings": [],
+        "deterministic_status": "APPROVED",
+        "llm_result": {
+          "verdict": "APPROVE",
+          "policy_sections": [
+            "s2.1",
+            "s8.1",
+            "s8.2"
+          ],
+          "rationale": "The justification specifies the exact software (Cloudflare Pro), its purpose (public documentation site), and notes it is in the approved catalog, meeting the software subscription policy and not exceeding the $500/year approval threshold.",
+          "confidence": 0.96,
+          "red_flags": [],
+          "served_by": "groq:openai/gpt-oss-120b",
+          "passed": true
+        },
+        "llm_error": null,
+        "final_status": "APPROVED"
+      }
+    ],
+    "quarantined_count": 6
+  }
+}

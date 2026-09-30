@@ -19,7 +19,9 @@ MOCK = "Mock (offline heuristic, no key needed)"
 @pytest.fixture(autouse=True)
 def isolated_output(tmp_path, monkeypatch):
     monkeypatch.setattr(workspace, "OUTPUT", tmp_path / "output")
+    monkeypatch.setattr(workspace, "EXAMPLES", tmp_path / "no_examples")   # the bundled example is tested on its own
     monkeypatch.delenv("APP_PASSCODE", raising=False)
+    monkeypatch.delenv("LIVE_LLM_PASSCODE", raising=False)
     for k in ("GROQ_API_KEY", "GEMINI_API_KEY", "OPENROUTER_API_KEY"):
         monkeypatch.setenv(k, "")  # blank values are ignored by load_dotenv's setdefault only if unset; empty means "no key"
 
@@ -239,3 +241,87 @@ def test_status_filter_shows_only_the_chosen_status():
     assert shown("approved")[0] == truth["APPROVED"]                        # only approved, nothing else
     assert shown("rejected")[0] == truth["REJECTED"]
     assert shown("all")[0] == n
+
+
+LIVE = "Live LLM (free-tier providers)"
+
+
+def _at_audit_step(**state):
+    """A batch with every justification submitted, sitting on the audit step."""
+    time.sleep(1.05)
+    ctx = audited_batch("gate", sample=False)
+    from schemas.models import PolicyRules
+    from stages.stage2_justify import sample_for
+    from utils.loaders import load_json_model
+    routed = {r.transaction.txn_id: r for r in read_json_artifact(ctx, 1, Stage1Payload)[1].routed}
+    rules = load_json_model(ctx.data_dir / "policy_rules.json", PolicyRules)
+    for t, (j, kind) in sample_for(list(routed.values()), rules, ctx.seed, workspace.SAMPLE_DATA).items():
+        submissions.submit(ctx.run_dir, routed[t], j.business_purpose, j.attendees, j.receipt, source=kind)
+    return app(batch_pick=ctx.run_id, wf_step="3. Audit and results", **state), ctx
+
+
+def test_live_llm_is_locked_behind_its_own_passcode_and_defaults_to_offline(monkeypatch):
+    monkeypatch.setenv("LIVE_LLM_PASSCODE", "live-pass")
+    monkeypatch.setenv("GROQ_API_KEY", "fake-key-never-used")
+    at, ctx = _at_audit_step()
+    at.run()
+    assert not at.exception
+    assert widget(at, "radio", "Auditor").value == MOCK                     # offline is the default while locked
+    widget(at, "radio", "Auditor").set_value(LIVE).run()
+    assert any(t.label == "Live LLM passcode" for t in at.text_input)       # the gate appears
+    assert not any(t.label == "Provider order" for t in at.text_input)      # and nothing live is configurable yet
+    widget(at, "checkbox", "I understand").check().run()
+    assert btn(at, "Lock submissions and run audit").disabled               # cannot start a live audit
+    for attempt, ok in (("wrong", False), ("live-pass", True)):
+        next(t for t in at.text_input if t.label == "Live LLM passcode").set_value(attempt)
+        next(b for b in at.button if b.label == "Unlock live mode").click().run()
+        assert bool(at.session_state["live_ok"] if "live_ok" in at.session_state else False) is ok, attempt
+    assert any(t.label == "Provider order" for t in at.text_input)
+    assert not (ctx.run_dir / "03_compliance_audited.json").exists()        # nothing ran
+
+
+def test_offline_audit_still_works_while_live_is_locked(monkeypatch):
+    monkeypatch.setenv("LIVE_LLM_PASSCODE", "live-pass")
+    at, ctx = _at_audit_step()
+    at.run()
+    widget(at, "checkbox", "I understand").check().run()
+    btn(at, "Lock submissions and run audit").click().run()
+    assert not at.exception and (ctx.run_dir / "04_erp_journal_entry.csv").exists()
+
+
+def test_without_a_live_passcode_the_live_option_stays_the_default_for_local_use(monkeypatch):
+    monkeypatch.setenv("GROQ_API_KEY", "fake-key-never-used")
+    at, _ = _at_audit_step()
+    at.run()
+    assert widget(at, "radio", "Auditor").value == LIVE
+    assert not any(t.label == "Live LLM passcode" for t in at.text_input)
+
+
+def test_shared_demo_notice_is_shown_on_the_workflow_page():
+    at = app().run()
+    note = " ".join(i.value for i in at.info)
+    assert "Shared demo" in note and "Do not upload real statements" in note
+
+
+def test_results_live_demo_panel_is_gated_too(monkeypatch):
+    monkeypatch.setenv("LIVE_LLM_PASSCODE", "live-pass")
+    at = app()
+    at.switch_page("ui/results.py").run()
+    widget(at, "radio", "Auditor").set_value("Live LLM (Groq / Gemini)").run()
+    assert btn(at, "Run pipeline").disabled
+    assert any(t.label == "Live LLM passcode" for t in at.text_input)
+
+
+def test_bundled_example_run_appears_on_results_and_verifies(monkeypatch):
+    real = Path(__file__).resolve().parent.parent / "examples"
+    monkeypatch.setattr(workspace, "EXAMPLES", real)
+    assert (real / "run_20260930T153959Z" / "04_erp_journal_entry.csv").exists()
+    at = app()
+    at.switch_page("ui/results.py").run()
+    assert not at.exception and not any("No completed runs" in i.value for i in at.info)
+    sel = widget(at, "selectbox", "Run")
+    assert sel.value == "run_20260930T153959Z" and "example" in sel.format_func(sel.value)
+    text = re.sub(r"<[^>]+>", " ", " ".join(m.value for m in at.markdown))
+    assert "Fail" not in text.split("Controls")[-1][:600]                   # integrity checks pass on the shipped run
+    from utils.artifacts import verify_run
+    assert verify_run(real / "run_20260930T153959Z") == []

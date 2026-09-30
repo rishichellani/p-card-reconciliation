@@ -1,0 +1,1023 @@
+{
+  "meta": {
+    "run_id": "run_20260930T153959Z",
+    "stage": 1,
+    "schema_version": "1.1",
+    "created_at": "2026-09-30T15:39:59+00:00",
+    "upstream_sha256": "1a22748623151ec620a7b8cdcadfa9ed8a2aedc2aab1c0765673a7880926e407",
+    "payload_sha256": "076982a2a971b227531a122071713150f55346c37d53176a7cb258de0b204c13",
+    "counts": {
+      "rows_read": 56,
+      "routed": 50,
+      "quarantined": 6
+    },
+    "meta_sha256": "49b642646fbd9bbeba57a5372b3315a47ea8440cafd43cd56e038caed3b345c4"
+  },
+  "payload": {
+    "source_file": "transactions.csv",
+    "source_sha256": "1a22748623151ec620a7b8cdcadfa9ed8a2aedc2aab1c0765673a7880926e407",
+    "statement_period_start": "2026-09-01",
+    "statement_period_end": "2026-09-25",
+    "control_total_usd": "19767.23",
+    "routed": [
+      {
+        "transaction": {
+          "txn_id": "R-2001",
+          "post_date": "2026-09-01",
+          "card_last4": "4821",
+          "merchant_name": "GITHUB INC",
+          "mcc": "5734",
+          "amount": "84.00",
+          "currency": "USD",
+          "statement_memo": "GITHUB INC 2001"
+        },
+        "employee_id": "E1001",
+        "employee_name": "Priya Nair",
+        "department": "Engineering",
+        "cost_center": "4100",
+        "approver_id": "E1010",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2002",
+          "post_date": "2026-09-02",
+          "card_last4": "4821",
+          "merchant_name": "AMAZON WEB SERVICES",
+          "mcc": "7372",
+          "amount": "1420.55",
+          "currency": "USD",
+          "statement_memo": "AMAZON WEB SERVICES 2002"
+        },
+        "employee_id": "E1001",
+        "employee_name": "Priya Nair",
+        "department": "Engineering",
+        "cost_center": "4100",
+        "approver_id": "E1010",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2003",
+          "post_date": "2026-09-03",
+          "card_last4": "4821",
+          "merchant_name": "JETBRAINS",
+          "mcc": "5734",
+          "amount": "249.00",
+          "currency": "USD",
+          "statement_memo": "JETBRAINS 2003"
+        },
+        "employee_id": "E1001",
+        "employee_name": "Priya Nair",
+        "department": "Engineering",
+        "cost_center": "4100",
+        "approver_id": "E1010",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2004",
+          "post_date": "2026-09-09",
+          "card_last4": "4821",
+          "merchant_name": "UDEMY",
+          "mcc": "8299",
+          "amount": "49.99",
+          "currency": "USD",
+          "statement_memo": "UDEMY 2004"
+        },
+        "employee_id": "E1001",
+        "employee_name": "Priya Nair",
+        "department": "Engineering",
+        "cost_center": "4100",
+        "approver_id": "E1010",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2005",
+          "post_date": "2026-09-10",
+          "card_last4": "4821",
+          "merchant_name": "UBER",
+          "mcc": "4121",
+          "amount": "28.40",
+          "currency": "USD",
+          "statement_memo": "UBER 2005"
+        },
+        "employee_id": "E1001",
+        "employee_name": "Priya Nair",
+        "department": "Engineering",
+        "cost_center": "4100",
+        "approver_id": "E1010",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2006",
+          "post_date": "2026-09-10",
+          "card_last4": "4821",
+          "merchant_name": "MARRIOTT DENVER",
+          "mcc": "7011",
+          "amount": "486.00",
+          "currency": "USD",
+          "statement_memo": "MARRIOTT DENVER 2006"
+        },
+        "employee_id": "E1001",
+        "employee_name": "Priya Nair",
+        "department": "Engineering",
+        "cost_center": "4100",
+        "approver_id": "E1010",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2007",
+          "post_date": "2026-09-11",
+          "card_last4": "4821",
+          "merchant_name": "DELTA AIR LINES",
+          "mcc": "4511",
+          "amount": "412.30",
+          "currency": "USD",
+          "statement_memo": "DELTA AIR LINES 2007"
+        },
+        "employee_id": "E1001",
+        "employee_name": "Priya Nair",
+        "department": "Engineering",
+        "cost_center": "4100",
+        "approver_id": "E1010",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2008",
+          "post_date": "2026-09-16",
+          "card_last4": "4821",
+          "merchant_name": "STAPLES",
+          "mcc": "5943",
+          "amount": "132.75",
+          "currency": "USD",
+          "statement_memo": "STAPLES 2008"
+        },
+        "employee_id": "E1001",
+        "employee_name": "Priya Nair",
+        "department": "Engineering",
+        "cost_center": "4100",
+        "approver_id": "E1010",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2009",
+          "post_date": "2026-09-17",
+          "card_last4": "4821",
+          "merchant_name": "DATADOG",
+          "mcc": "5734",
+          "amount": "340.00",
+          "currency": "USD",
+          "statement_memo": "DATADOG 2009"
+        },
+        "employee_id": "E1001",
+        "employee_name": "Priya Nair",
+        "department": "Engineering",
+        "cost_center": "4100",
+        "approver_id": "E1010",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2010",
+          "post_date": "2026-09-22",
+          "card_last4": "4821",
+          "merchant_name": "O'REILLY MEDIA",
+          "mcc": "8299",
+          "amount": "39.99",
+          "currency": "USD",
+          "statement_memo": "O'REILLY MEDIA 2010"
+        },
+        "employee_id": "E1001",
+        "employee_name": "Priya Nair",
+        "department": "Engineering",
+        "cost_center": "4100",
+        "approver_id": "E1010",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2011",
+          "post_date": "2026-09-24",
+          "card_last4": "4821",
+          "merchant_name": "UBER",
+          "mcc": "4121",
+          "amount": "31.20",
+          "currency": "USD",
+          "statement_memo": "UBER 2011"
+        },
+        "employee_id": "E1001",
+        "employee_name": "Priya Nair",
+        "department": "Engineering",
+        "cost_center": "4100",
+        "approver_id": "E1010",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2012",
+          "post_date": "2026-09-02",
+          "card_last4": "7734",
+          "merchant_name": "DELTA AIR LINES",
+          "mcc": "4511",
+          "amount": "684.20",
+          "currency": "USD",
+          "statement_memo": "DELTA AIR LINES 2012"
+        },
+        "employee_id": "E1002",
+        "employee_name": "Marcus Webb",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2013",
+          "post_date": "2026-09-03",
+          "card_last4": "7734",
+          "merchant_name": "HILTON CHICAGO",
+          "mcc": "7011",
+          "amount": "536.00",
+          "currency": "USD",
+          "statement_memo": "HILTON CHICAGO 2013"
+        },
+        "employee_id": "E1002",
+        "employee_name": "Marcus Webb",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2014",
+          "post_date": "2026-09-03",
+          "card_last4": "7734",
+          "merchant_name": "THE CAPITAL GRILLE",
+          "mcc": "5812",
+          "amount": "312.75",
+          "currency": "USD",
+          "statement_memo": "THE CAPITAL GRILLE 2014"
+        },
+        "employee_id": "E1002",
+        "employee_name": "Marcus Webb",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2015",
+          "post_date": "2026-09-04",
+          "card_last4": "7734",
+          "merchant_name": "LYFT",
+          "mcc": "4121",
+          "amount": "41.60",
+          "currency": "USD",
+          "statement_memo": "LYFT 2015"
+        },
+        "employee_id": "E1002",
+        "employee_name": "Marcus Webb",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2016",
+          "post_date": "2026-09-08",
+          "card_last4": "7734",
+          "merchant_name": "SALESFORCE",
+          "mcc": "5734",
+          "amount": "300.00",
+          "currency": "USD",
+          "statement_memo": "SALESFORCE 2016"
+        },
+        "employee_id": "E1002",
+        "employee_name": "Marcus Webb",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2017",
+          "post_date": "2026-09-15",
+          "card_last4": "7734",
+          "merchant_name": "PANERA BREAD",
+          "mcc": "5812",
+          "amount": "96.40",
+          "currency": "USD",
+          "statement_memo": "PANERA BREAD 2017"
+        },
+        "employee_id": "E1002",
+        "employee_name": "Marcus Webb",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2018",
+          "post_date": "2026-09-17",
+          "card_last4": "7734",
+          "merchant_name": "ZOOM VIDEO",
+          "mcc": "5734",
+          "amount": "149.90",
+          "currency": "USD",
+          "statement_memo": "ZOOM VIDEO 2018"
+        },
+        "employee_id": "E1002",
+        "employee_name": "Marcus Webb",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2019",
+          "post_date": "2026-09-21",
+          "card_last4": "7734",
+          "merchant_name": "UNITED AIRLINES",
+          "mcc": "4511",
+          "amount": "1120.00",
+          "currency": "USD",
+          "statement_memo": "UNITED AIRLINES 2019"
+        },
+        "employee_id": "E1002",
+        "employee_name": "Marcus Webb",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2020",
+          "post_date": "2026-09-23",
+          "card_last4": "7734",
+          "merchant_name": "STAPLES",
+          "mcc": "5943",
+          "amount": "64.30",
+          "currency": "USD",
+          "statement_memo": "STAPLES 2020"
+        },
+        "employee_id": "E1002",
+        "employee_name": "Marcus Webb",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2021",
+          "post_date": "2026-09-25",
+          "card_last4": "7734",
+          "merchant_name": "SHELL OIL",
+          "mcc": "5541",
+          "amount": "58.10",
+          "currency": "USD",
+          "statement_memo": "SHELL OIL 2021"
+        },
+        "employee_id": "E1002",
+        "employee_name": "Marcus Webb",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2022",
+          "post_date": "2026-09-11",
+          "card_last4": "7734",
+          "merchant_name": "MGM GRAND CASINO",
+          "mcc": "7995",
+          "amount": "500.00",
+          "currency": "USD",
+          "statement_memo": "MGM GRAND LAS VEGAS"
+        },
+        "employee_id": "E1002",
+        "employee_name": "Marcus Webb",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2023",
+          "post_date": "2026-09-18",
+          "card_last4": "7734",
+          "merchant_name": "THE DRUNKEN PIG",
+          "mcc": "5813",
+          "amount": "386.00",
+          "currency": "USD",
+          "statement_memo": "THE DRUNKEN PIG 2023"
+        },
+        "employee_id": "E1002",
+        "employee_name": "Marcus Webb",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2024",
+          "post_date": "2026-09-01",
+          "card_last4": "1190",
+          "merchant_name": "CANVA",
+          "mcc": "5734",
+          "amount": "119.99",
+          "currency": "USD",
+          "statement_memo": "CANVA 2024"
+        },
+        "employee_id": "E1003",
+        "employee_name": "Elena Rossi",
+        "department": "Marketing",
+        "cost_center": "5300",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2025",
+          "post_date": "2026-09-02",
+          "card_last4": "1190",
+          "merchant_name": "HUBSPOT",
+          "mcc": "5734",
+          "amount": "450.00",
+          "currency": "USD",
+          "statement_memo": "HUBSPOT 2025"
+        },
+        "employee_id": "E1003",
+        "employee_name": "Elena Rossi",
+        "department": "Marketing",
+        "cost_center": "5300",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2026",
+          "post_date": "2026-09-08",
+          "card_last4": "1190",
+          "merchant_name": "FACEBOOK ADS",
+          "mcc": "7311",
+          "amount": "1750.00",
+          "currency": "USD",
+          "statement_memo": "FACEBOOK ADS 2026"
+        },
+        "employee_id": "E1003",
+        "employee_name": "Elena Rossi",
+        "department": "Marketing",
+        "cost_center": "5300",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2027",
+          "post_date": "2026-09-09",
+          "card_last4": "1190",
+          "merchant_name": "FACEBOOK ADS",
+          "mcc": "7311",
+          "amount": "-250.00",
+          "currency": "USD",
+          "statement_memo": "FACEBOOK ADS 2027"
+        },
+        "employee_id": "E1003",
+        "employee_name": "Elena Rossi",
+        "department": "Marketing",
+        "cost_center": "5300",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2028",
+          "post_date": "2026-09-14",
+          "card_last4": "1190",
+          "merchant_name": "LINKEDIN ADS",
+          "mcc": "7311",
+          "amount": "1200.00",
+          "currency": "USD",
+          "statement_memo": "LINKEDIN ADS 2028"
+        },
+        "employee_id": "E1003",
+        "employee_name": "Elena Rossi",
+        "department": "Marketing",
+        "cost_center": "5300",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2029",
+          "post_date": "2026-09-15",
+          "card_last4": "1190",
+          "merchant_name": "VISTAPRINT",
+          "mcc": "5943",
+          "amount": "212.40",
+          "currency": "USD",
+          "statement_memo": "VISTAPRINT 2029"
+        },
+        "employee_id": "E1003",
+        "employee_name": "Elena Rossi",
+        "department": "Marketing",
+        "cost_center": "5300",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2030",
+          "post_date": "2026-09-17",
+          "card_last4": "1190",
+          "merchant_name": "PANERA BREAD",
+          "mcc": "5812",
+          "amount": "88.20",
+          "currency": "USD",
+          "statement_memo": "PANERA BREAD 2030"
+        },
+        "employee_id": "E1003",
+        "employee_name": "Elena Rossi",
+        "department": "Marketing",
+        "cost_center": "5300",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2031",
+          "post_date": "2026-09-18",
+          "card_last4": "1190",
+          "merchant_name": "ADOBE",
+          "mcc": "5734",
+          "amount": "599.88",
+          "currency": "USD",
+          "statement_memo": "ADOBE 2031"
+        },
+        "employee_id": "E1003",
+        "employee_name": "Elena Rossi",
+        "department": "Marketing",
+        "cost_center": "5300",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2032",
+          "post_date": "2026-09-23",
+          "card_last4": "1190",
+          "merchant_name": "EVENTBRITE",
+          "mcc": "8299",
+          "amount": "79.00",
+          "currency": "USD",
+          "statement_memo": "EVENTBRITE 2032"
+        },
+        "employee_id": "E1003",
+        "employee_name": "Elena Rossi",
+        "department": "Marketing",
+        "cost_center": "5300",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2033",
+          "post_date": "2026-09-14",
+          "card_last4": "1190",
+          "merchant_name": "TIFFANY & CO",
+          "mcc": "5944",
+          "amount": "890.00",
+          "currency": "USD",
+          "statement_memo": "TIFFANY & CO 2033"
+        },
+        "employee_id": "E1003",
+        "employee_name": "Elena Rossi",
+        "department": "Marketing",
+        "cost_center": "5300",
+        "approver_id": "E1011",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2034",
+          "post_date": "2026-09-01",
+          "card_last4": "3306",
+          "merchant_name": "HOME DEPOT",
+          "mcc": "5251",
+          "amount": "342.18",
+          "currency": "USD",
+          "statement_memo": "HOME DEPOT 2034"
+        },
+        "employee_id": "E1004",
+        "employee_name": "Tom Okafor",
+        "department": "Facilities",
+        "cost_center": "6100",
+        "approver_id": "E1012",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2035",
+          "post_date": "2026-09-03",
+          "card_last4": "3306",
+          "merchant_name": "GRAINGER",
+          "mcc": "5085",
+          "amount": "2240.00",
+          "currency": "USD",
+          "statement_memo": "GRAINGER 2035"
+        },
+        "employee_id": "E1004",
+        "employee_name": "Tom Okafor",
+        "department": "Facilities",
+        "cost_center": "6100",
+        "approver_id": "E1012",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2036",
+          "post_date": "2026-09-08",
+          "card_last4": "3306",
+          "merchant_name": "HOME DEPOT",
+          "mcc": "5251",
+          "amount": "128.40",
+          "currency": "USD",
+          "statement_memo": "HOME DEPOT 2036"
+        },
+        "employee_id": "E1004",
+        "employee_name": "Tom Okafor",
+        "department": "Facilities",
+        "cost_center": "6100",
+        "approver_id": "E1012",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2037",
+          "post_date": "2026-09-10",
+          "card_last4": "3306",
+          "merchant_name": "SHELL OIL",
+          "mcc": "5541",
+          "amount": "74.20",
+          "currency": "USD",
+          "statement_memo": "SHELL OIL 2037"
+        },
+        "employee_id": "E1004",
+        "employee_name": "Tom Okafor",
+        "department": "Facilities",
+        "cost_center": "6100",
+        "approver_id": "E1012",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2038",
+          "post_date": "2026-09-15",
+          "card_last4": "3306",
+          "merchant_name": "FASTENAL",
+          "mcc": "5085",
+          "amount": "615.50",
+          "currency": "USD",
+          "statement_memo": "FASTENAL 2038"
+        },
+        "employee_id": "E1004",
+        "employee_name": "Tom Okafor",
+        "department": "Facilities",
+        "cost_center": "6100",
+        "approver_id": "E1012",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2039",
+          "post_date": "2026-09-17",
+          "card_last4": "3306",
+          "merchant_name": "LOWES",
+          "mcc": "5251",
+          "amount": "89.60",
+          "currency": "USD",
+          "statement_memo": "LOWES 2039"
+        },
+        "employee_id": "E1004",
+        "employee_name": "Tom Okafor",
+        "department": "Facilities",
+        "cost_center": "6100",
+        "approver_id": "E1012",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2040",
+          "post_date": "2026-09-21",
+          "card_last4": "3306",
+          "merchant_name": "ULINE",
+          "mcc": "5943",
+          "amount": "412.00",
+          "currency": "USD",
+          "statement_memo": "ULINE 2040"
+        },
+        "employee_id": "E1004",
+        "employee_name": "Tom Okafor",
+        "department": "Facilities",
+        "cost_center": "6100",
+        "approver_id": "E1012",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2041",
+          "post_date": "2026-09-23",
+          "card_last4": "3306",
+          "merchant_name": "SHELL OIL",
+          "mcc": "5541",
+          "amount": "68.75",
+          "currency": "USD",
+          "statement_memo": "SHELL OIL 2041"
+        },
+        "employee_id": "E1004",
+        "employee_name": "Tom Okafor",
+        "department": "Facilities",
+        "cost_center": "6100",
+        "approver_id": "E1012",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2042",
+          "post_date": "2026-09-25",
+          "card_last4": "3306",
+          "merchant_name": "GRAINGER",
+          "mcc": "5085",
+          "amount": "1180.00",
+          "currency": "USD",
+          "statement_memo": "GRAINGER 2042"
+        },
+        "employee_id": "E1004",
+        "employee_name": "Tom Okafor",
+        "department": "Facilities",
+        "cost_center": "6100",
+        "approver_id": "E1012",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2043",
+          "post_date": "2026-09-02",
+          "card_last4": "9052",
+          "merchant_name": "ZOOM VIDEO",
+          "mcc": "5734",
+          "amount": "149.90",
+          "currency": "USD",
+          "statement_memo": "ZOOM VIDEO 2043"
+        },
+        "employee_id": "E1005",
+        "employee_name": "Dana Kim",
+        "department": "Finance",
+        "cost_center": "7100",
+        "approver_id": "E1013",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2044",
+          "post_date": "2026-09-09",
+          "card_last4": "9052",
+          "merchant_name": "CFI EDUCATION",
+          "mcc": "8299",
+          "amount": "199.00",
+          "currency": "USD",
+          "statement_memo": "CFI EDUCATION 2044"
+        },
+        "employee_id": "E1005",
+        "employee_name": "Dana Kim",
+        "department": "Finance",
+        "cost_center": "7100",
+        "approver_id": "E1013",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2045",
+          "post_date": "2026-09-11",
+          "card_last4": "9052",
+          "merchant_name": "STAPLES",
+          "mcc": "5943",
+          "amount": "96.30",
+          "currency": "USD",
+          "statement_memo": "STAPLES 2045"
+        },
+        "employee_id": "E1005",
+        "employee_name": "Dana Kim",
+        "department": "Finance",
+        "cost_center": "7100",
+        "approver_id": "E1013",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2046",
+          "post_date": "2026-09-15",
+          "card_last4": "9052",
+          "merchant_name": "APPLE STORE",
+          "mcc": "5045",
+          "amount": "899.00",
+          "currency": "USD",
+          "statement_memo": "APPLE STORE 2046"
+        },
+        "employee_id": "E1005",
+        "employee_name": "Dana Kim",
+        "department": "Finance",
+        "cost_center": "7100",
+        "approver_id": "E1013",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2047",
+          "post_date": "2026-09-22",
+          "card_last4": "9052",
+          "merchant_name": "NOTION",
+          "mcc": "5734",
+          "amount": "160.00",
+          "currency": "USD",
+          "statement_memo": "NOTION 2047"
+        },
+        "employee_id": "E1005",
+        "employee_name": "Dana Kim",
+        "department": "Finance",
+        "cost_center": "7100",
+        "approver_id": "E1013",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2048",
+          "post_date": "2026-09-24",
+          "card_last4": "9052",
+          "merchant_name": "AMAZON MKTPLACE",
+          "mcc": "5999",
+          "amount": "187.40",
+          "currency": "USD",
+          "statement_memo": "AMAZON MKTPLACE 2048"
+        },
+        "employee_id": "E1005",
+        "employee_name": "Dana Kim",
+        "department": "Finance",
+        "cost_center": "7100",
+        "approver_id": "E1013",
+        "employee_active": true
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2049",
+          "post_date": "2026-09-16",
+          "card_last4": "6618",
+          "merchant_name": "SHELL OIL",
+          "mcc": "5541",
+          "amount": "62.10",
+          "currency": "USD",
+          "statement_memo": "SHELL OIL 2049"
+        },
+        "employee_id": "E1006",
+        "employee_name": "Sam Patel",
+        "department": "Sales",
+        "cost_center": "5200",
+        "approver_id": "E1011",
+        "employee_active": false
+      },
+      {
+        "transaction": {
+          "txn_id": "R-2050",
+          "post_date": "2026-09-25",
+          "card_last4": "4821",
+          "merchant_name": "CLOUDFLARE",
+          "mcc": "5734",
+          "amount": "200.00",
+          "currency": "USD",
+          "statement_memo": "CLOUDFLARE 2050"
+        },
+        "employee_id": "E1001",
+        "employee_name": "Priya Nair",
+        "department": "Engineering",
+        "cost_center": "4100",
+        "approver_id": "E1010",
+        "employee_active": true
+      }
+    ],
+    "quarantined": [
+      {
+        "row_number": 52,
+        "raw": {
+          "txn_id": "R-2051",
+          "post_date": "2026-09-15",
+          "card_last4": "4821",
+          "merchant_name": "CVS PHARMACY",
+          "mcc": "5912",
+          "amount": "N/A",
+          "currency": "USD",
+          "statement_memo": "CVS 09912"
+        },
+        "reasons": [
+          "amount: Value error, not a valid money amount: 'N/A'"
+        ]
+      },
+      {
+        "row_number": 53,
+        "raw": {
+          "txn_id": "R-2052",
+          "post_date": "not-a-date",
+          "card_last4": "4821",
+          "merchant_name": "STARBUCKS",
+          "mcc": "5814",
+          "amount": "8.75",
+          "currency": "USD",
+          "statement_memo": "STARBUCKS 1234"
+        },
+        "reasons": [
+          "post_date: Value error, unrecognised date: 'not-a-date' (accepted: %Y-%m-%d, %m/%d/%Y, %d-%b-%Y, %Y/%m/%d)"
+        ]
+      },
+      {
+        "row_number": 54,
+        "raw": {
+          "txn_id": "R-2053",
+          "post_date": "2026-09-15",
+          "card_last4": "0000",
+          "merchant_name": "UNKNOWN MERCHANT LLC",
+          "mcc": "5999",
+          "amount": "75.00",
+          "currency": "USD",
+          "statement_memo": "UNKNOWN MERCHANT"
+        },
+        "reasons": [
+          "card_last4: no cardholder for card ending 0000"
+        ]
+      },
+      {
+        "row_number": 55,
+        "raw": {
+          "txn_id": "R-2054",
+          "post_date": "2026-09-23",
+          "card_last4": "1190",
+          "merchant_name": "",
+          "mcc": "5999",
+          "amount": "45.00",
+          "currency": "USD",
+          "statement_memo": ""
+        },
+        "reasons": [
+          "merchant_name: String should have at least 1 character"
+        ]
+      },
+      {
+        "row_number": 56,
+        "raw": {
+          "txn_id": "R-2055",
+          "post_date": "2026-09-25",
+          "card_last4": "4821",
+          "merchant_name": "LUFTHANSA",
+          "mcc": "4511",
+          "amount": "540.00",
+          "currency": "EUR",
+          "statement_memo": "LUFTHANSA FRANKFURT"
+        },
+        "reasons": [
+          "currency: Input should be 'USD'"
+        ]
+      },
+      {
+        "row_number": 57,
+        "raw": {
+          "txn_id": "R-2001",
+          "post_date": "2026-09-28",
+          "card_last4": "4821",
+          "merchant_name": "GITHUB INC",
+          "mcc": "5734",
+          "amount": "84.00",
+          "currency": "USD",
+          "statement_memo": "GITHUB.COM SAN FRANCISCO CA"
+        },
+        "reasons": [
+          "txn_id: duplicate of an earlier row (R-2001)"
+        ]
+      }
+    ]
+  }
+}

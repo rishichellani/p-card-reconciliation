@@ -12,6 +12,7 @@ import streamlit as st
 from schemas.models import PolicyRules, ReceiptMetadata, Stage1Payload, parse_money
 from stages.stage1_ingest import REQUIRED_COLUMNS
 from stages.stage2_justify import sample_for
+from ui.live_gate import live_allowed, live_unlocked
 from ui.theme import icon, money
 from utils import llm_cache, submissions, workspace
 from utils.artifacts import STAGE_FILES, read_json_artifact
@@ -40,6 +41,9 @@ if "pending_step" in st.session_state:
 
 st.title("Live workflow")
 st.caption("Load a bank statement, let each cardholder add their justification, then run the audit.")
+st.info("**Shared demo.** Batches are visible to everyone who opens this app and are lost when it restarts. "
+        "Do not upload real statements or personal data. To see a finished run with a real LLM, open **Results**.",
+        icon=":material/group:")
 
 # --------------------------------------------------------------------------- sidebar: batches, backup, restore
 with st.sidebar:
@@ -304,11 +308,14 @@ if step == STEPS[2]:
         else:
             st.success("Every transaction that needs a justification has one.")
 
-        mode = st.radio("Auditor", ["Live LLM (free-tier providers)", "Mock (offline heuristic, no key needed)"])
+        LIVE_OPT, MOCK_OPT = "Live LLM (free-tier providers)", "Mock (offline heuristic, no key needed)"
+        mode = st.radio("Auditor", [LIVE_OPT, MOCK_OPT], index=1 if os.environ.get("LIVE_LLM_PASSCODE") and not st.session_state.get("live_ok") else 0)
         live = mode.startswith("Live")
         providers = None
         can_run = True
-        if live:
+        if live and not live_unlocked("workflow"):
+            can_run = False
+        elif live:
             providers = st.text_input("Provider order", os.environ.get("LLM_PROVIDERS", "groq,gemini"),
                                       help="Comma-separated. Each needs its API key configured.")
             try:
@@ -343,6 +350,8 @@ if step == STEPS[2]:
                 bar.progress(n / total, text=f"Auditing {n} of {total}: {tid}")
 
             try:
+                if live and not live_allowed():
+                    raise PipelineError("Live mode is locked. Unlock it or choose the offline auditor.")
                 with st.spinner("Running the audit. Live mode is throttled to stay inside free-tier limits."):
                     workspace.run_audit(ctx, mock_llm=not live, providers=providers, progress=progress)
                 st.session_state["flash"] = "Audit complete. Open the results below."

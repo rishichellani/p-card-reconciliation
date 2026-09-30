@@ -1,0 +1,1689 @@
+{
+  "meta": {
+    "run_id": "run_20260930T153959Z",
+    "stage": 2,
+    "schema_version": "1.1",
+    "created_at": "2026-09-30T15:41:13+00:00",
+    "upstream_sha256": "076982a2a971b227531a122071713150f55346c37d53176a7cb258de0b204c13",
+    "payload_sha256": "cf8c976061db3437b6a6241a6e96d99b23ea95773687447db94b226e973cae94",
+    "counts": {
+      "items": 50,
+      "submitted": 49,
+      "missing": 1
+    },
+    "meta_sha256": "ee4386bf27e7a36d211d3c8d63fd7f5ccc1a8bbb48fa2bfe52759bfab1b86631"
+  },
+  "payload": {
+    "control_total_usd": "19767.23",
+    "justification_mode": "portal",
+    "simulation_seed": null,
+    "submissions_log_sha256": "04f923c5c2a73b5b21edeb2978e5d230c7dd3a6e42c4d4402500ce3635a329a8",
+    "items": [
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2001",
+            "post_date": "2026-09-01",
+            "card_last4": "4821",
+            "merchant_name": "GITHUB INC",
+            "mcc": "5734",
+            "amount": "84.00",
+            "currency": "USD",
+            "statement_memo": "GITHUB INC 2001"
+          },
+          "employee_id": "E1001",
+          "employee_name": "Priya Nair",
+          "department": "Engineering",
+          "cost_center": "4100",
+          "approver_id": "E1010",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "GitHub Team seats for the seven engineers on the Platform squad; renewal of the plan already in the approved tool catalog.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Github Inc",
+            "total": "84.00",
+            "receipt_date": "2026-09-01"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2002",
+            "post_date": "2026-09-02",
+            "card_last4": "4821",
+            "merchant_name": "AMAZON WEB SERVICES",
+            "mcc": "7372",
+            "amount": "1420.55",
+            "currency": "USD",
+            "statement_memo": "AMAZON WEB SERVICES 2002"
+          },
+          "employee_id": "E1001",
+          "employee_name": "Priya Nair",
+          "department": "Engineering",
+          "cost_center": "4100",
+          "approver_id": "E1010",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "August AWS usage for the CI and staging environments used by the Platform squad (cost center 4100).",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Amazon Web Services",
+            "total": "1420.55",
+            "receipt_date": "2026-09-02"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2003",
+            "post_date": "2026-09-03",
+            "card_last4": "4821",
+            "merchant_name": "JETBRAINS",
+            "mcc": "5734",
+            "amount": "249.00",
+            "currency": "USD",
+            "statement_memo": "JETBRAINS 2003"
+          },
+          "employee_id": "E1001",
+          "employee_name": "Priya Nair",
+          "department": "Engineering",
+          "cost_center": "4100",
+          "approver_id": "E1010",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Annual IntelliJ IDEA licence for the backend engineer who joins the Platform squad on Sept 8; the tool is in the approved catalog.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Jetbrains",
+            "total": "249.00",
+            "receipt_date": "2026-09-03"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2004",
+            "post_date": "2026-09-09",
+            "card_last4": "4821",
+            "merchant_name": "UDEMY",
+            "mcc": "8299",
+            "amount": "49.99",
+            "currency": "USD",
+            "statement_memo": "UDEMY 2004"
+          },
+          "employee_id": "E1001",
+          "employee_name": "Priya Nair",
+          "department": "Engineering",
+          "cost_center": "4100",
+          "approver_id": "E1010",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Kubernetes security course required for my on-call rotation, agreed with my manager Ana Lopez.",
+          "attendees": [],
+          "receipt": {
+            "present": false,
+            "vendor_name": null,
+            "total": null,
+            "receipt_date": null
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2005",
+            "post_date": "2026-09-10",
+            "card_last4": "4821",
+            "merchant_name": "UBER",
+            "mcc": "4121",
+            "amount": "28.40",
+            "currency": "USD",
+            "statement_memo": "UBER 2005"
+          },
+          "employee_id": "E1001",
+          "employee_name": "Priya Nair",
+          "department": "Engineering",
+          "cost_center": "4100",
+          "approver_id": "E1010",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Ride from Denver airport to the Northwind office for the Sept 10 architecture review.",
+          "attendees": [],
+          "receipt": {
+            "present": false,
+            "vendor_name": null,
+            "total": null,
+            "receipt_date": null
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2006",
+            "post_date": "2026-09-10",
+            "card_last4": "4821",
+            "merchant_name": "MARRIOTT DENVER",
+            "mcc": "7011",
+            "amount": "486.00",
+            "currency": "USD",
+            "statement_memo": "MARRIOTT DENVER 2006"
+          },
+          "employee_id": "E1001",
+          "employee_name": "Priya Nair",
+          "department": "Engineering",
+          "cost_center": "4100",
+          "approver_id": "E1010",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Two nights lodging (Sept 9-10, $243 per night) in Denver for the Northwind architecture review.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Marriott Denver",
+            "total": "486.00",
+            "receipt_date": "2026-09-10"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2007",
+            "post_date": "2026-09-11",
+            "card_last4": "4821",
+            "merchant_name": "DELTA AIR LINES",
+            "mcc": "4511",
+            "amount": "412.30",
+            "currency": "USD",
+            "statement_memo": "DELTA AIR LINES 2007"
+          },
+          "employee_id": "E1001",
+          "employee_name": "Priya Nair",
+          "department": "Engineering",
+          "cost_center": "4100",
+          "approver_id": "E1010",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Economy return flight from Denver to Seattle after the Northwind architecture review on Sept 11, booked 12 days ahead.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Delta Air Lines",
+            "total": "412.30",
+            "receipt_date": "2026-09-11"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2008",
+            "post_date": "2026-09-16",
+            "card_last4": "4821",
+            "merchant_name": "STAPLES",
+            "mcc": "5943",
+            "amount": "132.75",
+            "currency": "USD",
+            "statement_memo": "STAPLES 2008"
+          },
+          "employee_id": "E1001",
+          "employee_name": "Priya Nair",
+          "department": "Engineering",
+          "cost_center": "4100",
+          "approver_id": "E1010",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Printer paper, toner and whiteboard markers for the Platform squad room; stock ran out on Sept 15.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Staples",
+            "total": "132.75",
+            "receipt_date": "2026-09-16"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2009",
+            "post_date": "2026-09-17",
+            "card_last4": "4821",
+            "merchant_name": "DATADOG",
+            "mcc": "5734",
+            "amount": "340.00",
+            "currency": "USD",
+            "statement_memo": "DATADOG 2009"
+          },
+          "employee_id": "E1001",
+          "employee_name": "Priya Nair",
+          "department": "Engineering",
+          "cost_center": "4100",
+          "approver_id": "E1010",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Monthly Datadog APM seats for the Platform squad's production monitoring; already in the approved tool catalog.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Datadog",
+            "total": "340.00",
+            "receipt_date": "2026-09-17"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2010",
+            "post_date": "2026-09-22",
+            "card_last4": "4821",
+            "merchant_name": "O'REILLY MEDIA",
+            "mcc": "8299",
+            "amount": "39.99",
+            "currency": "USD",
+            "statement_memo": "O'REILLY MEDIA 2010"
+          },
+          "employee_id": "E1001",
+          "employee_name": "Priya Nair",
+          "department": "Engineering",
+          "cost_center": "4100",
+          "approver_id": "E1010",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "O'Reilly Learning month for my Site Reliability certification prep, agreed with my manager Ana Lopez.",
+          "attendees": [],
+          "receipt": {
+            "present": false,
+            "vendor_name": null,
+            "total": null,
+            "receipt_date": null
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2011",
+            "post_date": "2026-09-24",
+            "card_last4": "4821",
+            "merchant_name": "UBER",
+            "mcc": "4121",
+            "amount": "31.20",
+            "currency": "USD",
+            "statement_memo": "UBER 2011"
+          },
+          "employee_id": "E1001",
+          "employee_name": "Priya Nair",
+          "department": "Engineering",
+          "cost_center": "4100",
+          "approver_id": "E1010",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Ride to the Boulder data center for the disaster-recovery test on Sept 24.",
+          "attendees": [],
+          "receipt": {
+            "present": false,
+            "vendor_name": null,
+            "total": null,
+            "receipt_date": null
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2012",
+            "post_date": "2026-09-02",
+            "card_last4": "7734",
+            "merchant_name": "DELTA AIR LINES",
+            "mcc": "4511",
+            "amount": "684.20",
+            "currency": "USD",
+            "statement_memo": "DELTA AIR LINES 2012"
+          },
+          "employee_id": "E1002",
+          "employee_name": "Marcus Webb",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Economy airfare from Denver to Chicago for the Northwind renewal meeting on Sept 3, booked 14 days ahead.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Delta Air Lines",
+            "total": "684.20",
+            "receipt_date": "2026-09-02"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2013",
+            "post_date": "2026-09-03",
+            "card_last4": "7734",
+            "merchant_name": "HILTON CHICAGO",
+            "mcc": "7011",
+            "amount": "536.00",
+            "currency": "USD",
+            "statement_memo": "HILTON CHICAGO 2013"
+          },
+          "employee_id": "E1002",
+          "employee_name": "Marcus Webb",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Two nights lodging (Sept 2-3, $268 per night) in Chicago for the Northwind renewal meeting.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Hilton Chicago",
+            "total": "536.00",
+            "receipt_date": "2026-09-03"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2014",
+            "post_date": "2026-09-03",
+            "card_last4": "7734",
+            "merchant_name": "THE CAPITAL GRILLE",
+            "mcc": "5812",
+            "amount": "312.75",
+            "currency": "USD",
+            "statement_memo": "THE CAPITAL GRILLE 2014"
+          },
+          "employee_id": "E1002",
+          "employee_name": "Marcus Webb",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Dinner with the Northwind procurement team to review renewal terms for opportunity OPP-2291.",
+          "attendees": [
+            "Marcus Webb (Acme)",
+            "Jordan Lee (Northwind)",
+            "Priya Shah (Northwind)",
+            "Carlos Ortiz (Northwind)",
+            "Mei Chen (Northwind)"
+          ],
+          "receipt": {
+            "present": true,
+            "vendor_name": "The Capital Grille",
+            "total": "312.75",
+            "receipt_date": "2026-09-03"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2015",
+            "post_date": "2026-09-04",
+            "card_last4": "7734",
+            "merchant_name": "LYFT",
+            "mcc": "4121",
+            "amount": "41.60",
+            "currency": "USD",
+            "statement_memo": "LYFT 2015"
+          },
+          "employee_id": "E1002",
+          "employee_name": "Marcus Webb",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Ride from the Chicago hotel to O'Hare after the Northwind renewal meeting on Sept 4.",
+          "attendees": [],
+          "receipt": {
+            "present": false,
+            "vendor_name": null,
+            "total": null,
+            "receipt_date": null
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2016",
+            "post_date": "2026-09-08",
+            "card_last4": "7734",
+            "merchant_name": "SALESFORCE",
+            "mcc": "5734",
+            "amount": "300.00",
+            "currency": "USD",
+            "statement_memo": "SALESFORCE 2016"
+          },
+          "employee_id": "E1002",
+          "employee_name": "Marcus Webb",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Two additional Sales Cloud seats for the account executives starting Sept 8, approved under IT ticket IT-4417.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Salesforce",
+            "total": "300.00",
+            "receipt_date": "2026-09-08"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2017",
+            "post_date": "2026-09-15",
+            "card_last4": "7734",
+            "merchant_name": "PANERA BREAD",
+            "mcc": "5812",
+            "amount": "96.40",
+            "currency": "USD",
+            "statement_memo": "PANERA BREAD 2017"
+          },
+          "employee_id": "E1002",
+          "employee_name": "Marcus Webb",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Working lunch with two Fabrikam evaluators during the Sept 15 product demo to discuss the rollout timeline.",
+          "attendees": [
+            "Marcus Webb (Acme)",
+            "Dana Wu (Fabrikam)",
+            "Ravi Iyer (Fabrikam)"
+          ],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Panera Bread",
+            "total": "96.40",
+            "receipt_date": "2026-09-15"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2018",
+            "post_date": "2026-09-17",
+            "card_last4": "7734",
+            "merchant_name": "ZOOM VIDEO",
+            "mcc": "5734",
+            "amount": "149.90",
+            "currency": "USD",
+            "statement_memo": "ZOOM VIDEO 2018"
+          },
+          "employee_id": "E1002",
+          "employee_name": "Marcus Webb",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Annual Zoom Pro licence for the Denver sales team's customer calls; renewal of the existing plan.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Zoom Video",
+            "total": "149.90",
+            "receipt_date": "2026-09-17"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2019",
+            "post_date": "2026-09-21",
+            "card_last4": "7734",
+            "merchant_name": "UNITED AIRLINES",
+            "mcc": "4511",
+            "amount": "1120.00",
+            "currency": "USD",
+            "statement_memo": "UNITED AIRLINES 2019"
+          },
+          "employee_id": "E1002",
+          "employee_name": "Marcus Webb",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Airfare to Chicago for the Oct 6-8 Midwest Sales Summit, booked Sept 21, 15 days ahead.",
+          "attendees": [],
+          "receipt": {
+            "present": false,
+            "vendor_name": null,
+            "total": null,
+            "receipt_date": null
+          },
+          "source": "override",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2020",
+            "post_date": "2026-09-23",
+            "card_last4": "7734",
+            "merchant_name": "STAPLES",
+            "mcc": "5943",
+            "amount": "64.30",
+            "currency": "USD",
+            "statement_memo": "STAPLES 2020"
+          },
+          "employee_id": "E1002",
+          "employee_name": "Marcus Webb",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Business cards and folders for the Sept 24 customer workshop in Denver.",
+          "attendees": [],
+          "receipt": {
+            "present": false,
+            "vendor_name": null,
+            "total": null,
+            "receipt_date": null
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2021",
+            "post_date": "2026-09-25",
+            "card_last4": "7734",
+            "merchant_name": "SHELL OIL",
+            "mcc": "5541",
+            "amount": "58.10",
+            "currency": "USD",
+            "statement_memo": "SHELL OIL 2021"
+          },
+          "employee_id": "E1002",
+          "employee_name": "Marcus Webb",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Fuel for the rental car on the Sept 24-25 customer workshop drive to Colorado Springs.",
+          "attendees": [],
+          "receipt": {
+            "present": false,
+            "vendor_name": null,
+            "total": null,
+            "receipt_date": null
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2022",
+            "post_date": "2026-09-11",
+            "card_last4": "7734",
+            "merchant_name": "MGM GRAND CASINO",
+            "mcc": "7995",
+            "amount": "500.00",
+            "currency": "USD",
+            "statement_memo": "MGM GRAND LAS VEGAS"
+          },
+          "employee_id": "E1002",
+          "employee_name": "Marcus Webb",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Client entertainment during the Las Vegas trade show.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "MGM Grand Casino",
+            "total": "500.00",
+            "receipt_date": "2026-09-11"
+          },
+          "source": "override",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2023",
+            "post_date": "2026-09-18",
+            "card_last4": "7734",
+            "merchant_name": "THE DRUNKEN PIG",
+            "mcc": "5813",
+            "amount": "386.00",
+            "currency": "USD",
+            "statement_memo": "THE DRUNKEN PIG 2023"
+          },
+          "employee_id": "E1002",
+          "employee_name": "Marcus Webb",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Team bonding night out after a tough quarter.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "The Drunken Pig",
+            "total": "386.00",
+            "receipt_date": "2026-09-18"
+          },
+          "source": "override",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2024",
+            "post_date": "2026-09-01",
+            "card_last4": "1190",
+            "merchant_name": "CANVA",
+            "mcc": "5734",
+            "amount": "119.99",
+            "currency": "USD",
+            "statement_memo": "CANVA 2024"
+          },
+          "employee_id": "E1003",
+          "employee_name": "Elena Rossi",
+          "department": "Marketing",
+          "cost_center": "5300",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Canva Teams annual renewal for the four Marketing designers; already in the approved tool catalog.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Canva",
+            "total": "119.99",
+            "receipt_date": "2026-09-01"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2025",
+            "post_date": "2026-09-02",
+            "card_last4": "1190",
+            "merchant_name": "HUBSPOT",
+            "mcc": "5734",
+            "amount": "450.00",
+            "currency": "USD",
+            "statement_memo": "HUBSPOT 2025"
+          },
+          "employee_id": "E1003",
+          "employee_name": "Elena Rossi",
+          "department": "Marketing",
+          "cost_center": "5300",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Marketing Hub Starter seats for the demand-gen team's Q3 email campaigns; in the approved tool catalog.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Hubspot",
+            "total": "450.00",
+            "receipt_date": "2026-09-02"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2026",
+            "post_date": "2026-09-08",
+            "card_last4": "1190",
+            "merchant_name": "FACEBOOK ADS",
+            "mcc": "7311",
+            "amount": "1750.00",
+            "currency": "USD",
+            "statement_memo": "FACEBOOK ADS 2026"
+          },
+          "employee_id": "E1003",
+          "employee_name": "Elena Rossi",
+          "department": "Marketing",
+          "cost_center": "5300",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Paid social spend for the approved Q3 'Autumn Launch' campaign (CMP-0917), September flight.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Facebook Ads",
+            "total": "1750.00",
+            "receipt_date": "2026-09-08"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2027",
+            "post_date": "2026-09-09",
+            "card_last4": "1190",
+            "merchant_name": "FACEBOOK ADS",
+            "mcc": "7311",
+            "amount": "-250.00",
+            "currency": "USD",
+            "statement_memo": "FACEBOOK ADS 2027"
+          },
+          "employee_id": "E1003",
+          "employee_name": "Elena Rossi",
+          "department": "Marketing",
+          "cost_center": "5300",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "",
+          "attendees": [],
+          "receipt": {
+            "present": false,
+            "vendor_name": null,
+            "total": null,
+            "receipt_date": null
+          },
+          "source": "portal",
+          "submitted_by": null,
+          "submitted_at": null
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2028",
+            "post_date": "2026-09-14",
+            "card_last4": "1190",
+            "merchant_name": "LINKEDIN ADS",
+            "mcc": "7311",
+            "amount": "1200.00",
+            "currency": "USD",
+            "statement_memo": "LINKEDIN ADS 2028"
+          },
+          "employee_id": "E1003",
+          "employee_name": "Elena Rossi",
+          "department": "Marketing",
+          "cost_center": "5300",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "LinkedIn sponsored content for the approved 'Autumn Launch' campaign (CMP-0917), targeting IT directors.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Linkedin Ads",
+            "total": "1200.00",
+            "receipt_date": "2026-09-14"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2029",
+            "post_date": "2026-09-15",
+            "card_last4": "1190",
+            "merchant_name": "VISTAPRINT",
+            "mcc": "5943",
+            "amount": "212.40",
+            "currency": "USD",
+            "statement_memo": "VISTAPRINT 2029"
+          },
+          "employee_id": "E1003",
+          "employee_name": "Elena Rossi",
+          "department": "Marketing",
+          "cost_center": "5300",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Printed brochures and a banner for the Sept 24 Denver trade-show booth, approved under campaign CMP-0917.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Vistaprint",
+            "total": "212.40",
+            "receipt_date": "2026-09-15"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2030",
+            "post_date": "2026-09-17",
+            "card_last4": "1190",
+            "merchant_name": "PANERA BREAD",
+            "mcc": "5812",
+            "amount": "88.20",
+            "currency": "USD",
+            "statement_memo": "PANERA BREAD 2030"
+          },
+          "employee_id": "E1003",
+          "employee_name": "Elena Rossi",
+          "department": "Marketing",
+          "cost_center": "5300",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Working lunch with two Bright Agency designers to review the Autumn Launch creative on Sept 17.",
+          "attendees": [
+            "Elena Rossi (Acme)",
+            "Nora Kim (Bright Agency)",
+            "Luis Park (Bright Agency)"
+          ],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Panera Bread",
+            "total": "88.20",
+            "receipt_date": "2026-09-17"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2031",
+            "post_date": "2026-09-18",
+            "card_last4": "1190",
+            "merchant_name": "ADOBE",
+            "mcc": "5734",
+            "amount": "599.88",
+            "currency": "USD",
+            "statement_memo": "ADOBE 2031"
+          },
+          "employee_id": "E1003",
+          "employee_name": "Elena Rossi",
+          "department": "Marketing",
+          "cost_center": "5300",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Annual Creative Cloud licences for the two new designers, approved under IT ticket IT-4432.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Adobe",
+            "total": "599.88",
+            "receipt_date": "2026-09-18"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2032",
+            "post_date": "2026-09-23",
+            "card_last4": "1190",
+            "merchant_name": "EVENTBRITE",
+            "mcc": "8299",
+            "amount": "79.00",
+            "currency": "USD",
+            "statement_memo": "EVENTBRITE 2032"
+          },
+          "employee_id": "E1003",
+          "employee_name": "Elena Rossi",
+          "department": "Marketing",
+          "cost_center": "5300",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Registration for the Sept 30 B2B Marketing Summit, relevant to my demand-generation role; agreed with my manager Chris Doyle.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Eventbrite",
+            "total": "79.00",
+            "receipt_date": "2026-09-23"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2033",
+            "post_date": "2026-09-14",
+            "card_last4": "1190",
+            "merchant_name": "TIFFANY & CO",
+            "mcc": "5944",
+            "amount": "890.00",
+            "currency": "USD",
+            "statement_memo": "TIFFANY & CO 2033"
+          },
+          "employee_id": "E1003",
+          "employee_name": "Elena Rossi",
+          "department": "Marketing",
+          "cost_center": "5300",
+          "approver_id": "E1011",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Thank-you gift for a client contact.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Tiffany & Co",
+            "total": "890.00",
+            "receipt_date": "2026-09-14"
+          },
+          "source": "override",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2034",
+            "post_date": "2026-09-01",
+            "card_last4": "3306",
+            "merchant_name": "HOME DEPOT",
+            "mcc": "5251",
+            "amount": "342.18",
+            "currency": "USD",
+            "statement_memo": "HOME DEPOT 2034"
+          },
+          "employee_id": "E1004",
+          "employee_name": "Tom Okafor",
+          "department": "Facilities",
+          "cost_center": "6100",
+          "approver_id": "E1012",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "HVAC filters and hardware for the scheduled quarterly maintenance of the third-floor air handlers.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Home Depot",
+            "total": "342.18",
+            "receipt_date": "2026-09-01"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2035",
+            "post_date": "2026-09-03",
+            "card_last4": "3306",
+            "merchant_name": "GRAINGER",
+            "mcc": "5085",
+            "amount": "2240.00",
+            "currency": "USD",
+            "statement_memo": "GRAINGER 2035"
+          },
+          "employee_id": "E1004",
+          "employee_name": "Tom Okafor",
+          "department": "Facilities",
+          "cost_center": "6100",
+          "approver_id": "E1012",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Twelve replacement fire extinguishers and inspection tags to meet the September safety-audit deadline.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Grainger",
+            "total": "2240.00",
+            "receipt_date": "2026-09-03"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2036",
+            "post_date": "2026-09-08",
+            "card_last4": "3306",
+            "merchant_name": "HOME DEPOT",
+            "mcc": "5251",
+            "amount": "128.40",
+            "currency": "USD",
+            "statement_memo": "HOME DEPOT 2036"
+          },
+          "employee_id": "E1004",
+          "employee_name": "Tom Okafor",
+          "department": "Facilities",
+          "cost_center": "6100",
+          "approver_id": "E1012",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Ceiling tiles and adhesive to repair the water-damaged tiles in conference room B, ticket FAC-2210.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Home Depot",
+            "total": "128.40",
+            "receipt_date": "2026-09-08"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2037",
+            "post_date": "2026-09-10",
+            "card_last4": "3306",
+            "merchant_name": "SHELL OIL",
+            "mcc": "5541",
+            "amount": "74.20",
+            "currency": "USD",
+            "statement_memo": "SHELL OIL 2037"
+          },
+          "employee_id": "E1004",
+          "employee_name": "Tom Okafor",
+          "department": "Facilities",
+          "cost_center": "6100",
+          "approver_id": "E1012",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Fuel for the facilities van on the Sept 10 supplier site visits.",
+          "attendees": [],
+          "receipt": {
+            "present": false,
+            "vendor_name": null,
+            "total": null,
+            "receipt_date": null
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2038",
+            "post_date": "2026-09-15",
+            "card_last4": "3306",
+            "merchant_name": "FASTENAL",
+            "mcc": "5085",
+            "amount": "615.50",
+            "currency": "USD",
+            "statement_memo": "FASTENAL 2038"
+          },
+          "employee_id": "E1004",
+          "employee_name": "Tom Okafor",
+          "department": "Facilities",
+          "cost_center": "6100",
+          "approver_id": "E1012",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Anchor bolts and brackets for the warehouse shelving installation scheduled for Sept 16-17.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Fastenal",
+            "total": "615.50",
+            "receipt_date": "2026-09-15"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2039",
+            "post_date": "2026-09-17",
+            "card_last4": "3306",
+            "merchant_name": "LOWES",
+            "mcc": "5251",
+            "amount": "89.60",
+            "currency": "USD",
+            "statement_memo": "LOWES 2039"
+          },
+          "employee_id": "E1004",
+          "employee_name": "Tom Okafor",
+          "department": "Facilities",
+          "cost_center": "6100",
+          "approver_id": "E1012",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Weatherstripping and door sweeps for the loading-dock doors, ticket FAC-2233.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Lowes",
+            "total": "89.60",
+            "receipt_date": "2026-09-17"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2040",
+            "post_date": "2026-09-21",
+            "card_last4": "3306",
+            "merchant_name": "ULINE",
+            "mcc": "5943",
+            "amount": "412.00",
+            "currency": "USD",
+            "statement_memo": "ULINE 2040"
+          },
+          "employee_id": "E1004",
+          "employee_name": "Tom Okafor",
+          "department": "Facilities",
+          "cost_center": "6100",
+          "approver_id": "E1012",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Packing tape and shipping boxes for the Sept 25 office relocation of the finance team.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Uline",
+            "total": "412.00",
+            "receipt_date": "2026-09-21"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2041",
+            "post_date": "2026-09-23",
+            "card_last4": "3306",
+            "merchant_name": "SHELL OIL",
+            "mcc": "5541",
+            "amount": "68.75",
+            "currency": "USD",
+            "statement_memo": "SHELL OIL 2041"
+          },
+          "employee_id": "E1004",
+          "employee_name": "Tom Okafor",
+          "department": "Facilities",
+          "cost_center": "6100",
+          "approver_id": "E1012",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Fuel for the facilities van on the Sept 23 furniture delivery run.",
+          "attendees": [],
+          "receipt": {
+            "present": false,
+            "vendor_name": null,
+            "total": null,
+            "receipt_date": null
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2042",
+            "post_date": "2026-09-25",
+            "card_last4": "3306",
+            "merchant_name": "GRAINGER",
+            "mcc": "5085",
+            "amount": "1180.00",
+            "currency": "USD",
+            "statement_memo": "GRAINGER 2042"
+          },
+          "employee_id": "E1004",
+          "employee_name": "Tom Okafor",
+          "department": "Facilities",
+          "cost_center": "6100",
+          "approver_id": "E1012",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Replacement LED panels for the second-floor open office under the energy-savings project FAC-2250.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Grainger",
+            "total": "1180.00",
+            "receipt_date": "2026-09-25"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2043",
+            "post_date": "2026-09-02",
+            "card_last4": "9052",
+            "merchant_name": "ZOOM VIDEO",
+            "mcc": "5734",
+            "amount": "149.90",
+            "currency": "USD",
+            "statement_memo": "ZOOM VIDEO 2043"
+          },
+          "employee_id": "E1005",
+          "employee_name": "Dana Kim",
+          "department": "Finance",
+          "cost_center": "7100",
+          "approver_id": "E1013",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Zoom Pro licence for the Finance team's audit calls; renewal of the existing plan.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Zoom Video",
+            "total": "149.90",
+            "receipt_date": "2026-09-02"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2044",
+            "post_date": "2026-09-09",
+            "card_last4": "9052",
+            "merchant_name": "CFI EDUCATION",
+            "mcc": "8299",
+            "amount": "199.00",
+            "currency": "USD",
+            "statement_memo": "CFI EDUCATION 2044"
+          },
+          "employee_id": "E1005",
+          "employee_name": "Dana Kim",
+          "department": "Finance",
+          "cost_center": "7100",
+          "approver_id": "E1013",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Financial modelling certification course for my FP&A analyst role, agreed with my manager Hiro Tanaka.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Cfi Education",
+            "total": "199.00",
+            "receipt_date": "2026-09-09"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2045",
+            "post_date": "2026-09-11",
+            "card_last4": "9052",
+            "merchant_name": "STAPLES",
+            "mcc": "5943",
+            "amount": "96.30",
+            "currency": "USD",
+            "statement_memo": "STAPLES 2045"
+          },
+          "employee_id": "E1005",
+          "employee_name": "Dana Kim",
+          "department": "Finance",
+          "cost_center": "7100",
+          "approver_id": "E1013",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Binders, dividers and printer paper for the September quarter-end close.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Staples",
+            "total": "96.30",
+            "receipt_date": "2026-09-11"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2046",
+            "post_date": "2026-09-15",
+            "card_last4": "9052",
+            "merchant_name": "APPLE STORE",
+            "mcc": "5045",
+            "amount": "899.00",
+            "currency": "USD",
+            "statement_memo": "APPLE STORE 2046"
+          },
+          "employee_id": "E1005",
+          "employee_name": "Dana Kim",
+          "department": "Finance",
+          "cost_center": "7100",
+          "approver_id": "E1013",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Replacement laptop for a failed unit assigned to the Finance analyst, IT ticket IT-4501.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Apple Store",
+            "total": "899.00",
+            "receipt_date": "2026-09-15"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2047",
+            "post_date": "2026-09-22",
+            "card_last4": "9052",
+            "merchant_name": "NOTION",
+            "mcc": "5734",
+            "amount": "160.00",
+            "currency": "USD",
+            "statement_memo": "NOTION 2047"
+          },
+          "employee_id": "E1005",
+          "employee_name": "Dana Kim",
+          "department": "Finance",
+          "cost_center": "7100",
+          "approver_id": "E1013",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Notion team plan for the Finance team's close checklist; the tool is in the approved catalog.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Notion",
+            "total": "160.00",
+            "receipt_date": "2026-09-22"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2048",
+            "post_date": "2026-09-24",
+            "card_last4": "9052",
+            "merchant_name": "AMAZON MKTPLACE",
+            "mcc": "5999",
+            "amount": "187.40",
+            "currency": "USD",
+            "statement_memo": "AMAZON MKTPLACE 2048"
+          },
+          "employee_id": "E1005",
+          "employee_name": "Dana Kim",
+          "department": "Finance",
+          "cost_center": "7100",
+          "approver_id": "E1013",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Two monitor stands and cable organisers for the new Finance desks on the fourth floor, ticket FAC-2260.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Amazon Mktplace",
+            "total": "187.40",
+            "receipt_date": "2026-09-24"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2049",
+            "post_date": "2026-09-16",
+            "card_last4": "6618",
+            "merchant_name": "SHELL OIL",
+            "mcc": "5541",
+            "amount": "62.10",
+            "currency": "USD",
+            "statement_memo": "SHELL OIL 2049"
+          },
+          "employee_id": "E1006",
+          "employee_name": "Sam Patel",
+          "department": "Sales",
+          "cost_center": "5200",
+          "approver_id": "E1011",
+          "employee_active": false
+        },
+        "justification": {
+          "business_purpose": "Fuel for the team car.",
+          "attendees": [],
+          "receipt": {
+            "present": false,
+            "vendor_name": null,
+            "total": null,
+            "receipt_date": null
+          },
+          "source": "override",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      },
+      {
+        "routed": {
+          "transaction": {
+            "txn_id": "R-2050",
+            "post_date": "2026-09-25",
+            "card_last4": "4821",
+            "merchant_name": "CLOUDFLARE",
+            "mcc": "5734",
+            "amount": "200.00",
+            "currency": "USD",
+            "statement_memo": "CLOUDFLARE 2050"
+          },
+          "employee_id": "E1001",
+          "employee_name": "Priya Nair",
+          "department": "Engineering",
+          "cost_center": "4100",
+          "approver_id": "E1010",
+          "employee_active": true
+        },
+        "justification": {
+          "business_purpose": "Cloudflare Pro plan for the public documentation site; the tool is in the approved catalog.",
+          "attendees": [],
+          "receipt": {
+            "present": true,
+            "vendor_name": "Cloudflare",
+            "total": "200.00",
+            "receipt_date": "2026-09-25"
+          },
+          "source": "simulated",
+          "submitted_by": "Sample data",
+          "submitted_at": "2026-09-30T15:40:24"
+        }
+      }
+    ],
+    "quarantined_count": 6
+  }
+}

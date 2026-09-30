@@ -1,0 +1,14 @@
+{
+  "employees": [
+    {"employee_id": "E1001", "name": "Priya Nair", "email": "priya.nair@acme-corp.example", "department": "Engineering", "cost_center": "4100", "manager_id": "E1010", "card_last4": "4821", "single_txn_limit": "2500.00", "monthly_limit": "10000.00", "active": true},
+    {"employee_id": "E1002", "name": "Marcus Webb", "email": "marcus.webb@acme-corp.example", "department": "Sales", "cost_center": "5200", "manager_id": "E1011", "card_last4": "7734", "single_txn_limit": "1500.00", "monthly_limit": "6000.00", "active": true},
+    {"employee_id": "E1003", "name": "Elena Rossi", "email": "elena.rossi@acme-corp.example", "department": "Marketing", "cost_center": "5300", "manager_id": "E1011", "card_last4": "1190", "single_txn_limit": "2000.00", "monthly_limit": "8000.00", "active": true},
+    {"employee_id": "E1004", "name": "Tom Okafor", "email": "tom.okafor@acme-corp.example", "department": "Facilities", "cost_center": "6100", "manager_id": "E1012", "card_last4": "3306", "single_txn_limit": "5000.00", "monthly_limit": "20000.00", "active": true},
+    {"employee_id": "E1005", "name": "Dana Kim", "email": "dana.kim@acme-corp.example", "department": "Finance", "cost_center": "7100", "manager_id": "E1013", "card_last4": "9052", "single_txn_limit": "1000.00", "monthly_limit": "4000.00", "active": true},
+    {"employee_id": "E1006", "name": "Sam Patel", "email": "sam.patel@acme-corp.example", "department": "Sales", "cost_center": "5200", "manager_id": "E1011", "card_last4": "6618", "single_txn_limit": "1500.00", "monthly_limit": "6000.00", "active": false},
+    {"employee_id": "E1010", "name": "Ana Lopez", "email": "ana.lopez@acme-corp.example", "department": "Engineering", "cost_center": "4100", "manager_id": null, "card_last4": null, "single_txn_limit": "0", "monthly_limit": "0", "active": true},
+    {"employee_id": "E1011", "name": "Chris Doyle", "email": "chris.doyle@acme-corp.example", "department": "Commercial", "cost_center": "5000", "manager_id": null, "card_last4": null, "single_txn_limit": "0", "monthly_limit": "0", "active": true},
+    {"employee_id": "E1012", "name": "Ruth Adler", "email": "ruth.adler@acme-corp.example", "department": "Operations", "cost_center": "6000", "manager_id": null, "card_last4": null, "single_txn_limit": "0", "monthly_limit": "0", "active": true},
+    {"employee_id": "E1013", "name": "Hiro Tanaka", "email": "hiro.tanaka@acme-corp.example", "department": "Finance", "cost_center": "7000", "manager_id": null, "card_last4": null, "single_txn_limit": "0", "monthly_limit": "0", "active": true}
+  ]
+}

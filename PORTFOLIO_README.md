@@ -72,7 +72,7 @@ A Streamlit app with two pages.
 employee directory and the policy rules: type, required or not, validation, and what each field drives downstream.
 
 ## Testing
-108 offline tests cover money and date parsing, quarantine behaviour, provider failover, credential disabling, JSON repair
+115 offline tests cover money and date parsing, quarantine behaviour, provider failover, credential disabling, JSON repair
 and retry, the hash chain and tamper detection, the append-only log, missing-justification handling, backup and restore
 (including tampered and unsafe archives), and total versus partial LLM outage. A `--mock-llm` mode runs the whole
 pipeline with no keys.
@@ -93,7 +93,7 @@ manual review. Coverage is about 89% of lines, including the UI through Streamli
 ## Honest limitations
 This is a prototype, not a production system.
 - **Sample data:** the statement, employees and policy are invented. No real cardholder data has been used.
-- **No login:** in the app you choose who you are. An optional shared passcode gates access, but it is not identity control.
+- **No login:** in the app you choose who you are. An optional shared passcode gates access, but it is not identity control. On the public demo, the live LLM option has its own passcode so visitors cannot spend the free-tier quota; everyone can use the offline auditor and browse a bundled real LLM run.
 - **Receipts are typed in:** there is no image upload or OCR, and nothing verifies that the typed values match a real receipt.
 - **Storage:** on a hosted free tier, files are lost when the app restarts, so the app has backup and restore. A real
   deployment needs a database or persistent disk.

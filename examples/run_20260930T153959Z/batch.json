@@ -1,0 +1,11 @@
+{
+  "mode": "portal",
+  "label": "",
+  "created_at": "2026-09-30T15:39:59+00:00",
+  "input_sha256": {
+    "employees.json": "795710721ec871468ef4c3972afc6865425f2ccbef1b246b8a307cf37add3db1",
+    "policy_rules.json": "a75b9fd1cfdbe569e77718f7407d7640ce7a3b877f5f2608feac1ce97a0e9778",
+    "spending_policy.md": "9c95648d1a1f1db065a1d21ba758d01a5d99478c70f1ce928cbe947492fc4737",
+    "transactions.csv": "1a22748623151ec620a7b8cdcadfa9ed8a2aedc2aab1c0765673a7880926e407"
+  }
+}
