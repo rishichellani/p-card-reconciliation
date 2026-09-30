@@ -85,6 +85,32 @@ def _when(j: dict) -> str:
     return (j.get("submitted_at") or "").replace("T", " ")[:16]
 
 
+_VERDICT_STATUS = {"APPROVE": "APPROVED", "FLAG": "FLAGGED", "REJECT": "REJECTED"}
+_RANK = {"APPROVED": 0, "FLAGGED": 1, "MANUAL_REVIEW": 2, "REJECTED": 3}
+
+
+def _final_explanation(a: dict, kind: str) -> str:
+    """Say which side decided the final status: the rules, the auditor, or both agreeing."""
+    final, det, llm = a["final_status"], a["deterministic_status"], a.get("llm_result")
+    label = STATUS_LABEL
+    if llm is None:
+        if a.get("llm_error"):
+            return f"{label[final]}. The {kind} could not be reached, so this needs a person to decide."
+        if any(f["code"] == "MISSING_JUSTIFICATION" for f in a["findings"]):
+            return f"{label[final]}. No justification was submitted, so there was nothing for the {kind} to judge."
+        return f"{label[final]}. A hard rule decided this, so the {kind} was not asked."
+    verdict = _VERDICT_STATUS[llm["verdict"]]
+    if any(f["code"] == "LOW_LLM_CONFIDENCE" for f in a["findings"]):
+        verdict = "FLAGGED"  # an approval with low confidence is treated as a flag
+    if verdict == det:
+        return f"{label[final]}. The rules and the {kind} agree."
+    if _RANK[det] > _RANK[verdict]:
+        return (f"{label[final]}. The rule result ({label[det]}) is worse than the {kind} verdict ({label[verdict]}), "
+                f"so the rule's result stands. The {kind} can never override a rule.")
+    return (f"{label[final]}. The {kind} verdict ({label[verdict]}) is worse than the rule result ({label[det]}), "
+            f"so the {kind}'s verdict stands. It can raise a flag that the rules did not.")
+
+
 def build_trace(run_dir: Path) -> dict[str, list[dict]]:
     """txn_id -> ordered list of {stage, step, detail, file}: the life of each transaction across the four stages."""
     env, _, journal = _load(run_dir)
@@ -119,7 +145,7 @@ def build_trace(run_dir: Path) -> dict[str, list[dict]]:
                                    else "Skipped: a hard rule already decided this transaction.")),
              "file": STAGE_FILES[3]},
             {"stage": 3, "step": "Final status",
-             "detail": f"{STATUS_LABEL[a['final_status']]}. Rule: the worse of the rule result and the LLM verdict wins; the LLM can escalate but never downgrade.",
+             "detail": _final_explanation(a, auditor_kind(env[3]["payload"]["auditor"])),
              "file": STAGE_FILES[3]},
             {"stage": 4, "step": "ERP journal lines",
              "detail": " | ".join(f"{'Dr' if float(x['debit']) else 'Cr'} {x['gl_account']} {x['gl_account_name']} {float(x['debit'] or 0) or float(x['credit']):,.2f}"

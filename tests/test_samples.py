@@ -110,3 +110,18 @@ def test_sample_labels_do_not_call_hand_written_text_random(realistic):
     clean = next(a for a in s3.items if a.txn_id == "R-2001").justified.justification.model_dump(mode="json")
     planted = next(a for a in s3.items if a.txn_id == "R-2033").justified.justification.model_dump(mode="json")
     assert source_label(clean) == "SAMPLE DATA (demo text)" and source_label(planted) == "SAMPLE DATA (planted demo scenario)"
+
+
+def test_the_trace_says_which_side_decided_the_final_status(realistic):
+    from utils.export import build_trace
+    ctx, _, _, _ = realistic
+    trace = build_trace(ctx.run_dir)
+    final = lambda t: next(s["detail"] for s in trace[t] if s["step"] == "Final status")
+    # R-2019: the receipt rule flags it, the auditor approves: the RULE stands
+    assert "rule result (Flagged) is worse than the Mock auditor verdict (Approved)" in final("R-2019") and "never override a rule" in final("R-2019")
+    # R-2033: no rule fires, the auditor rejects: the AUDITOR stands
+    assert "Mock auditor verdict (Rejected) is worse than the rule result (Approved)" in final("R-2033") and "verdict stands" in final("R-2033")
+    # a clean transaction: both agree
+    assert final("R-2001") == "Approved. The rules and the Mock auditor agree."
+    # hard rule reject: the auditor is never asked
+    assert "A hard rule decided this" in final("R-2022")
