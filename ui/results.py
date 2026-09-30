@@ -145,7 +145,14 @@ with tab_over:
         st.markdown(f'<div class="pc-panel"><h3>Spend by outcome</h3>{rows}</div>', unsafe_allow_html=True)
     with right:
         debits = Decimal(manifest["total_debits"])
-        tie = Decimal(manifest["control_total_usd"]) == Decimal(str(round(df["amount"].sum(), 2)))
+        control = Decimal(manifest["control_total_usd"])
+        refunds = Decimal(str(round(-df.loc[df["amount"] < 0, "amount"].sum(), 2)))
+        rules_path = OUTPUT / run_id / "inputs" / "policy_rules.json"
+        rules_path = rules_path if rules_path.exists() else ROOT / "data" / "policy_rules.json"
+        liability = json.loads(rules_path.read_text())["liability_account"]
+        on_liability = journal[journal["gl_account"] == liability]
+        net_liability = Decimal(str(round(on_liability["credit"].sum() - on_liability["debit"].sum(), 2)))
+        tie = net_liability == control
         llm_n = int((df["llm"] != "-").sum())
 
         def row(ok: bool, text: str) -> str:
@@ -153,8 +160,11 @@ with tab_over:
 
         items = (
             row(not data["problems"], "Artifact hash chain " + ("verified" if not data["problems"] else "FAILED"))
-            + row(True, f"Journal balanced: debits = credits = <span class='pc-num'>{money(debits)}</span>")
-            + row(tie, f"Ties to statement control total <span class='pc-num'>{money(manifest['control_total_usd'])}</span>")
+            + row(True, f"Journal balanced: total debits = total credits = <span class='pc-num'>{money(debits)}</span>"
+                        + (f" (gross: includes {money(refunds)} of refunds on both sides)" if refunds else ""))
+            + row(tie, f"Net card liability <span class='pc-num'>{money(net_liability)}</span> "
+                       f"{'matches' if tie else 'DOES NOT match'} the statement total <span class='pc-num'>{money(control)}</span> "
+                       "(purchases minus refunds)")
             + f'<li><span class="pc-badge" style="--c:#1d4ed8">{icon("info")}Info</span>'
               f'<span>LLM audited {llm_n} of {len(df)}; the rest were decided by hard rules or sent to manual review</span></li>'
         )

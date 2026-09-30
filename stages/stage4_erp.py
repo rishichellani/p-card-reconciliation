@@ -98,6 +98,6 @@ def run(ctx: RunContext) -> str:
         "control_total_usd": str(s3.control_total_usd), "auditor": s3.auditor,
     }
     write_immutable(ctx.run_dir / CSV_MANIFEST, (json.dumps(manifest, indent=2) + "\n").encode("utf-8"))
-    log.info("Stage 4: journal %s, %d lines, debits = credits = $%s, net clearing liability ties to control total $%s",
+    log.info("Stage 4: journal %s, %d lines, gross debits = gross credits = $%s; net clearing liability ties to control total $%s (purchases minus refunds)",
              journal_id, len(lines), manifest["total_debits"], s3.control_total_usd)
     return manifest["csv_sha256"]
