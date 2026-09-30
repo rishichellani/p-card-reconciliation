@@ -79,3 +79,17 @@ def mock_item(tmp_path):
     stage1_ingest.run(ctx)
     stage2_justify.run(ctx)
     return read_json_artifact(ctx, 2, Stage2Payload)[1].items[0]
+
+
+def test_probe_reports_each_provider(monkeypatch):
+    from utils import llm_client
+
+    def fake_request(self, p, st, system, user):
+        if p.name == "groq":
+            raise ProviderError("credentials rejected (401)", permanent=True)
+        return '{"ok": true}'
+
+    monkeypatch.setattr(llm_client.LLMClient, "_request", fake_request)
+    result = {name: (ok, detail) for name, _, ok, detail in llm_client.probe(providers("gemini", "groq"))}
+    assert result["gemini"][0] is True
+    assert result["groq"][0] is False and "credentials rejected" in result["groq"][1]

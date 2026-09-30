@@ -10,5 +10,9 @@ class LLMResponseError(Exception):
     """The LLM returned something unusable (refusal, truncation, non-JSON, schema violation) or the call failed."""
 
 
+class LLMUnavailableError(PipelineError):
+    """The LLM providers are failing across the board. Stops the audit so nothing systemic is saved as if it were a result."""
+
+
 class LLMAuthError(PipelineError):
     """Credentials missing/invalid. Fatal: retrying 25 transactions would fail identically."""

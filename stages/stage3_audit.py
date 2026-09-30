@@ -19,11 +19,14 @@ from stages.deterministic_checks import run_checks, status_from_findings
 from stages.llm_auditor import Auditor, LLMAuditor, MockAuditor
 from utils.artifacts import read_json_artifact, write_json_artifact
 from utils.context import RunContext
-from utils.errors import LLMResponseError, PipelineError
+from utils.errors import LLMResponseError, LLMUnavailableError, PipelineError
 from utils.llm_client import LLMClient, load_providers
 from utils.loaders import load_json_model, read_bytes
 
 log = logging.getLogger(__name__)
+
+# If this many LLM attempts fail before a single one succeeds, the problem is the connection, not the transactions.
+SYSTEMIC_FAILURE_THRESHOLD = 3
 
 VERDICT_TO_STATUS = {
     "APPROVE": AuditStatus.APPROVED,
@@ -51,6 +54,7 @@ def run(ctx: RunContext, auditor: Auditor | None = None, progress=None) -> str:
 
     det_findings = run_checks(s2.items, employees, rules)
     audited: list[AuditedTransaction] = []
+    llm_ok = llm_failed = 0
 
     for n, item in enumerate(s2.items, start=1):
         txn = item.routed.transaction
@@ -77,10 +81,17 @@ def run(ctx: RunContext, auditor: Auditor | None = None, progress=None) -> str:
                         code="LOW_LLM_CONFIDENCE", severity=Severity.FLAG,
                         message=f"auditor approved with confidence {llm_result.confidence:.2f} < {rules.min_llm_confidence}",
                     ))
+                llm_ok += 1
                 final = worst(det_status, llm_status)  # LLM can escalate, never downgrade deterministic findings
                 log.info("[%d/%d] %s det=%s llm=%s(%.2f) -> %s", n, len(s2.items), txn.txn_id,
                          det_status.value, llm_result.verdict, llm_result.confidence, final.value)
             except LLMResponseError as exc:
+                llm_failed += 1
+                if llm_ok == 0 and llm_failed >= SYSTEMIC_FAILURE_THRESHOLD:
+                    raise LLMUnavailableError(
+                        f"The LLM providers are not responding ({llm_failed} attempts in a row failed, none succeeded), so the audit "
+                        f"was stopped instead of sending everything to manual review. Nothing from this stage was saved; "
+                        f"fix the connection and run the audit again. Last error: {exc}") from exc
                 llm_error = str(exc)
                 final = worst(det_status, AuditStatus.MANUAL_REVIEW)
                 log.error("[%d/%d] %s LLM audit failed -> MANUAL_REVIEW: %s", n, len(s2.items), txn.txn_id, exc)

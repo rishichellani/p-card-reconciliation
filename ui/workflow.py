@@ -16,7 +16,7 @@ from ui.theme import icon, money
 from utils import submissions, workspace
 from utils.artifacts import STAGE_FILES, read_json_artifact
 from utils.errors import PipelineError
-from utils.llm_client import load_providers
+from utils.llm_client import load_providers, probe
 from utils.loaders import load_json_model
 
 log = logging.getLogger(__name__)
@@ -278,6 +278,14 @@ with tab_audit:
                 st.caption("Will use: " + ", ".join(f"{p.name} ({p.model})" for p in found) + ". "
                            "The justification text, merchant, amount and department are sent to these providers. "
                            "Names, emails and card numbers are not. Free tiers may use prompts for training.")
+                if st.button("Test connection", icon=":material/network_check:",
+                             help="Sends one tiny request to each provider so you can see which ones work before locking anything."):
+                    with st.spinner("Contacting the providers..."):
+                        results = probe(found)
+                    for name, model, ok, detail in results:
+                        (st.success if ok else st.error)(f"{name} ({model}): {detail}")
+                    if not any(ok for _, _, ok, _ in results):
+                        st.warning("No provider responded. Fix the keys or model names first, or the audit will stop.")
             except PipelineError as exc:
                 can_run = False
                 st.error(f"{exc}. Add a key in `.env` or the app's Secrets, or choose Mock.")

@@ -83,6 +83,19 @@ def load_providers(env: Mapping[str, str] | None = None, order: str | None = Non
     return configs
 
 
+def probe(providers: list[ProviderConfig], timeout: float = 30.0) -> list[tuple[str, str, bool, str]]:
+    """One tiny request per provider, so a person can see which connection works. Returns (name, model, ok, detail)."""
+    out = []
+    for p in providers:
+        client = LLMClient([p], timeout=timeout, max_tokens=500, sleep=lambda s: None)
+        try:
+            reply = client.complete("Reply with JSON only.", 'Return exactly {"ok": true}.')
+            out.append((p.name, p.model, True, "responded"))
+        except LLMResponseError as exc:
+            out.append((p.name, p.model, False, str(exc).removeprefix("all LLM providers failed: ")))
+    return out
+
+
 @dataclass
 class _State:
     dead: bool = False

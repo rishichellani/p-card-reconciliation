@@ -178,3 +178,62 @@ def test_log_lines_written_before_the_source_field_still_verify(batch):
     body["entry_hash"] = submissions._entry_hash(body)
     (ctx.run_dir / submissions.LOG_NAME).write_text(_json.dumps(body) + "\n")
     assert submissions.read_log(ctx.run_dir)[0].source == "employee"
+
+
+class _DownAuditor:
+    name = "always-failing"
+
+    def audit(self, item, category, findings):
+        from utils.errors import LLMResponseError
+        raise LLMResponseError("all LLM providers failed: groq: rate limited; gemini: API error 503")
+
+
+class _FlakyAuditor:
+    """Works for the first calls, then fails: a partial outage must NOT abort the audit."""
+    name = "flaky"
+
+    def __init__(self):
+        self.calls = 0
+
+    def audit(self, item, category, findings):
+        from utils.errors import LLMResponseError
+        from schemas.models import LLMAuditResult
+        self.calls += 1
+        if self.calls > 2:
+            raise LLMResponseError("temporary failure")
+        return LLMAuditResult(verdict="APPROVE", rationale="Looks specific and compliant.", confidence=0.9)
+
+
+def _load_samples(ctx, routed):
+    from stages.stage2_justify import sample_for
+    from schemas.models import PolicyRules
+    from utils.loaders import load_json_model
+    rules = load_json_model(ctx.data_dir / "policy_rules.json", PolicyRules)
+    for t, (j, kind) in sample_for(list(routed.values()), rules, ctx.seed, workspace.SAMPLE_DATA).items():
+        submissions.submit(ctx.run_dir, routed[t], j.business_purpose, j.attendees, j.receipt, source=kind)
+
+
+def test_total_llm_outage_stops_the_audit_and_can_be_retried(batch):
+    from dataclasses import replace
+    from stages import stage3_audit
+    from utils.errors import LLMUnavailableError
+    ctx, routed = batch
+    _load_samples(ctx, routed)
+    workspace.run_stage(replace(ctx, mock_llm=True), 2)
+    with pytest.raises(LLMUnavailableError, match="not responding"):
+        stage3_audit.run(ctx, auditor=_DownAuditor())
+    assert not (ctx.run_dir / "03_compliance_audited.json").exists()      # nothing systemic was saved
+    assert workspace.batch_info(ctx.run_dir)["state"] == "audit incomplete"
+    workspace.run_audit(ctx, mock_llm=True, providers=None)               # retry completes; justifications not re-entered
+    assert workspace.batch_info(ctx.run_dir)["state"] == "complete"
+
+
+def test_partial_llm_outage_still_completes_with_manual_review(batch):
+    from dataclasses import replace
+    from stages import stage3_audit
+    ctx, routed = batch
+    _load_samples(ctx, routed)
+    workspace.run_stage(replace(ctx, mock_llm=True), 2)
+    stage3_audit.run(ctx, auditor=_FlakyAuditor())
+    s3 = read_json_artifact(ctx, 3, Stage3Payload)[1]
+    assert s3.status_counts.get("MANUAL_REVIEW", 0) > 0 and any(a.llm_result for a in s3.items)
