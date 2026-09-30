@@ -26,6 +26,9 @@ TEMPLATE = "txn_id,post_date,card_last4,merchant_name,mcc,amount,currency,statem
 # A pending selection must be applied before the selectbox is created (Streamlit forbids setting it afterwards).
 if "pending_pick" in st.session_state:
     st.session_state["batch_pick"] = st.session_state.pop("pending_pick")
+STEPS = ["1. Statement", "2. Justifications", "3. Audit and results"]
+if "pending_step" in st.session_state:
+    st.session_state["wf_step"] = st.session_state.pop("pending_step")
 
 st.title("Live workflow")
 st.caption("Load a bank statement, let each cardholder add their justification, then run the audit.")
@@ -109,10 +112,12 @@ st.markdown(
     + (f" &middot; {html.escape(info['label'])}" if info["label"] else "")
     + f" &middot; {html.escape(info['state'])}</p>", unsafe_allow_html=True)
 
-tab_stmt, tab_just, tab_audit = st.tabs(["1. Statement", "2. Justifications", "3. Audit and results"])
+# Not st.tabs: tabs snap back to the first one on every rerun (after saving, loading samples, running the audit).
+_first_time = {} if "wf_step" in st.session_state else {"default": STEPS[0]}
+step = st.segmented_control("Workflow step", STEPS, key="wf_step", label_visibility="collapsed", **_first_time) or STEPS[0]
 
 # --------------------------------------------------------------------------- 1. statement
-with tab_stmt:
+if step == STEPS[0]:
     c = st.columns(3)
     c[0].metric("Transactions routed", len(routed))
     c[1].metric("Rows set aside", len(s1.quarantined))
@@ -139,7 +144,7 @@ with tab_stmt:
                      column_config={"row": "CSV row", "txn_id": "Txn", "merchant": "Merchant", "amount": "Amount", "why": "Why"})
 
 # --------------------------------------------------------------------------- 2. justifications
-with tab_just:
+if step == STEPS[1]:
     done = len(needs_just) - len(missing)
     st.markdown(f'<p role="status"><strong>{done} of {len(needs_just)} justifications submitted.</strong> '
                 f'{len(missing)} still needed.</p>', unsafe_allow_html=True)
@@ -160,7 +165,8 @@ with tab_just:
                     for t, (j, kind) in samples.items():
                         submissions.submit(run_dir, routed[t], j.business_purpose, j.attendees, j.receipt, source=kind)
                     st.session_state["flash"] = (f"Loaded {len(samples)} sample justifications (marked as sample data). "
-                                                 "Open the Audit and results tab to run the audit.")
+                                                 "Now run the audit.")
+                    st.session_state["pending_step"] = STEPS[2]
                     st.rerun()
                 except PipelineError as exc:
                     st.error(str(exc))
@@ -255,7 +261,7 @@ with tab_just:
             st.caption("Nothing submitted yet.")
 
 # --------------------------------------------------------------------------- 3. audit
-with tab_audit:
+if step == STEPS[2]:
     if complete:
         st.success("The audit is complete and every artifact verified.")
         if st.button("Open results", type="primary", icon=":material/fact_check:"):
@@ -308,7 +314,8 @@ with tab_audit:
             try:
                 with st.spinner("Running the audit. Live mode is throttled to stay inside free-tier limits."):
                     workspace.run_audit(ctx, mock_llm=not live, providers=providers, progress=progress)
-                st.session_state["flash"] = "Audit complete."
+                st.session_state["flash"] = "Audit complete. Open the results below."
+                st.session_state["pending_step"] = STEPS[2]
                 st.rerun()
             except PipelineError as exc:
                 st.error(f"The audit stopped: {exc}")
