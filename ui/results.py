@@ -15,8 +15,9 @@ from ui.theme import SEVERITY_RANK, STATUS, badge, icon, money
 from utils.artifacts import CSV_MANIFEST, STAGE_FILES, verify_run
 from utils.export import build_trace, provenance_note, source_label, write_workbook
 
+from utils.workspace import OUTPUT  # the same folder the Live workflow writes to
+
 ROOT = Path(__file__).resolve().parent.parent
-OUTPUT = ROOT / "output"
 
 # --------------------------------------------------------------------------- data
 def list_runs() -> list[str]:

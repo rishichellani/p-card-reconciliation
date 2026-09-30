@@ -37,12 +37,10 @@ st.caption("Load a bank statement, let each cardholder add their justification, 
 with st.sidebar:
     st.header("Batches")
     batches = workspace.list_batches()
-    short = {"collecting justifications": "open", "audit incomplete": "retry audit", "complete": "done", "not started": "new"}
-
     def batch_label(b: dict) -> str:
         r = b["run_id"]  # run_YYYYMMDDTHHMMSSZ -> "MM-DD HH:MM"
         when = f"{r[8:10]}-{r[10:12]} {r[13:15]}:{r[15:17]} UTC"
-        return f"{when} · {b['label']} · {short.get(b['state'], b['state'])}" if b["label"] else f"{when} · {short.get(b['state'], b['state'])}"
+        return f"{when} · {b['label']}" if b["label"] else when  # state is shown in the header: a state here goes stale
 
     labels = {b["run_id"]: batch_label(b) for b in batches}
     pick = st.selectbox("Batch", [NEW, *labels], key="batch_pick", format_func=lambda k: k if k == NEW else labels[k])
@@ -264,9 +262,9 @@ if step == STEPS[1]:
 if step == STEPS[2]:
     if complete:
         st.success("The audit is complete and every artifact verified.")
-        if st.button("Open results", type="primary", icon=":material/fact_check:"):
-            st.session_state["results_run"] = pick
-            st.switch_page("ui/results.py")
+        st.session_state["results_run"] = pick  # the Results page opens this batch
+        # A page link behaves exactly like the sidebar entry; a scripted switch_page did not navigate on the hosted app.
+        st.page_link("ui/results.py", label="Open results", icon=":material/fact_check:")
     else:
         if closed:
             st.warning("A previous audit attempt did not finish. Submissions are already locked; run it again to complete it.")
