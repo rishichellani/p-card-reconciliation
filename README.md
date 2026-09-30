@@ -78,6 +78,21 @@ journal, and the audit trail. Batches from the live workflow and simulated demos
 Identity: there is no login. "Choose who you are" is a demo convenience, so anyone who can open the page can act as any
 cardholder. Set `APP_PASSCODE` (env var or Streamlit secret) to require a shared passcode before the app opens.
 
+### Running with Docker
+
+```bash
+docker compose up --build          # http://localhost:8600
+# or, without compose:
+docker build -t pcard-reconciler .
+docker run --rm -p 8600:8501 --env-file .env -v pcard-output:/app/output pcard-reconciler
+```
+
+The image is Python 3.12 on a slim base (about 830 MB, mostly Streamlit's dependencies), runs as an unprivileged user and has a
+health check. API keys and `APP_PASSCODE` are never baked in: pass them with `--env-file .env` or `-e`. Batches and audit artifacts are
+written to `/app/output`, which is a named volume, so they survive restarts (unlike Streamlit Community Cloud, where files are lost).
+That makes a container host with a volume, such as Render, Fly.io or Cloud Run with a bucket, the option to choose if you need entries to persist.
+The full test suite also passes on Python 3.12 and 3.13.
+
 ### Deploying to Streamlit Community Cloud
 
 Community Cloud deploys straight from a GitHub repo (it does not run Docker) and has no persistent disk.

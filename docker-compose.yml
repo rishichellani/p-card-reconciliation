@@ -1,0 +1,15 @@
+# docker compose up --build      then open http://localhost:8600
+services:
+  app:
+    build: .
+    image: pcard-reconciler
+    ports:
+      - "8600:8501"
+    env_file:
+      - path: .env          # optional: GROQ_API_KEY, GEMINI_API_KEY, APP_PASSCODE ...
+        required: false
+    volumes:
+      - pcard-output:/app/output   # batches and audit artifacts survive container restarts
+    restart: unless-stopped
+volumes:
+  pcard-output:

@@ -78,7 +78,7 @@ and retry, the hash chain and tamper detection, the append-only log, missing-jus
 pipeline with no keys.
 
 ## Tech
-Python 3.10+, Pydantic v2, Streamlit, OpenAI-compatible SDK client (Gemini / Groq / OpenRouter), `Decimal`, openpyxl, pytest.
+Python 3.10+ (tested on 3.12, 3.13 and 3.14), Docker, Pydantic v2, Streamlit, OpenAI-compatible SDK client (Gemini / Groq / OpenRouter), `Decimal`, openpyxl, pytest.
 
 ## Sample data
 Two invented statements ship with the app. A realistic one (50 transactions, five planted problems, so 45 approved with the offline auditor)
