@@ -34,7 +34,14 @@ st.caption("Load a bank statement, let each cardholder add their justification, 
 with st.sidebar:
     st.header("Batches")
     batches = workspace.list_batches()
-    labels = {b["run_id"]: f"{b['run_id'][4:]}  {b['label']}  ({b['state']})".replace("  (", " (") for b in batches}
+    short = {"collecting justifications": "open", "audit incomplete": "retry audit", "complete": "done", "not started": "new"}
+
+    def batch_label(b: dict) -> str:
+        r = b["run_id"]  # run_YYYYMMDDTHHMMSSZ -> "MM-DD HH:MM"
+        when = f"{r[8:10]}-{r[10:12]} {r[13:15]}:{r[15:17]} UTC"
+        return f"{when} · {b['label']} · {short.get(b['state'], b['state'])}" if b["label"] else f"{when} · {short.get(b['state'], b['state'])}"
+
+    labels = {b["run_id"]: batch_label(b) for b in batches}
     pick = st.selectbox("Batch", [NEW, *labels], key="batch_pick", format_func=lambda k: k if k == NEW else labels[k])
 
     st.divider()
@@ -106,11 +113,12 @@ tab_stmt, tab_just, tab_audit = st.tabs(["1. Statement", "2. Justifications", "3
 
 # --------------------------------------------------------------------------- 1. statement
 with tab_stmt:
-    c = st.columns(4)
+    c = st.columns(3)
     c[0].metric("Transactions routed", len(routed))
     c[1].metric("Rows set aside", len(s1.quarantined))
     c[2].metric("Control total", money(s1.control_total_usd))
-    c[3].metric("Period", f"{s1.statement_period_start} to {s1.statement_period_end}")
+    st.markdown(f'<p><strong>Statement period:</strong> <span class="pc-num">{s1.statement_period_start}</span> to '
+                f'<span class="pc-num">{s1.statement_period_end}</span></p>', unsafe_allow_html=True)
     rows = []
     for t, r in routed.items():
         e = latest.get(t)
